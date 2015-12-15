@@ -13,5 +13,7 @@ namespace Web.ThanhDat.Models
             : base("DefaultConnection")
         {
         }
+
+        public System.Data.Entity.DbSet<Web.ThanhDat.Models.Catalog> Catalogs { get; set; }
     }
 }
