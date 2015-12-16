@@ -52,4 +52,3 @@ D:\Projects\Web.ThanhDat\MVCProject\MVCProject\bin\Microsoft.Owin.Security.Twitt
 D:\Projects\Web.ThanhDat\MVCProject\MVCProject\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 D:\Projects\Web.ThanhDat\MVCProject\MVCProject\obj\Debug\MVCProject.dll
 D:\Projects\Web.ThanhDat\MVCProject\MVCProject\obj\Debug\MVCProject.pdb
-D:\Projects\Web.ThanhDat\MVCProject\MVCProject\obj\Debug\MVCProject.csprojResolveAssemblyReference.cache
