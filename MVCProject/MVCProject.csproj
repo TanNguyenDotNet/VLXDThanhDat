@@ -166,8 +166,13 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CatalogController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LocationController.cs" />
+    <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\ProductNameController.cs" />
+    <Compile Include="Controllers\ProductPriceController.cs" />
     <Compile Include="Controllers\PromotionController.cs" />
     <Compile Include="Controllers\PromotionTypeController.cs" />
+    <Compile Include="Controllers\SupplierController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -308,6 +313,31 @@
     <Content Include="Views\PromotionType\Details.cshtml" />
     <Content Include="Views\PromotionType\Edit.cshtml" />
     <Content Include="Views\PromotionType\Index.cshtml" />
+    <Content Include="Views\ProductPrice\Create.cshtml" />
+    <Content Include="Views\ProductPrice\Delete.cshtml" />
+    <Content Include="Views\ProductPrice\Details.cshtml" />
+    <Content Include="Views\ProductPrice\Edit.cshtml" />
+    <Content Include="Views\ProductPrice\Index.cshtml" />
+    <Content Include="Views\Location\Create.cshtml" />
+    <Content Include="Views\Location\Delete.cshtml" />
+    <Content Include="Views\Location\Details.cshtml" />
+    <Content Include="Views\Location\Edit.cshtml" />
+    <Content Include="Views\Location\Index.cshtml" />
+    <Content Include="Views\Supplier\Create.cshtml" />
+    <Content Include="Views\Supplier\Delete.cshtml" />
+    <Content Include="Views\Supplier\Details.cshtml" />
+    <Content Include="Views\Supplier\Edit.cshtml" />
+    <Content Include="Views\Supplier\Index.cshtml" />
+    <Content Include="Views\ProductName\Create.cshtml" />
+    <Content Include="Views\ProductName\Delete.cshtml" />
+    <Content Include="Views\ProductName\Details.cshtml" />
+    <Content Include="Views\ProductName\Edit.cshtml" />
+    <Content Include="Views\ProductName\Index.cshtml" />
+    <Content Include="Views\Product\Create.cshtml" />
+    <Content Include="Views\Product\Delete.cshtml" />
+    <Content Include="Views\Product\Details.cshtml" />
+    <Content Include="Views\Product\Edit.cshtml" />
+    <Content Include="Views\Product\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
