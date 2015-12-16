@@ -10,7 +10,7 @@ namespace MVCProject.Common
     {
         public static IEnumerable<SelectListItem> GetLocationList(Models.aspnetEntities db)
         {
-            return db.Locations.AsEnumerable()
+            return db.Locations.OrderBy(d=>d.Order).AsEnumerable()
                 .Select(d => new SelectListItem
                 {
                     Value = d.ID.ToString(),
@@ -27,6 +27,16 @@ namespace MVCProject.Common
                 {
                     Value = d.ID.ToString(),
                     Text = d.Title
+                });
+        }
+
+        public static IEnumerable<SelectListItem> GetPromotionTypeList(Models.aspnetEntities db)
+        {
+            return db.PromotionTypes.AsEnumerable()
+                .Select(d => new SelectListItem
+                {
+                    Value = d.ID.ToString(),
+                    Text = d.ProTypeName
                 });
         }
     }

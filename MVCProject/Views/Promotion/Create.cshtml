@@ -1,0 +1,93 @@
+﻿@model MVCProject.Models.Promotion
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create</h2>
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Promotion</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            <span class="control-label col-md-2">Sản phẩm áp dụng:</span>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ProductID)
+                    @Html.ValidationMessageFor(model => model.ProductID)
+                </div>
+</div>
+        <div class="form-group">
+            <span class="control-label col-md-2">
+                Kích hoạt:</span>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Active)
+                    @Html.ValidationMessageFor(model => model.Active)
+                </div>
+</div>
+
+        <div class="form-group">
+            <span class="control-label col-md-2">Mã khuyến mãi</span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.PromotionCode, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.PromotionCode)
+                </div>
+        </div>
+
+        <div class="form-group">
+            <span class="control-label col-md-2">
+                Ngày áp dụng:</span>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.StartDate)
+                    @Html.ValidationMessageFor(model => model.StartDate)
+                </div>
+</div>
+
+        <div class="form-group">
+            <span class="control-label col-md-2">
+                Ngày kết thúc:</span>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.EndDate)
+                    @Html.ValidationMessageFor(model => model.EndDate)
+                </div>
+</div>
+        <div class="form-group">
+            <span class="control-label col-md-2">Hình thức khuyến mãi:</span>
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.PromotionTypeID, (IEnumerable<SelectListItem>)ViewBag.PromotionTypeList,
+                    "Chọn hình thức khuyến mãi", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.PromotionTypeID)
+                </div>
+</div>
+
+        <div class="form-group">
+            <span class="control-label col-md-2">
+                Giá trị khuyến mãi:</span>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.PromotionValue, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.PromotionValue)
+                </div>
+</div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

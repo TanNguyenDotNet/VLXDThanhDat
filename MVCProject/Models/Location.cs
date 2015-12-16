@@ -17,5 +17,6 @@ namespace MVCProject.Models
         public int ID { get; set; }
         public string LocationName { get; set; }
         public string LocationCode { get; set; }
+        public Nullable<int> Order { get; set; }
     }
 }

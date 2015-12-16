@@ -1,0 +1,49 @@
+﻿@model MVCProject.Models.PromotionType
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>PromotionType</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ProTypeName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProTypeName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AddType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AddType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ExRate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ExRate)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

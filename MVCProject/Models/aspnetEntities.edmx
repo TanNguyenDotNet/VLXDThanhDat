@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Models.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Models.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -76,6 +76,7 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LocationName" Type="nvarchar" MaxLength="255" />
           <Property Name="LocationCode" Type="varchar" MaxLength="5" />
+          <Property Name="Order" Type="int" />
         </EntityType>
         <EntityType Name="Product">
           <Key>
@@ -245,8 +246,7 @@
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Models" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -319,6 +319,7 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="LocationName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="LocationCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="Order" Type="Int32" />
         </EntityType>
         <EntityType Name="Product">
           <Key>
@@ -527,6 +528,7 @@
           <EntitySetMapping Name="Locations">
             <EntityTypeMapping TypeName="Models.Location">
               <MappingFragment StoreEntitySet="Location">
+                <ScalarProperty Name="Order" ColumnName="Order" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="LocationName" ColumnName="LocationName" />
                 <ScalarProperty Name="LocationCode" ColumnName="LocationCode" />

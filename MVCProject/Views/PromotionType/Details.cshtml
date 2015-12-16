@@ -1,0 +1,43 @@
+﻿@model MVCProject.Models.PromotionType
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>PromotionType</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ProTypeName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProTypeName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AddType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AddType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ExRate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ExRate)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
