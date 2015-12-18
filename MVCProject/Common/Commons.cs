@@ -39,5 +39,16 @@ namespace MVCProject.Common
                     Text = d.ProTypeName
                 });
         }
+
+
+        public static IEnumerable<SelectListItem> GetProductList(Models.aspnetEntities db)
+        {
+            return db.Products.AsEnumerable()
+                .Select(d => new SelectListItem
+                {
+                    Value = d.ID.ToString(),
+                    Text = d.ProductName
+                });
+        }
     }
 }

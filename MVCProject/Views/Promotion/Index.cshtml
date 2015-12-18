@@ -8,44 +8,42 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Thêm mới", "Create") ::::  @Html.ActionLink("Hình thức khuyến mãi", "Index", "PromotionType")
 </p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.ProductID)
+            Tiêu đề
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Active)
+            Kích hoạt
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.PromotionCode)
+            Mã
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.StartDate)
+            Ngày áp dụng
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.EndDate)
+           Ngày hết hạn
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.UserID)
+           Ngày tạo
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Created)
+           Hình thức khuyến mãi
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.PromotionTypeID)
+            Giá trị
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PromotionValue)
-        </th>
-        <th></th>
+        
     </tr>
 
 @foreach (var item in Model) {
     <tr>
+        
         <td>
-            @Html.DisplayFor(modelItem => item.ProductID)
+            @Html.ActionLink(item.Title, "Edit", new { id = item.ID })
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Active)
@@ -54,16 +52,13 @@
             @Html.DisplayFor(modelItem => item.PromotionCode)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.StartDate)
+            @DateTime.Parse(item.StartDate.ToString()).ToString("dd/MM/yyyy")
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.EndDate)
+            @DateTime.Parse(item.EndDate.ToString()).ToString("dd/MM/yyyy")
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.UserID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Created)
+            @DateTime.Parse(item.Created.ToString()).ToString("dd/MM/yyyy")
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.PromotionTypeID)
@@ -71,11 +66,7 @@
         <td>
             @Html.DisplayFor(modelItem => item.PromotionValue)
         </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
+       
     </tr>
 }
 

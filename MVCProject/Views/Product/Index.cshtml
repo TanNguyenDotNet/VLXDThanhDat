@@ -1,78 +1,59 @@
 ﻿@model IEnumerable<MVCProject.Models.Product>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Danh sách";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<h2>Sản phẩm</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Thêm mới", "Create")
 </p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.ItemCode)
+            Tên sản phẩm
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Barcode)
+            Mã sản phẩm
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.CatID)
+            Mã danh mục
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.SKU)
+            SKU
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.SupplierID)
+            Nhà cung cấp
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ImageLink)
+            Hiện/Ẩn
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Adwords)
+            Ngày tạo
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Show)
+            ĐVT
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.DateCreate)
+           BH
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Color)
+           Đã xóa
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Dimension)
+            Tình trạng
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Unit)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Warranty)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IsDel)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IsState)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UserID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ProductName)
-        </th>
-        <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.ItemCode)
+            @Html.ActionLink(item.ProductName, "Edit", new { id = item.ID })
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Barcode)
+            @Html.DisplayFor(modelItem => item.ItemCode)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.CatID)
@@ -84,22 +65,10 @@
             @Html.DisplayFor(modelItem => item.SupplierID)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.ImageLink)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Adwords)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.Show)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.DateCreate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Color)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Dimension)
+            @DateTime.Parse(item.DateCreate.ToString()).ToString("dd/MM/yyyy")
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Unit)
@@ -112,17 +81,6 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.IsState)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UserID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ProductName)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
         </td>
     </tr>
 }

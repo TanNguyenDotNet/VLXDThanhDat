@@ -1,11 +1,11 @@
 ﻿@model MVCProject.Models.PromotionType
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Chỉnh sửa";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Edit</h2>
+<h2>Chỉnh sửa</h2>
 
 
 @using (Html.BeginForm())
@@ -13,29 +13,29 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>PromotionType</h4>
+        <h4>Hình thức khuyến mãi</h4>
         <hr />
         @Html.ValidationSummary(true)
         <div class="form-group">
-            @Html.LabelFor(model => model.ProTypeName, new { @class = "control-label col-md-2" })
+            <span class="control-label col-md-2">Tiêu đề:</span>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ProTypeName)
+                @Html.TextBoxFor(model => model.ProTypeName, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.ProTypeName)
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.AddType, new { @class = "control-label col-md-2" })
+            <span class="control-label col-md-2">Phương thức tính:</span>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.AddType)
+                @Html.TextBoxFor(model => model.AddType, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.AddType)
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ExRate, new { @class = "control-label col-md-2" })
+            <span class="control-label col-md-2">Giá trị:</span>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ExRate)
+                @Html.TextBoxFor(model => model.ExRate, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.ExRate)
             </div>
         </div>
@@ -44,14 +44,14 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Lưu Lại" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Về danh sách", "Index")
 </div>
 
 @section Scripts {

@@ -39,6 +39,8 @@ namespace MVCProject.Controllers
         public ActionResult Create()
         {
             ViewBag.PromotionTypeList = Common.Commons.GetPromotionTypeList(db);
+            ViewBag.LocationList = Common.Commons.GetLocationList(db);
+
             return View();
         }
 
@@ -47,10 +49,15 @@ namespace MVCProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="ProductID,Active,PromotionCode,StartDate,EndDate,UserID,Created,PromotionTypeID,PromotionValue,ID")] Promotion promotion)
+        public ActionResult Create([Bind(Include="ProductID,Active,PromotionCode,StartDate,EndDate,UserID,Created,PromotionTypeID,PromotionValue,ID,Title,LocationID")] Promotion promotion)
         {
             if (ModelState.IsValid)
             {
+                if (promotion.LocationID == null)
+                    promotion.LocationID = 0;
+                if (promotion.ProductID == null)
+                    promotion.ProductID = "";
+                promotion.Created = DateTime.Now;
                 db.Promotions.Add(promotion);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -66,6 +73,10 @@ namespace MVCProject.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
+            ViewBag.PromotionTypeList = Common.Commons.GetPromotionTypeList(db);
+            ViewBag.LocationList = Common.Commons.GetLocationList(db);
+
             Promotion promotion = db.Promotions.Find(id);
             if (promotion == null)
             {
@@ -79,7 +90,7 @@ namespace MVCProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="ProductID,Active,PromotionCode,StartDate,EndDate,UserID,Created,PromotionTypeID,PromotionValue,ID")] Promotion promotion)
+        public ActionResult Edit([Bind(Include="ProductID,Active,PromotionCode,StartDate,EndDate,UserID,Created,PromotionTypeID,PromotionValue,ID,Title,LocationID")] Promotion promotion)
         {
             if (ModelState.IsValid)
             {

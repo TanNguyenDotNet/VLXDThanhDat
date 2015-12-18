@@ -20,39 +20,28 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.PID)
+            Tiêu đề
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Title)
+        <th width="20%">
+           PID
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
+        <th width="20%">
+            Mã tỉnh/thành phố
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LocationID)
-        </th>
-        <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.PID)
+            @Html.ActionLink(item.Title, "Edit", new { id = item.ID })
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Title)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.LocationID)
         </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
+        
     </tr>
 }
 

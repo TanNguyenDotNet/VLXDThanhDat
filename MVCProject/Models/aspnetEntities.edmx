@@ -126,16 +126,18 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ProductID" Type="bigint" Nullable="false" />
           <Property Name="Active" Type="bit" Nullable="false" />
           <Property Name="PromotionCode" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="StartDate" Type="date" Nullable="false" />
-          <Property Name="EndDate" Type="date" Nullable="false" />
+          <Property Name="StartDate" Type="datetime" />
+          <Property Name="EndDate" Type="datetime" />
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="Created" Type="date" />
           <Property Name="PromotionTypeID" Type="int" Nullable="false" />
           <Property Name="PromotionValue" Type="decimal" Precision="14" Scale="2" Nullable="false" />
           <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LocationID" Type="int" />
+          <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ProductID" Type="text" />
         </EntityType>
         <EntityType Name="PromotionType">
           <Key>
@@ -369,16 +371,18 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ProductID" Type="Int64" Nullable="false" />
+          <Property Name="ProductID" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
           <Property Name="PromotionCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="StartDate" Type="DateTime" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Precision="3" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="Created" Type="DateTime" Precision="0" />
           <Property Name="PromotionTypeID" Type="Int32" Nullable="false" />
           <Property Name="PromotionValue" Type="Decimal" Precision="14" Scale="2" Nullable="false" />
           <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LocationID" Type="Int32" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="PromotionType">
           <Key>
@@ -585,6 +589,8 @@
           <EntitySetMapping Name="Promotions">
             <EntityTypeMapping TypeName="Models.Promotion">
               <MappingFragment StoreEntitySet="Promotion">
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
                 <ScalarProperty Name="ProductID" ColumnName="ProductID" />
                 <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="PromotionCode" ColumnName="PromotionCode" />
