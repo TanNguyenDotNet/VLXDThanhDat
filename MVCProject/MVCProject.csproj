@@ -269,6 +269,7 @@
       <DependentUpon>aspnetEntities.edmx</DependentUpon>
       <LastGenOutput>aspnetEntities.cs</LastGenOutput>
     </Content>
+    <Content Include="App_Data\aspnet1.bak" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -351,9 +352,7 @@
     <Content Include="Views\Product\Index.cshtml" />
     <Content Include="Views\ProductCode\Create.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
