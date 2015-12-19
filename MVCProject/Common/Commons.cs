@@ -50,5 +50,48 @@ namespace MVCProject.Common
                     Text = d.ProductName
                 });
         }
+
+        public static IEnumerable<SelectListItem> GetSupplierList(Models.aspnetEntities db)
+        {
+            return db.Suppliers.AsEnumerable()
+                .Select(d => new SelectListItem
+                {
+                    Value = d.ID.ToString(),
+                    Text = d.Name
+                });
+        }
+
+        public static IEnumerable<SelectListItem> GetWarrantyList(Models.aspnetEntities db)
+        {
+            return db.Warranties.AsEnumerable()
+                .Select(d => new SelectListItem
+                {
+                    Value = d.Value + d.DVT,
+                    Text = d.Title
+                });
+        }
+
+        public static dynamic GetCatalogCodeList(Models.aspnetEntities db)
+        {
+            return db.Catalogs.AsEnumerable()
+                .Select(d => new SelectListItem
+                {
+                    Value = d.Title,
+                    Text = d.Code
+                });
+        }
+
+        public static string GenItemCode(Models.aspnetEntities db, out int useCatCode)
+        {
+            Models.ProductCode pc = db.ProductCodes.Single(d => d.Active == true);
+            int s = pc.ScrollNumber + 1;
+            pc.ScrollNumber = s;
+            db.SaveChanges();
+            useCatCode = ((bool) pc.CatID) ? 1 : 0;
+            string code = (pc.Group1 != "" ? pc.Group1 + "." : "") +
+                (pc.Group2 != "" ? pc.Group2 + "." : "") +
+                string.Format("{0:0000000000}", pc.ScrollNumber);
+            return code;
+        }
     }
 }

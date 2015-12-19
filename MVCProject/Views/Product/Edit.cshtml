@@ -1,81 +1,90 @@
 ﻿@model MVCProject.Models.Product
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Chỉnh sửa";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Edit</h2>
-
+<h2>Chỉnh sửa</h2>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Product</h4>
+        <h4>Sản phẩm: @Model.ItemCode</h4>
         <hr />
         @Html.ValidationSummary(true)
         @Html.HiddenFor(model => model.ID)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ItemCode, new { @class = "control-label col-md-2" })
+            <span class="control-label col-md-2">Tên sản phẩm:</span>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ItemCode)
+                @Html.TextBoxFor(model => model.ProductName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ProductName)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <span class="control-label col-md-2">Mã sản phẩm:</span>
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.ItemCode, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.ItemCode)
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Barcode, new { @class = "control-label col-md-2" })
+            <span class="control-label col-md-2">Barcode</span>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Barcode)
+                @Html.TextBoxFor(model => model.Barcode, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Barcode)
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.CatID, new { @class = "control-label col-md-2" })
+            <span class="control-label col-md-2">SKU</span>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.CatID)
-                @Html.ValidationMessageFor(model => model.CatID)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.SKU, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.SKU)
+                @Html.TextBoxFor(model => model.SKU, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.SKU)
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.SupplierID, new { @class = "control-label col-md-2" })
+            <span class="control-label col-md-2">Danh mục</span>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.SupplierID)
+                @Html.DropDownListFor(model => model.CatID, (IEnumerable<SelectListItem>)ViewBag.CatalogList,
+                        "Chọn danh mục", new { @class = "form-control", @onchange="SetCode(this.value);" })
+                @Html.ValidationMessageFor(model => model.CatID)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <span class="control-label col-md-2">Nhà phân phối:</span>
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.SupplierID, (IEnumerable<SelectListItem>)ViewBag.SupplierList,
+                        "Chọn nhà phân phối", new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.SupplierID)
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ImageLink, new { @class = "control-label col-md-2" })
+            <span class="control-label col-md-2">Liên kết:</span>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ImageLink)
+                @Html.TextBoxFor(model => model.ImageLink, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.ImageLink)
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Adwords, new { @class = "control-label col-md-2" })
+            <span class="control-label col-md-2">Adwords:</span>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Adwords)
+                @Html.TextBoxFor(model => model.Adwords, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Adwords)
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Show, new { @class = "control-label col-md-2" })
+            <span class="control-label col-md-2">Hiển thị:</span>
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Show)
                 @Html.ValidationMessageFor(model => model.Show)
@@ -83,74 +92,43 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.DateCreate, new { @class = "control-label col-md-2" })
+            <span class="control-label col-md-2">Màu sắc:</span>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.DateCreate)
-                @Html.ValidationMessageFor(model => model.DateCreate)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Color, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Color)
+                @Html.TextBoxFor(model => model.Color, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Color)
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Dimension, new { @class = "control-label col-md-2" })
+            <span class="control-label col-md-2">Kích thước:</span>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Dimension)
+                @Html.TextBoxFor(model => model.Dimension, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Dimension)
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Unit, new { @class = "control-label col-md-2" })
+            <span class="control-label col-md-2">ĐVT:</span>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Unit)
+                @Html.TextBoxFor(model => model.Unit, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Unit)
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Warranty, new { @class = "control-label col-md-2" })
+            <span class="control-label col-md-2">Thời gian bảo hành:</span>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Warranty)
+                @Html.DropDownListFor(model => model.Warranty, (IEnumerable<SelectListItem>)ViewBag.WarrantyList,
+                 "Chọn thời gian bảo hành", new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Warranty)
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.IsDel, new { @class = "control-label col-md-2" })
+            <span class="control-label col-md-2">Đã xóa:</span>
             <div class="col-md-10">
                 @Html.EditorFor(model => model.IsDel)
                 @Html.ValidationMessageFor(model => model.IsDel)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.IsState, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.IsState)
-                @Html.ValidationMessageFor(model => model.IsState)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.UserID, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.UserID)
-                @Html.ValidationMessageFor(model => model.UserID)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ProductName, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ProductName)
-                @Html.ValidationMessageFor(model => model.ProductName)
             </div>
         </div>
 
@@ -160,6 +138,38 @@
             </div>
         </div>
     </div>
+    <script>
+        var useCatCode = '@ViewData["UseCatCode"].ToString()';
+        var arrCatCode = new Array();
+        @if (((List<MVCProject.Models.Catalog>)ViewData["CatCode"]).Count > 0) {
+            int count = 0;
+            foreach (var item in (IEnumerable<MVCProject.Models.Catalog>)ViewData["CatCode"])
+            {
+                 @Html.Raw("arrCatCode[" + count + "]='" + item.ID + "," + item.Code + "';" + Environment.NewLine);
+                                                                                                                  count++;
+            }
+        }
+        
+        function SetCode(catid) {
+            if (useCatCode == '0')
+                return;
+            
+            var icode = document.getElementById("ItemCode").value;
+            var strs = icode.split('.');
+            var code = "";
+            for (var i = 0; i < arrCatCode.length; i++) {
+                var parts = arrCatCode[i].split(',');
+                if (parts[0] == (catid + '')) {
+                    code = parts[1];
+                    break;
+                }
+            }
+            if (strs.length == 3 && code != '')
+                document.getElementById("ItemCode").value = code + '.' + icode;
+            else if (strs.length == 4 && code != '')
+                document.getElementById("ItemCode").value = code + '.' + strs[1] + '.' + strs[2] + '.' + strs[3];
+        }
+    </script>
 }
 
 <div>

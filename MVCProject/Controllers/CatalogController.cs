@@ -48,7 +48,7 @@ namespace MVCProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="ID,PID,Title,Description,LocationID")] Catalog catalog)
+        public ActionResult Create([Bind(Include="ID,PID,Title,Description,LocationID,Code")] Catalog catalog)
         {
             if (!Request.IsAuthenticated)
                 return null;
@@ -86,7 +86,7 @@ namespace MVCProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="ID,PID,Title,Description,LocationID")] Catalog catalog)
+        public ActionResult Edit([Bind(Include="ID,PID,Title,Description,LocationID,Code")] Catalog catalog)
         {
             if (!Request.IsAuthenticated)
                 return null;

@@ -68,6 +68,7 @@
           <Property Name="Title" Type="nvarchar" MaxLength="255" />
           <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="LocationID" Type="int" />
+          <Property Name="Code" Type="varchar" MaxLength="5" />
         </EntityType>
         <EntityType Name="Location">
           <Key>
@@ -83,23 +84,35 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ItemCode" Type="varchar" MaxLength="150" />
+          <Property Name="ItemCode" Type="varchar" MaxLength="150" Nullable="false" />
           <Property Name="Barcode" Type="varchar" MaxLength="150" />
-          <Property Name="CatID" Type="bigint" />
+          <Property Name="CatID" Type="bigint" Nullable="false" />
           <Property Name="SKU" Type="nvarchar" MaxLength="150" />
           <Property Name="SupplierID" Type="int" />
           <Property Name="ImageLink" Type="ntext" />
           <Property Name="Adwords" Type="ntext" />
-          <Property Name="Show" Type="bit" />
+          <Property Name="Show" Type="bit" Nullable="false" />
           <Property Name="DateCreate" Type="datetime" />
           <Property Name="Color" Type="nvarchar" MaxLength="150" />
           <Property Name="Dimension" Type="varchar" MaxLength="50" />
           <Property Name="Unit" Type="nvarchar" MaxLength="255" />
-          <Property Name="Warranty" Type="int" />
-          <Property Name="IsDel" Type="bit" />
+          <Property Name="Warranty" Type="varchar" MaxLength="5" />
+          <Property Name="IsDel" Type="bit" Nullable="false" />
           <Property Name="IsState" Type="tinyint" />
           <Property Name="UserID" Type="int" />
-          <Property Name="ProductName" Type="nvarchar" MaxLength="255" />
+          <Property Name="ProductName" Type="nvarchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProductCode">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="Group1" Type="varchar" MaxLength="5" />
+          <Property Name="Group2" Type="varchar" MaxLength="5" />
+          <Property Name="CatID" Type="bit" />
+          <Property Name="ScrollNumber" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Active" Type="bit" />
+          <Property Name="CatCode" Type="varchar" MaxLength="5" />
         </EntityType>
         <EntityType Name="ProductName">
           <Key>
@@ -159,6 +172,15 @@
           <Property Name="TaxCode" Type="varchar" MaxLength="20" />
           <Property Name="AccountBank" Type="varchar" MaxLength="50" />
           <Property Name="NameBank" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Warranty">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="Title" Type="nvarchar" MaxLength="255" />
+          <Property Name="DVT" Type="varchar" MaxLength="1" />
+          <Property Name="Value" Type="tinyint" />
+          <Property Name="ID" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
@@ -226,11 +248,13 @@
           <EntitySet Name="Catalog" EntityType="Self.Catalog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Location" EntityType="Self.Location" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductCode" EntityType="Self.ProductCode" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductName" EntityType="Self.ProductName" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductPrice" EntityType="Self.ProductPrice" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Promotion" EntityType="Self.Promotion" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PromotionType" EntityType="Self.PromotionType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Supplier" EntityType="Self.Supplier" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Warranty" EntityType="Self.Warranty" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
@@ -313,6 +337,7 @@
           <Property Name="Title" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="LocationID" Type="Int32" />
+          <Property Name="Code" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Location">
           <Key>
@@ -328,23 +353,23 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ItemCode" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="ItemCode" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Barcode" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="CatID" Type="Int64" />
+          <Property Name="CatID" Type="Int64" Nullable="false" />
           <Property Name="SKU" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="SupplierID" Type="Int32" />
           <Property Name="ImageLink" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Adwords" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Show" Type="Boolean" />
+          <Property Name="Show" Type="Boolean" Nullable="false" />
           <Property Name="DateCreate" Type="DateTime" Precision="3" />
           <Property Name="Color" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="Dimension" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Unit" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Warranty" Type="Int32" />
-          <Property Name="IsDel" Type="Boolean" />
+          <Property Name="Warranty" Type="String" MaxLength="5" Unicode="false" FixedLength="false" />
+          <Property Name="IsDel" Type="Boolean" Nullable="false" />
           <Property Name="IsState" Type="Byte" />
           <Property Name="UserID" Type="Int32" />
-          <Property Name="ProductName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ProductName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
         </EntityType>
         <EntityType Name="ProductName">
           <Key>
@@ -463,7 +488,30 @@
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
           </AssociationSet>
+          <EntitySet Name="ProductCodes" EntityType="Models.ProductCode" />
+          <EntitySet Name="Warranties" EntityType="Models.Warranty" />
         </EntityContainer>
+        <EntityType Name="ProductCode">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="Group1" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="Group2" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="CatID" Type="Boolean" />
+          <Property Name="ScrollNumber" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Active" Type="Boolean" />
+          <Property Name="CatCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Warranty">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="Title" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DVT" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="Value" Type="Byte" />
+          <Property Name="ID" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -521,6 +569,7 @@
           <EntitySetMapping Name="Catalogs">
             <EntityTypeMapping TypeName="Models.Catalog">
               <MappingFragment StoreEntitySet="Catalog">
+                <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="PID" ColumnName="PID" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
@@ -635,6 +684,29 @@
               <ScalarProperty Name="Id" ColumnName="UserId" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="ProductCodes">
+            <EntityTypeMapping TypeName="Models.ProductCode">
+              <MappingFragment StoreEntitySet="ProductCode">
+                <ScalarProperty Name="CatCode" ColumnName="CatCode" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ScrollNumber" ColumnName="ScrollNumber" />
+                <ScalarProperty Name="CatID" ColumnName="CatID" />
+                <ScalarProperty Name="Group2" ColumnName="Group2" />
+                <ScalarProperty Name="Group1" ColumnName="Group1" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Warranties">
+            <EntityTypeMapping TypeName="Models.Warranty">
+              <MappingFragment StoreEntitySet="Warranty">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="DVT" ColumnName="DVT" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

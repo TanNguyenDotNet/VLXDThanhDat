@@ -19,5 +19,6 @@ namespace MVCProject.Models
         public string Title { get; set; }
         public string Description { get; set; }
         public Nullable<int> LocationID { get; set; }
+        public string Code { get; set; }
     }
 }

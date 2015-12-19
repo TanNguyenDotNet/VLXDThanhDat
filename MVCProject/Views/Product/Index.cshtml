@@ -8,7 +8,8 @@
 <h2>Sản phẩm</h2>
 
 <p>
-    @Html.ActionLink("Thêm mới", "Create")
+    @Html.ActionLink("Thêm mới", "Create") :::: @Html.ActionLink("Thêm giá sản phẩm", "Create", "ProductPrice") | 
+    @Html.ActionLink("Cấu hình mã sản phẩm", "Create", "ProductCode")
 </p>
 <table class="table">
     <tr>
@@ -42,9 +43,7 @@
         <th>
            Đã xóa
         </th>
-        <th>
-            Tình trạng
-        </th>
+        
     </tr>
 
 @foreach (var item in Model) {
@@ -68,7 +67,11 @@
             @Html.DisplayFor(modelItem => item.Show)
         </td>
         <td>
-            @DateTime.Parse(item.DateCreate.ToString()).ToString("dd/MM/yyyy")
+            @if (item.DateCreate != null)
+            {
+                DateTime.Parse(item.DateCreate.ToString()).ToString("dd/MM/yyyy");
+            }
+            &nbsp;
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Unit)
@@ -79,9 +82,7 @@
         <td>
             @Html.DisplayFor(modelItem => item.IsDel)
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IsState)
-        </td>
+        
     </tr>
 }
 

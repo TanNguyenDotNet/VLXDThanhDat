@@ -22,12 +22,10 @@
         <th>
             Tiêu đề
         </th>
-        <th width="20%">
-           PID
+        <th width="40%">
+           Mô tả
         </th>
-        <th width="20%">
-            Mã tỉnh/thành phố
-        </th>
+        
     </tr>
 
 @foreach (var item in Model) {
@@ -36,12 +34,8 @@
             @Html.ActionLink(item.Title, "Edit", new { id = item.ID })
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Title)
+            @Html.DisplayFor(modelItem => item.Description)
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LocationID)
-        </td>
-        
     </tr>
 }
 

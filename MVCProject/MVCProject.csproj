@@ -167,6 +167,7 @@
     <Compile Include="Controllers\CatalogController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LocationController.cs" />
+    <Compile Include="Controllers\ProductCodeController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\ProductNameController.cs" />
     <Compile Include="Controllers\ProductPriceController.cs" />
@@ -217,6 +218,9 @@
     <Compile Include="Models\Product.cs">
       <DependentUpon>aspnetEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ProductCode.cs">
+      <DependentUpon>aspnetEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ProductName.cs">
       <DependentUpon>aspnetEntities.tt</DependentUpon>
     </Compile>
@@ -230,6 +234,9 @@
       <DependentUpon>aspnetEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Supplier.cs">
+      <DependentUpon>aspnetEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Warranty.cs">
       <DependentUpon>aspnetEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -342,6 +349,7 @@
     <Content Include="Views\Product\Details.cshtml" />
     <Content Include="Views\Product\Edit.cshtml" />
     <Content Include="Views\Product\Index.cshtml" />
+    <Content Include="Views\ProductCode\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -38,7 +38,15 @@ namespace MVCProject.Controllers
         // GET: /Product/Create
         public ActionResult Create()
         {
-            return View();
+            var p = new Models.Product();
+            int useCatCode = 0;
+            p.Barcode = p.SKU = p.ItemCode = Common.Commons.GenItemCode(db, out useCatCode);
+            ViewBag.CatalogList = Common.Commons.GetCatalogList(db, 0);
+            ViewBag.SupplierList = Common.Commons.GetSupplierList(db);
+            ViewBag.WarrantyList = Common.Commons.GetWarrantyList(db);
+            ViewData["UseCatCode"] = useCatCode;
+            ViewData["CatCode"] = db.Catalogs.Select(d => d).ToList();
+            return View(p);
         }
 
         // POST: /Product/Create
@@ -70,6 +78,14 @@ namespace MVCProject.Controllers
             {
                 return HttpNotFound();
             }
+
+            int useCatCode = 0;
+            Common.Commons.GenItemCode(db, out useCatCode);
+            ViewBag.CatalogList = Common.Commons.GetCatalogList(db, 0);
+            ViewBag.SupplierList = Common.Commons.GetSupplierList(db);
+            ViewBag.WarrantyList = Common.Commons.GetWarrantyList(db);
+            ViewData["UseCatCode"] = useCatCode;
+            ViewData["CatCode"] = db.Catalogs.Select(d=>d).ToList();
             return View(product);
         }
 
