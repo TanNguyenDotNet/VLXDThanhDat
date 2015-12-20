@@ -30,7 +30,7 @@ namespace MVCProject.Models
         public string Warranty { get; set; }
         public bool IsDel { get; set; }
         public Nullable<byte> IsState { get; set; }
-        public Nullable<int> UserID { get; set; }
+        public string UserID { get; set; }
         public string ProductName { get; set; }
     }
 }

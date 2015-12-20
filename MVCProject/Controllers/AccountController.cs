@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using MVCProject.Models;
+using MVCProject.Common;
 
 namespace MVCProject.Controllers
 {
@@ -82,6 +83,16 @@ namespace MVCProject.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    string en = Security.EncryptString(model.UserName + "~" + 
+                        model.UserType, false, EncryptType.TripleDES);
+                    Models.AppNetUserType ut = new AppNetUserType {
+                        Username = en,
+                        UserType = en
+                    };
+                    Models.aspnetEntities db = new Models.aspnetEntities();
+                    db.AppNetUserTypes.Add(ut);
+                    db.SaveChanges();
+
                     await SignInAsync(user, isPersistent: false);
                     return RedirectToAction("Index", "Home");
                 }

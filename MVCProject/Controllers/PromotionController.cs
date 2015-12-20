@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using MVCProject.Models;
 
 namespace MVCProject.Controllers
@@ -17,12 +18,18 @@ namespace MVCProject.Controllers
         // GET: /Promotion/
         public ActionResult Index()
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
+
+            ViewData["ProductList"] = db.Products.Select(d => d).ToList();
             return View(db.Promotions.ToList());
         }
 
         // GET: /Promotion/Details/5
         public ActionResult Details(long? id)
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -36,12 +43,22 @@ namespace MVCProject.Controllers
         }
 
         // GET: /Promotion/Create
-        public ActionResult Create()
+        public ActionResult Create(long? id)
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
+            
             ViewBag.PromotionTypeList = Common.Commons.GetPromotionTypeList(db);
             ViewBag.LocationList = Common.Commons.GetLocationList(db);
+            ViewBag.ProductList = Common.Commons.GetProductList(db);
 
-            return View();
+            var pp = new Models.Promotion();
+            if (id != null)
+                pp.ProductID = (long)id;
+            
+            int code = 0;
+            pp.PromotionCode = Common.Commons.GenItemCode(db, out code, "KM");
+            return View(pp);
         }
 
         // POST: /Promotion/Create
@@ -51,12 +68,16 @@ namespace MVCProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include="ProductID,Active,PromotionCode,StartDate,EndDate,UserID,Created,PromotionTypeID,PromotionValue,ID,Title,LocationID")] Promotion promotion)
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
             if (ModelState.IsValid)
             {
                 if (promotion.LocationID == null)
                     promotion.LocationID = 0;
                 if (promotion.ProductID == null)
-                    promotion.ProductID = "";
+                    promotion.ProductID = 0;
+
+                promotion.UserID = User.Identity.GetUserId();
                 promotion.Created = DateTime.Now;
                 db.Promotions.Add(promotion);
                 db.SaveChanges();
@@ -69,6 +90,8 @@ namespace MVCProject.Controllers
         // GET: /Promotion/Edit/5
         public ActionResult Edit(long? id)
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -76,6 +99,7 @@ namespace MVCProject.Controllers
 
             ViewBag.PromotionTypeList = Common.Commons.GetPromotionTypeList(db);
             ViewBag.LocationList = Common.Commons.GetLocationList(db);
+            ViewBag.ProductList = Common.Commons.GetProductList(db);
 
             Promotion promotion = db.Promotions.Find(id);
             if (promotion == null)
@@ -92,6 +116,8 @@ namespace MVCProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include="ProductID,Active,PromotionCode,StartDate,EndDate,UserID,Created,PromotionTypeID,PromotionValue,ID,Title,LocationID")] Promotion promotion)
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
             if (ModelState.IsValid)
             {
                 db.Entry(promotion).State = EntityState.Modified;
@@ -104,6 +130,8 @@ namespace MVCProject.Controllers
         // GET: /Promotion/Delete/5
         public ActionResult Delete(long? id)
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -121,6 +149,8 @@ namespace MVCProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
             Promotion promotion = db.Promotions.Find(id);
             db.Promotions.Remove(promotion);
             db.SaveChanges();

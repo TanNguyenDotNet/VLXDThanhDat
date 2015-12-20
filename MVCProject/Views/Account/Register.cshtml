@@ -1,6 +1,6 @@
 ﻿@model MVCProject.Models.RegisterViewModel
 @{
-    ViewBag.Title = "Register";
+    ViewBag.Title = "Đăng ký";
 }
 
 <h2>@ViewBag.Title.</h2>
@@ -8,7 +8,7 @@
 @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
-    <h4>Create a new account.</h4>
+    <h4>Tạo mới tài khoản.</h4>
     <hr />
     @Html.ValidationSummary()
     <div class="form-group">
@@ -30,8 +30,18 @@
         </div>
     </div>
     <div class="form-group">
+        <span class = "col-md-2 control-label">Loại tài khoản (Quyền):</span>
+        <div class="col-md-10">
+            <select name="UserType" id="UserType" class="form-control">
+                <option value="BackendUser">Quản trị</option>
+                <option value="FrontendUser" selected="selected">Người dùng</option>
+            </select>
+        </div>
+    </div>
+    
+    <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Register" />
+            <input type="submit" class="btn btn-default" value="Đăng Ký" />
         </div>
     </div>
 }

@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using MVCProject.Models;
+using Microsoft.AspNet.Identity;
 
 namespace MVCProject.Controllers
 {
@@ -17,12 +18,18 @@ namespace MVCProject.Controllers
         // GET: /ProductPrice/
         public ActionResult Index()
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
+            ViewData["ProductList"] = db.Products.Select(d=>d).ToList();
             return View(db.ProductPrices.ToList());
         }
 
         // GET: /ProductPrice/Details/5
         public ActionResult Details(long? id)
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -36,9 +43,17 @@ namespace MVCProject.Controllers
         }
 
         // GET: /ProductPrice/Create
-        public ActionResult Create()
+        public ActionResult Create(long? id)
         {
-            return View();
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
+
+            var pp = new Models.ProductPrice();
+            if (id != null)
+                pp.ProductID = (long)id;
+            ViewBag.ProductList = Common.Commons.GetProductList(db);
+            ViewBag.LocationList = Common.Commons.GetLocationList(db);
+            return View(pp);
         }
 
         // POST: /ProductPrice/Create
@@ -48,8 +63,13 @@ namespace MVCProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include="ID,ProductID,Price,Created,Description,UserID,LocationID")] ProductPrice productprice)
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
+
             if (ModelState.IsValid)
             {
+                productprice.Created = DateTime.Now;
+                productprice.UserID = User.Identity.GetUserId();
                 db.ProductPrices.Add(productprice);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -61,6 +81,12 @@ namespace MVCProject.Controllers
         // GET: /ProductPrice/Edit/5
         public ActionResult Edit(long? id)
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
+
+            ViewBag.ProductList = Common.Commons.GetProductList(db);
+            ViewBag.LocationList = Common.Commons.GetLocationList(db);
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -80,6 +106,9 @@ namespace MVCProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include="ID,ProductID,Price,Created,Description,UserID,LocationID")] ProductPrice productprice)
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
+
             if (ModelState.IsValid)
             {
                 db.Entry(productprice).State = EntityState.Modified;
@@ -92,6 +121,9 @@ namespace MVCProject.Controllers
         // GET: /ProductPrice/Delete/5
         public ActionResult Delete(long? id)
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -109,6 +141,9 @@ namespace MVCProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
+
             ProductPrice productprice = db.ProductPrices.Find(id);
             db.ProductPrices.Remove(productprice);
             db.SaveChanges();

@@ -12,12 +12,13 @@ namespace MVCProject.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class ProductName
+    public partial class AppNetUserType
     {
-        public long ID { get; set; }
-        public long ProductID { get; set; }
-        public string Name { get; set; }
-        public Nullable<int> LocationID { get; set; }
-        public string UserId { get; set; }
+        public string Username { get; set; }
+        public string Email { get; set; }
+        public string Fax { get; set; }
+        public string Address { get; set; }
+        public string Phone { get; set; }
+        public string UserType { get; set; }
     }
 }

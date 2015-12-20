@@ -40,5 +40,6 @@ namespace MVCProject.Models
         public virtual DbSet<Supplier> Suppliers { get; set; }
         public virtual DbSet<ProductCode> ProductCodes { get; set; }
         public virtual DbSet<Warranty> Warranties { get; set; }
+        public virtual DbSet<AppNetUserType> AppNetUserTypes { get; set; }
     }
 }

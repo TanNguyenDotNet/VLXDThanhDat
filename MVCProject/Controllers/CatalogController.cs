@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using MVCProject.Models;
+using Microsoft.AspNet.Identity;
 
 namespace MVCProject.Controllers
 {
@@ -17,12 +18,18 @@ namespace MVCProject.Controllers
         // GET: /Catalog/
         public ActionResult Index()
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
+
             return View(db.Catalogs.ToList());
         }
 
         // GET: /Catalog/Details/5
         public ActionResult Details(int? id)
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -38,6 +45,9 @@ namespace MVCProject.Controllers
         // GET: /Catalog/Create
         public ActionResult Create()
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
+            
             ViewBag.LocationList = Common.Commons.GetLocationList(db);
             ViewBag.CatalogList = Common.Commons.GetCatalogList(db, -1);
             return View();
@@ -50,7 +60,7 @@ namespace MVCProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include="ID,PID,Title,Description,LocationID,Code")] Catalog catalog)
         {
-            if (!Request.IsAuthenticated)
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
 
             if (ModelState.IsValid)
@@ -66,6 +76,9 @@ namespace MVCProject.Controllers
         // GET: /Catalog/Edit/5
         public ActionResult Edit(int? id)
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
+
             ViewBag.LocationList = Common.Commons.GetLocationList(db);
             ViewBag.CatalogList = Common.Commons.GetCatalogList(db, id);
 
@@ -88,7 +101,7 @@ namespace MVCProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include="ID,PID,Title,Description,LocationID,Code")] Catalog catalog)
         {
-            if (!Request.IsAuthenticated)
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
 
             if (ModelState.IsValid)
@@ -103,6 +116,9 @@ namespace MVCProject.Controllers
         // GET: /Catalog/Delete/5
         public ActionResult Delete(int? id)
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -120,7 +136,7 @@ namespace MVCProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            if (!Request.IsAuthenticated)
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
 
             Catalog catalog = db.Catalogs.Find(id);

@@ -19,7 +19,7 @@ namespace MVCProject.Models
         public decimal Price { get; set; }
         public Nullable<System.DateTime> Created { get; set; }
         public string Description { get; set; }
-        public Nullable<int> UserID { get; set; }
+        public string UserID { get; set; }
         public Nullable<int> LocationID { get; set; }
     }
 }

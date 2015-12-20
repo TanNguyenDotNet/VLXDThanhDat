@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<MVCProject.Models.Catalog>
-
 @if (!Request.IsAuthenticated)
 {
     Response.Redirect("~/Account/Login");
@@ -7,15 +6,15 @@
 }
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Danh mục";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 
-<h2>Index</h2>
+<h2>Danh mục</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Thêm mới", "Create")
 </p>
 <table class="table">
     <tr>

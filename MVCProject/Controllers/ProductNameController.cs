@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using MVCProject.Models;
+using Microsoft.AspNet.Identity;
 
 namespace MVCProject.Controllers
 {
@@ -17,12 +18,16 @@ namespace MVCProject.Controllers
         // GET: /ProductName/
         public ActionResult Index()
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
             return View(db.ProductNames.ToList());
         }
 
         // GET: /ProductName/Details/5
         public ActionResult Details(long? id)
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -38,6 +43,8 @@ namespace MVCProject.Controllers
         // GET: /ProductName/Create
         public ActionResult Create()
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
             return View();
         }
 
@@ -48,8 +55,11 @@ namespace MVCProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include="ID,ProductID,Name,LocationID")] ProductName productname)
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
             if (ModelState.IsValid)
             {
+                productname.UserId = User.Identity.GetUserId();
                 db.ProductNames.Add(productname);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -61,6 +71,8 @@ namespace MVCProject.Controllers
         // GET: /ProductName/Edit/5
         public ActionResult Edit(long? id)
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -80,6 +92,8 @@ namespace MVCProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include="ID,ProductID,Name,LocationID")] ProductName productname)
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
             if (ModelState.IsValid)
             {
                 db.Entry(productname).State = EntityState.Modified;
@@ -92,6 +106,8 @@ namespace MVCProject.Controllers
         // GET: /ProductName/Delete/5
         public ActionResult Delete(long? id)
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -109,6 +125,8 @@ namespace MVCProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
             ProductName productname = db.ProductNames.Find(id);
             db.ProductNames.Remove(productname);
             db.SaveChanges();

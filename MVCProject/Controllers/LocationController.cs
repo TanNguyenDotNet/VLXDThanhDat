@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using MVCProject.Models;
+using Microsoft.AspNet.Identity;
 
 namespace MVCProject.Controllers
 {
@@ -17,12 +18,16 @@ namespace MVCProject.Controllers
         // GET: /Location/
         public ActionResult Index()
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
             return View(db.Locations.ToList());
         }
 
         // GET: /Location/Details/5
         public ActionResult Details(int? id)
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -38,6 +43,8 @@ namespace MVCProject.Controllers
         // GET: /Location/Create
         public ActionResult Create()
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
             return View();
         }
 
@@ -48,6 +55,8 @@ namespace MVCProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include="ID,LocationName,LocationCode,Order")] Location location)
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
             if (ModelState.IsValid)
             {
                 db.Locations.Add(location);
@@ -61,6 +70,8 @@ namespace MVCProject.Controllers
         // GET: /Location/Edit/5
         public ActionResult Edit(int? id)
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -80,6 +91,8 @@ namespace MVCProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include="ID,LocationName,LocationCode,Order")] Location location)
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
             if (ModelState.IsValid)
             {
                 db.Entry(location).State = EntityState.Modified;
@@ -92,6 +105,8 @@ namespace MVCProject.Controllers
         // GET: /Location/Delete/5
         public ActionResult Delete(int? id)
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -109,6 +124,8 @@ namespace MVCProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
             Location location = db.Locations.Find(id);
             db.Locations.Remove(location);
             db.SaveChanges();

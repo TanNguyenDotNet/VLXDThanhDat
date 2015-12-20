@@ -8,8 +8,8 @@
 <h2>Sản phẩm</h2>
 
 <p>
-    @Html.ActionLink("Thêm mới", "Create") :::: @Html.ActionLink("Thêm giá sản phẩm", "Create", "ProductPrice") | 
-    @Html.ActionLink("Cấu hình mã sản phẩm", "Create", "ProductCode")
+    @Html.ActionLink("Thêm mới", "Create") :::: <a href="../ProductCode/Create/?code=SP">Cấu hình mã sản phẩm</a>
+    | @Html.ActionLink("Giá sản phẩm", "Index", "ProductPrice")
 </p>
 <table class="table">
     <tr>
@@ -43,7 +43,9 @@
         <th>
            Đã xóa
         </th>
-        
+        <th>
+            #
+            </th>
     </tr>
 
 @foreach (var item in Model) {
@@ -82,7 +84,10 @@
         <td>
             @Html.DisplayFor(modelItem => item.IsDel)
         </td>
-        
+        <td>
+            @Html.ActionLink("Thêm giá", "Create/" + item.ID, "ProductPrice") | 
+            @Html.ActionLink("Khuyến mãi", "Create/" + item.ID, "Promotion")
+        </td>
     </tr>
 }
 

@@ -15,6 +15,17 @@
           <Property Name="Model" Type="varbinary(max)" Nullable="false" />
           <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
         </EntityType>
+        <EntityType Name="AppNetUserType">
+          <Key>
+            <PropertyRef Name="Username" />
+          </Key>
+          <Property Name="Username" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="150" />
+          <Property Name="Fax" Type="varchar" MaxLength="20" />
+          <Property Name="Address" Type="nvarchar" MaxLength="255" />
+          <Property Name="Phone" Type="varchar" MaxLength="20" />
+          <Property Name="UserType" Type="text" Nullable="false" />
+        </EntityType>
         <EntityType Name="AspNetRoles">
           <Key>
             <PropertyRef Name="Id" />
@@ -99,7 +110,7 @@
           <Property Name="Warranty" Type="varchar" MaxLength="5" />
           <Property Name="IsDel" Type="bit" Nullable="false" />
           <Property Name="IsState" Type="tinyint" />
-          <Property Name="UserID" Type="int" />
+          <Property Name="UserID" Type="varchar" MaxLength="50" />
           <Property Name="ProductName" Type="nvarchar" MaxLength="255" Nullable="false" />
         </EntityType>
         <EntityType Name="ProductCode">
@@ -122,6 +133,7 @@
           <Property Name="ProductID" Type="bigint" Nullable="false" />
           <Property Name="Name" Type="nvarchar(max)" />
           <Property Name="LocationID" Type="int" />
+          <Property Name="UserId" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="ProductPrice">
           <Key>
@@ -132,7 +144,7 @@
           <Property Name="Price" Type="decimal" Precision="14" Scale="2" Nullable="false" />
           <Property Name="Created" Type="date" />
           <Property Name="Description" Type="nvarchar(max)" />
-          <Property Name="UserID" Type="int" />
+          <Property Name="UserID" Type="varchar" MaxLength="50" />
           <Property Name="LocationID" Type="int" />
         </EntityType>
         <EntityType Name="Promotion">
@@ -143,14 +155,14 @@
           <Property Name="PromotionCode" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="StartDate" Type="datetime" />
           <Property Name="EndDate" Type="datetime" />
-          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Created" Type="date" />
           <Property Name="PromotionTypeID" Type="int" Nullable="false" />
           <Property Name="PromotionValue" Type="decimal" Precision="14" Scale="2" Nullable="false" />
           <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LocationID" Type="int" />
           <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="ProductID" Type="text" />
+          <Property Name="ProductID" Type="bigint" />
         </EntityType>
         <EntityType Name="PromotionType">
           <Key>
@@ -240,6 +252,7 @@
         </Association>
         <EntityContainer Name="ModelsStoreContainer">
           <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AppNetUserType" EntityType="Self.AppNetUserType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
@@ -368,7 +381,7 @@
           <Property Name="Warranty" Type="String" MaxLength="5" Unicode="false" FixedLength="false" />
           <Property Name="IsDel" Type="Boolean" Nullable="false" />
           <Property Name="IsState" Type="Byte" />
-          <Property Name="UserID" Type="Int32" />
+          <Property Name="UserID" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
           <Property Name="ProductName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
         </EntityType>
         <EntityType Name="ProductName">
@@ -379,6 +392,7 @@
           <Property Name="ProductID" Type="Int64" Nullable="false" />
           <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="LocationID" Type="Int32" />
+          <Property Name="UserId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ProductPrice">
           <Key>
@@ -389,19 +403,19 @@
           <Property Name="Price" Type="Decimal" Precision="14" Scale="2" Nullable="false" />
           <Property Name="Created" Type="DateTime" Precision="0" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="UserID" Type="Int32" />
+          <Property Name="UserID" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
           <Property Name="LocationID" Type="Int32" />
         </EntityType>
         <EntityType Name="Promotion">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ProductID" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
+          <Property Name="ProductID" Type="Int64" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
           <Property Name="PromotionCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="StartDate" Type="DateTime" Precision="3" />
           <Property Name="EndDate" Type="DateTime" Precision="3" />
-          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="String" MaxLength="50" Nullable="false" Unicode="false" FixedLength="false" />
           <Property Name="Created" Type="DateTime" Precision="0" />
           <Property Name="PromotionTypeID" Type="Int32" Nullable="false" />
           <Property Name="PromotionValue" Type="Decimal" Precision="14" Scale="2" Nullable="false" />
@@ -490,6 +504,7 @@
           </AssociationSet>
           <EntitySet Name="ProductCodes" EntityType="Models.ProductCode" />
           <EntitySet Name="Warranties" EntityType="Models.Warranty" />
+          <EntitySet Name="AppNetUserTypes" EntityType="Models.AppNetUserType" />
         </EntityContainer>
         <EntityType Name="ProductCode">
           <Key>
@@ -511,6 +526,17 @@
           <Property Name="DVT" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Name="Value" Type="Byte" />
           <Property Name="ID" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="AppNetUserType">
+          <Key>
+            <PropertyRef Name="Username" />
+          </Key>
+          <Property Name="Username" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Fax" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="UserType" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -615,6 +641,7 @@
           <EntitySetMapping Name="ProductNames">
             <EntityTypeMapping TypeName="Models.ProductName">
               <MappingFragment StoreEntitySet="ProductName">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="ProductID" ColumnName="ProductID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -704,6 +731,18 @@
                 <ScalarProperty Name="Value" ColumnName="Value" />
                 <ScalarProperty Name="DVT" ColumnName="DVT" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AppNetUserTypes">
+            <EntityTypeMapping TypeName="Models.AppNetUserType">
+              <MappingFragment StoreEntitySet="AppNetUserType">
+                <ScalarProperty Name="UserType" ColumnName="UserType" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Fax" ColumnName="Fax" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 
 namespace MVCProject.Common
 {
@@ -81,9 +82,9 @@ namespace MVCProject.Common
                 });
         }
 
-        public static string GenItemCode(Models.aspnetEntities db, out int useCatCode)
+        public static string GenItemCode(Models.aspnetEntities db, out int useCatCode, string itemType)
         {
-            Models.ProductCode pc = db.ProductCodes.Single(d => d.Active == true);
+            Models.ProductCode pc = db.ProductCodes.Single(d => d.Active == true && d.CatCode == itemType);
             int s = pc.ScrollNumber + 1;
             pc.ScrollNumber = s;
             db.SaveChanges();
@@ -92,6 +93,24 @@ namespace MVCProject.Common
                 (pc.Group2 != "" ? pc.Group2 + "." : "") +
                 string.Format("{0:0000000000}", pc.ScrollNumber);
             return code;
+        }
+
+        public static bool CheckLogin(HttpRequestBase req, HttpResponseBase res, string username)
+        {
+            if (!req.IsAuthenticated)
+                res.Redirect("~/Account/Login");
+
+            string en = Security.EncryptString(username + "~BackendUser", false, EncryptType.TripleDES);
+            Models.aspnetEntities db = new Models.aspnetEntities();
+            try
+            {
+                var i = db.AppNetUserTypes.Single(d => d.Username == en);
+                if (i == null)
+                    return false;
+            }
+            catch { return false; }
+
+            return req.IsAuthenticated;
         }
     }
 }

@@ -5,13 +5,17 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<h2>Khuyến mãi</h2>
 
 <p>
-    @Html.ActionLink("Thêm mới", "Create") ::::  @Html.ActionLink("Hình thức khuyến mãi", "Index", "PromotionType")
+    @Html.ActionLink("Thêm mới", "Create") ::::  @Html.ActionLink("Hình thức khuyến mãi", "Index", "PromotionType") |
+    <a href="../ProductCode/Create/?code=KM">Cấu hình mã sản phẩm</a>
 </p>
 <table class="table">
     <tr>
+        <th>
+            Sản phẩm áp dụng
+        </th>
         <th>
             Tiêu đề
         </th>
@@ -31,9 +35,6 @@
            Ngày tạo
         </th>
         <th>
-           Hình thức khuyến mãi
-        </th>
-        <th>
             Giá trị
         </th>
         
@@ -41,7 +42,16 @@
 
 @foreach (var item in Model) {
     <tr>
-        
+        <td>
+            @if (((List<MVCProject.Models.Product>)ViewData["ProductList"]).Count > 0)
+            {
+                MVCProject.Models.Product i = ((List<MVCProject.Models.Product>)ViewData["ProductList"]).Single(s => s.ID == item.ProductID);
+                if (i != null)
+                {
+                    @Html.Raw(i.ProductName);
+                }
+            }
+            </td>
         <td>
             @Html.ActionLink(item.Title, "Edit", new { id = item.ID })
         </td>
@@ -59,9 +69,6 @@
         </td>
         <td>
             @DateTime.Parse(item.Created.ToString()).ToString("dd/MM/yyyy")
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PromotionTypeID)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.PromotionValue)

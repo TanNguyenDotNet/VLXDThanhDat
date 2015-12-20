@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using MVCProject.Models;
+using Microsoft.AspNet.Identity;
 
 namespace MVCProject.Controllers
 {
@@ -17,12 +18,16 @@ namespace MVCProject.Controllers
         // GET: /Product/
         public ActionResult Index()
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
             return View(db.Products.ToList());
         }
 
         // GET: /Product/Details/5
         public ActionResult Details(long? id)
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -38,9 +43,11 @@ namespace MVCProject.Controllers
         // GET: /Product/Create
         public ActionResult Create()
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
             var p = new Models.Product();
             int useCatCode = 0;
-            p.Barcode = p.SKU = p.ItemCode = Common.Commons.GenItemCode(db, out useCatCode);
+            p.Barcode = p.SKU = p.ItemCode = Common.Commons.GenItemCode(db, out useCatCode, "SP");
             ViewBag.CatalogList = Common.Commons.GetCatalogList(db, 0);
             ViewBag.SupplierList = Common.Commons.GetSupplierList(db);
             ViewBag.WarrantyList = Common.Commons.GetWarrantyList(db);
@@ -56,8 +63,11 @@ namespace MVCProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include="ID,ItemCode,Barcode,CatID,SKU,SupplierID,ImageLink,Adwords,Show,DateCreate,Color,Dimension,Unit,Warranty,IsDel,IsState,UserID,ProductName")] Product product)
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
             if (ModelState.IsValid)
             {
+                product.UserID = User.Identity.GetUserId();
                 db.Products.Add(product);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -69,6 +79,8 @@ namespace MVCProject.Controllers
         // GET: /Product/Edit/5
         public ActionResult Edit(long? id)
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -80,7 +92,7 @@ namespace MVCProject.Controllers
             }
 
             int useCatCode = 0;
-            Common.Commons.GenItemCode(db, out useCatCode);
+            Common.Commons.GenItemCode(db, out useCatCode, "SP");
             ViewBag.CatalogList = Common.Commons.GetCatalogList(db, 0);
             ViewBag.SupplierList = Common.Commons.GetSupplierList(db);
             ViewBag.WarrantyList = Common.Commons.GetWarrantyList(db);
@@ -96,6 +108,8 @@ namespace MVCProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include="ID,ItemCode,Barcode,CatID,SKU,SupplierID,ImageLink,Adwords,Show,DateCreate,Color,Dimension,Unit,Warranty,IsDel,IsState,UserID,ProductName")] Product product)
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
             if (ModelState.IsValid)
             {
                 db.Entry(product).State = EntityState.Modified;
@@ -108,6 +122,8 @@ namespace MVCProject.Controllers
         // GET: /Product/Delete/5
         public ActionResult Delete(long? id)
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -125,6 +141,8 @@ namespace MVCProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
             Product product = db.Products.Find(id);
             db.Products.Remove(product);
             db.SaveChanges();

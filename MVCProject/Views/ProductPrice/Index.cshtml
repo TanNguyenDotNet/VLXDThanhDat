@@ -1,62 +1,61 @@
 ﻿@model IEnumerable<MVCProject.Models.ProductPrice>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Danh sách";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<h2>Giá sản phẩm</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Thêm mới", "Create")
 </p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.ProductID)
+            Sản phẩm
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Price)
+        <th width="10%">
+            Giá
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Created)
+        <th width="10%">
+           Ngày tạo
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
+        <th width="20%">
+            Mô tả
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UserID)
+        <th width="15%">
+            Mã tỉnh/thành phố
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LocationID)
-        </th>
-        <th></th>
+        <th width="10%">&nbsp;</th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.ProductID)
+            @if(((List<MVCProject.Models.Product>)ViewData["ProductList"]).Count > 0)
+            {
+                MVCProject.Models.Product i = ((List<MVCProject.Models.Product>)ViewData["ProductList"]).Single(s=>s.ID == item.ProductID);
+                if(i != null)
+                {
+                    @Html.Raw(i.ProductName);
+                }
+            }
+        </td>
+        <td align="right">
+            @Double.Parse(item.Price.ToString()).ToString("#,###.00")
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Price)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Created)
+            @DateTime.Parse(item.Created.ToString()).ToString("dd/MM/yyyy")
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Description)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.UserID)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.LocationID)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+            @Html.ActionLink("Chỉnh sửa", "Edit", new { id=item.ID })
         </td>
     </tr>
 }

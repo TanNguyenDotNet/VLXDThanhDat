@@ -14,12 +14,12 @@ namespace MVCProject.Models
     
     public partial class Promotion
     {
-        public string ProductID { get; set; }
+        public Nullable<long> ProductID { get; set; }
         public bool Active { get; set; }
         public string PromotionCode { get; set; }
         public Nullable<System.DateTime> StartDate { get; set; }
         public Nullable<System.DateTime> EndDate { get; set; }
-        public int UserID { get; set; }
+        public string UserID { get; set; }
         public Nullable<System.DateTime> Created { get; set; }
         public int PromotionTypeID { get; set; }
         public decimal PromotionValue { get; set; }
