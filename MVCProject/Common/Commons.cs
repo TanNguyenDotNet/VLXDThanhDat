@@ -102,13 +102,19 @@ namespace MVCProject.Common
 
             string en = Security.EncryptString(username + "~BackendUser", false, EncryptType.TripleDES);
             Models.aspnetEntities db = new Models.aspnetEntities();
+            bool redirect = false;
             try
             {
-                var i = db.AppNetUserTypes.Single(d => d.Username == en);
-                if (i == null)
-                    return false;
+                var i = db.AppNetUserTypes.Where(d => d.Username == en).ToList();
+                if (i == null || i.Count == 0)
+                    redirect = true;
             }
             catch { return false; }
+            if (redirect)
+            {
+                res.Redirect("~/Product/Home");
+                return false;
+            }
 
             return req.IsAuthenticated;
         }

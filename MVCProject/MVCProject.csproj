@@ -355,6 +355,8 @@
     <Content Include="Views\Product\Edit.cshtml" />
     <Content Include="Views\Product\Index.cshtml" />
     <Content Include="Views\ProductCode\Create.cshtml" />
+    <Content Include="Views\Shared\_Layout.Frontend.cshtml" />
+    <Content Include="Views\Product\Home.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

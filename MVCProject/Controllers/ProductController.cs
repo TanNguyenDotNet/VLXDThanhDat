@@ -14,7 +14,12 @@ namespace MVCProject.Controllers
     public class ProductController : Controller
     {
         private aspnetEntities db = new aspnetEntities();
-
+        public ActionResult Home()
+        {
+            if (!Request.IsAuthenticated)
+                return null;
+            return View(db.Products.ToList());
+        }
         // GET: /Product/
         public ActionResult Index()
         {
