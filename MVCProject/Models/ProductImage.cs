@@ -20,5 +20,6 @@ namespace MVCProject.Models
         public string ImageLink { get; set; }
         public string Note { get; set; }
         public string ImageAddIn { get; set; }
+        public string Component { get; set; }
     }
 }

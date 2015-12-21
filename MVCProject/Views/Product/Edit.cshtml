@@ -68,14 +68,6 @@
         </div>
 
         <div class="form-group">
-            <span class="control-label col-md-2">Liên kết:</span>
-            <div class="col-md-10">
-                @Html.TextBoxFor(model => model.ImageLink, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ImageLink)
-            </div>
-        </div>
-
-        <div class="form-group">
             <span class="control-label col-md-2">Adwords:</span>
             <div class="col-md-10">
                 @Html.TextBoxFor(model => model.Adwords, new { @class = "form-control" })
@@ -110,7 +102,15 @@
         <div class="form-group">
             <span class="control-label col-md-2">ĐVT:</span>
             <div class="col-md-10">
-                @Html.TextBoxFor(model => model.Unit, new { @class = "form-control" })
+                <select name="Unit" id="Unit" class="form-control">
+                    <option value="Cái" @if (Model.Unit == "Cai") { @Html.Raw(" selected='selected'") }>Cái</option>
+                    <option value="Chiếc" @if (Model.Unit == "Chiếc") { @Html.Raw(" selected='selected'") }>Chiếc</option>
+                    <option value="Cây" @if (Model.Unit == "Cây")
+                                          { @Html.Raw(" selected='selected'") }>Cây</option>
+                    <option value="Ống" @if (Model.Unit == "Ống")
+                                        { @Html.Raw(" selected='selected'")  }>Ống</option>
+
+                </select>
                 @Html.ValidationMessageFor(model => model.Unit)
             </div>
         </div>
@@ -131,10 +131,24 @@
                 @Html.ValidationMessageFor(model => model.IsDel)
             </div>
         </div>
+
         <div class="form-group">
-            <span class="control-label col-md-2">Hình ảnh:</span>
+            <span class="control-label col-md-2">Ảnh tiêu đề:</span>
+            <div class="col-md-10">
+                <input type="file" name="intro" id="intro" style="height: 30px; line-height :30px; width: 600px;" />
+            </div>
+        </div>
+        <div class="form-group">
+            <span class="control-label col-md-2">Ảnh chi tiết:</span>
             <div class="col-md-10">
                 <input type="file" name="Image" id="Image" style="height: 30px; line-height :30px; width: 600px;" />
+            </div>
+        </div>
+        <div class="form-group">
+            <span class="control-label col-md-2">Liên kết:</span>
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.ImageLink, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ImageLink)
             </div>
         </div>
         

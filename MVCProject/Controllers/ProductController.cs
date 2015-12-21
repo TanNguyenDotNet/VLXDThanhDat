@@ -21,7 +21,27 @@ namespace MVCProject.Controllers
         {
             if (!Request.IsAuthenticated)
                 return null;
-            return View(db.Products.ToList());
+
+            string cid = Request.QueryString["CatID"];
+            string name = Request.QueryString["Name"];
+            long lcid = 0;
+            try { 
+                cid = cid == "" ? "0" : cid;
+                lcid = long.Parse(cid);
+            }
+            catch { lcid = 0; }
+
+            ViewData["ImageList"] = db.ProductImages.Where(c => c.Component == "Product").ToList();
+            ViewData["CatList"] = db.Catalogs.Select(d => d).ToList();
+            if (cid != null && cid != "" && name != null && name != "")
+                return View(db.Products.Where(c => c.CatID == lcid
+                    && c.ProductName.Contains(name)));
+            else if (cid != null && cid != "")
+                return View(db.Products.Where(c => c.CatID == lcid).ToList());
+            else if (name != null && name != "")
+                return View(db.Products.Where(c => c.ProductName.Contains(name)).ToList());
+            else
+                return View(db.Products.ToList());
         }
         // GET: /Product/
         public ActionResult Index()
@@ -76,6 +96,8 @@ namespace MVCProject.Controllers
             if (ModelState.IsValid)
             {
                 Upload();
+                SaveImage(introImg, "Intro", product.ItemCode, "Product", "");
+                SaveImage(reval, "Detail", product.ItemCode, "Product", product.ImageLink);
                 product.UserID = User.Identity.GetUserId();
                 db.Products.Add(product);
                 db.SaveChanges();
@@ -83,6 +105,32 @@ namespace MVCProject.Controllers
             }
 
             return View(product);
+        }
+
+        private void SaveImage(string image, string addIn, string itemCode, string component, string imageLink)
+        {
+            if (image != "")
+            {
+                if (addIn == "Intro")
+                {
+                    var list = db.ProductImages.Where(c => c.ProductCode == itemCode 
+                        && c.Component == component && c.ImageAddIn == addIn).ToList();
+                    if (list != null && list.Count > 0)
+                    {
+                        db.ProductImages.Remove(list[0]);
+                        db.SaveChanges();
+                    }
+                }
+
+                Models.ProductImage pi = new ProductImage();
+                pi.Image = image;
+                pi.ImageAddIn = addIn;
+                pi.ProductCode = itemCode;
+                pi.Component = component;
+                pi.ImageLink = imageLink;
+                db.ProductImages.Add(pi);
+                db.SaveChanges();
+            }
         }
 
         // GET: /Product/Edit/5
@@ -122,6 +170,8 @@ namespace MVCProject.Controllers
             if (ModelState.IsValid)
             {
                 Upload();
+                SaveImage(introImg, "Intro", product.ItemCode, "Product", "");
+                SaveImage(reval, "Detail", product.ItemCode, "Product", product.ImageLink);
                 db.Entry(product).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

@@ -135,6 +135,7 @@
           <Property Name="ImageLink" Type="varchar(max)" />
           <Property Name="Note" Type="nvarchar(max)" />
           <Property Name="ImageAddIn" Type="varchar(max)" />
+          <Property Name="Component" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="ProductName">
           <Key>
@@ -561,6 +562,7 @@
           <Property Name="ImageLink" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ImageAddIn" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Component" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -773,6 +775,7 @@
           <EntitySetMapping Name="ProductImages">
             <EntityTypeMapping TypeName="Models.ProductImage">
               <MappingFragment StoreEntitySet="ProductImage">
+                <ScalarProperty Name="Component" ColumnName="Component" />
                 <ScalarProperty Name="ImageAddIn" ColumnName="ImageAddIn" />
                 <ScalarProperty Name="Note" ColumnName="Note" />
                 <ScalarProperty Name="ImageLink" ColumnName="ImageLink" />

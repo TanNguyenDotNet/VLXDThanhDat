@@ -212,6 +212,7 @@
     <Compile Include="Models\Catalog.cs">
       <DependentUpon>aspnetEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CommonModels.cs" />
     <Compile Include="Models\C__MigrationHistory.cs">
       <DependentUpon>aspnetEntities.tt</DependentUpon>
     </Compile>
@@ -361,6 +362,7 @@
     <Content Include="Views\ProductCode\Create.cshtml" />
     <Content Include="Views\Shared\_Layout.Frontend.cshtml" />
     <Content Include="Views\Product\Home.cshtml" />
+    <Content Include="Views\Product\_filterPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Images\" />
