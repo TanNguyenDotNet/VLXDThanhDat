@@ -11,7 +11,7 @@ Target Server Type    : SQL Server
 Target Server Version : 105000
 File Encoding         : 65001
 
-Date: 2015-12-21 11:37:22
+Date: 2015-12-21 11:39:34
 */
 
 
@@ -26,7 +26,8 @@ CREATE TABLE [dbo].[ProductImage] (
 [Image] varchar(255) NULL ,
 [ImageLink] varchar(MAX) NULL ,
 [Note] nvarchar(MAX) NULL ,
-[ImageAddIn] varchar(MAX) NULL 
+[ImageAddIn] varchar(MAX) NULL ,
+[Component] varchar(50) NULL DEFAULT ('Product') 
 )
 
 
