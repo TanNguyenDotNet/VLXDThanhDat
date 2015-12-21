@@ -1,0 +1,76 @@
+﻿@model MVCProject.Models.ProductCode
+
+@{
+    ViewBag.Title = "Cấu hình";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Cấu hình</h2>
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Mã sản phẩm</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model=>model.CatCode)
+        <div class="form-group">
+            <span class="control-label col-md-2">Group 1:</span>
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Group1, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Group1)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <span class="control-label col-md-2">Group 2:</span>
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Group2, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Group2)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <span class="control-label col-md-2">Dùng mã danh mục:</span>
+            <div class="col-md-10">
+               @Html.EditorFor(model => model.CatID, new { @class="form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <span class="control-label col-md-2">Số tự động:</span>
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.ScrollNumber, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ScrollNumber)
+            </div>
+        </div>
+
+        @Html.HiddenFor(model => model.Active)
+        @Html.HiddenFor(model => model.CatCode)
+        @Html.HiddenFor(model => model.ID)
+        
+        <div class="form-group">
+            <span class="control-label col-md-2">Kết quả:</span>
+            <div class="col-md-10">
+                <input type="text" id="display" name="display" class="form-control" />
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Lưu Lại" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Về danh sách", "Index", "Product")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
