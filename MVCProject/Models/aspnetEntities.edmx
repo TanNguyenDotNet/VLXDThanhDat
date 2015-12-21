@@ -24,7 +24,7 @@
           <Property Name="Fax" Type="varchar" MaxLength="20" />
           <Property Name="Address" Type="nvarchar" MaxLength="255" />
           <Property Name="Phone" Type="varchar" MaxLength="20" />
-          <Property Name="UserType" Type="text" Nullable="false" />
+          <Property Name="UserType" Type="varchar" MaxLength="255" Nullable="false" />
         </EntityType>
         <EntityType Name="AspNetRoles">
           <Key>
@@ -134,6 +134,7 @@
           <Property Name="Image" Type="varchar" MaxLength="255" />
           <Property Name="ImageLink" Type="varchar(max)" />
           <Property Name="Note" Type="nvarchar(max)" />
+          <Property Name="ImageAddIn" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="ProductName">
           <Key>
@@ -548,7 +549,7 @@
           <Property Name="Fax" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="UserType" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="UserType" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ProductImage">
           <Key>
@@ -559,6 +560,7 @@
           <Property Name="Image" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="ImageLink" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ImageAddIn" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -771,6 +773,7 @@
           <EntitySetMapping Name="ProductImages">
             <EntityTypeMapping TypeName="Models.ProductImage">
               <MappingFragment StoreEntitySet="ProductImage">
+                <ScalarProperty Name="ImageAddIn" ColumnName="ImageAddIn" />
                 <ScalarProperty Name="Note" ColumnName="Note" />
                 <ScalarProperty Name="ImageLink" ColumnName="ImageLink" />
                 <ScalarProperty Name="Image" ColumnName="Image" />

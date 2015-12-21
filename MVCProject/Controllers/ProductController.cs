@@ -75,6 +75,7 @@ namespace MVCProject.Controllers
                 return null;
             if (ModelState.IsValid)
             {
+                Upload();
                 product.UserID = User.Identity.GetUserId();
                 db.Products.Add(product);
                 db.SaveChanges();
@@ -120,6 +121,7 @@ namespace MVCProject.Controllers
                 return null;
             if (ModelState.IsValid)
             {
+                Upload();
                 db.Entry(product).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
