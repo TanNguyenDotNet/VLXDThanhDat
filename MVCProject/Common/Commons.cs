@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -117,6 +118,23 @@ namespace MVCProject.Common
             }
 
             return req.IsAuthenticated;
+        }
+
+        public static string Save(HttpPostedFileBase file, string path, string name)
+        {
+            string reval = "";
+            try
+            {
+                if (file.ContentLength > 0)
+                {
+                    string ogrName = Path.GetFileName(file.FileName);
+                    reval = String.Format("{0}.{1}", name, ogrName.Split('.')[1]);
+                    string tmpPath = Path.Combine(path, reval);
+                    file.SaveAs(tmpPath);
+                }
+                return reval;
+            }
+            catch { return ""; }
         }
     }
 }

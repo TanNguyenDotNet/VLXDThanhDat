@@ -24,6 +24,7 @@
         <EntityTypeShape EntityType="Models.ProductCode" Width="1.5" PointX="3.375" PointY="9.75" />
         <EntityTypeShape EntityType="Models.Warranty" Width="1.5" PointX="11.375" PointY="3.75" />
         <EntityTypeShape EntityType="Models.AppNetUserType" Width="1.5" PointX="11.375" PointY="6.75" />
+        <EntityTypeShape EntityType="Models.ProductImage" Width="1.5" PointX="11.375" PointY="9.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

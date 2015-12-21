@@ -14,6 +14,9 @@ namespace MVCProject.Controllers
     public class ProductController : Controller
     {
         private aspnetEntities db = new aspnetEntities();
+
+        private string reval = "";
+        private string introImg = "";
         public ActionResult Home()
         {
             if (!Request.IsAuthenticated)
@@ -152,6 +155,40 @@ namespace MVCProject.Controllers
             db.Products.Remove(product);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        private string Upload()
+        {
+            try
+            {
+                reval = "";
+                introImg = "";
+                Random r = new Random();
+                string RootPath = HttpContext.Server.MapPath("~/Images/");
+                foreach (string inputTagName in Request.Files)
+                {
+                    HttpPostedFileBase file = Request.Files[inputTagName];
+
+                    string name = "IMG_" + DateTime.Now.ToString("ddMMyyyy") + "_" +
+                        r.Next(1000000, 9999999);
+
+                    string fileName = Common.Commons.Save(file, RootPath + (inputTagName == "intro" ? "Intro" : "Details"), name);
+
+                    if (fileName != "")
+                    {
+                        if (inputTagName == "intro")
+                            introImg = fileName;
+                        else
+                        {
+                            if (reval != "") reval += ",";
+                            reval += fileName;
+                        }
+                    }
+                }
+
+                return reval;
+            }
+            catch { return null; }
         }
 
         protected override void Dispose(bool disposing)

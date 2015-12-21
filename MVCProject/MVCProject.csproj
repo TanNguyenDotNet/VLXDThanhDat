@@ -225,6 +225,9 @@
     <Compile Include="Models\ProductCode.cs">
       <DependentUpon>aspnetEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ProductImage.cs">
+      <DependentUpon>aspnetEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ProductName.cs">
       <DependentUpon>aspnetEntities.tt</DependentUpon>
     </Compile>
@@ -358,7 +361,9 @@
     <Content Include="Views\Shared\_Layout.Frontend.cshtml" />
     <Content Include="Views\Product\Home.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Images\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />

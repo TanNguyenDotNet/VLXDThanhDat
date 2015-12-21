@@ -8,7 +8,7 @@
 <h2>Thêm mới</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm("Create", "Product", FormMethod.Post, new { enctype = "multipart/form-data" })) 
 {
     @Html.AntiForgeryToken()
     
@@ -107,6 +107,7 @@
             </div>
         </div>
 
+        <input type="file" name="Image" id="Image" class="form-control" />
         <div class="form-group">
             <span class="control-label col-md-2">ĐVT:</span>
             <div class="col-md-10">

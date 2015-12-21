@@ -50,6 +50,11 @@ namespace MVCProject.Controllers
                 if (user != null)
                 {
                     await SignInAsync(user, model.RememberMe);
+                    string en = Security.EncryptString(model.UserName + "~BackendUser", false, EncryptType.TripleDES);
+                    var l = (new Models.aspnetEntities()).AppNetUserTypes.Where(d => d.UserType == en);
+                    returnUrl = "~/Product/Index";
+                    if (l == null || (l.ToList()).Count == 0)
+                        returnUrl = "~/Product/Home";
                     return RedirectToLocal(returnUrl);
                 }
                 else
