@@ -220,6 +220,12 @@
     <Compile Include="Models\Location.cs">
       <DependentUpon>aspnetEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Order.cs">
+      <DependentUpon>retailEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\OrdersDetail.cs">
+      <DependentUpon>retailEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Product.cs">
       <DependentUpon>aspnetEntities.tt</DependentUpon>
     </Compile>
@@ -240,6 +246,21 @@
     </Compile>
     <Compile Include="Models\PromotionType.cs">
       <DependentUpon>aspnetEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\retailEntities.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>retailEntities.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\retailEntities.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>retailEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\retailEntities.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>retailEntities.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\Supplier.cs">
       <DependentUpon>aspnetEntities.tt</DependentUpon>
@@ -281,6 +302,23 @@
       <LastGenOutput>aspnetEntities.cs</LastGenOutput>
     </Content>
     <Content Include="App_Data\aspnet1.bak" />
+    <EntityDeploy Include="Models\retailEntities.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>retailEntities.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\retailEntities.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>retailEntities.edmx</DependentUpon>
+      <LastGenOutput>retailEntities.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\retailEntities.edmx.diagram">
+      <DependentUpon>retailEntities.edmx</DependentUpon>
+    </Content>
+    <Content Include="Models\retailEntities.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>retailEntities.edmx</DependentUpon>
+      <LastGenOutput>retailEntities.cs</LastGenOutput>
+    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
