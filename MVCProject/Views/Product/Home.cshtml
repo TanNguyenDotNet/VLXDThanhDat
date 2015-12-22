@@ -40,7 +40,7 @@
                 <div class="col-md-offset-2 col-md-10">
                     <input type="button" onclick="filterFromSubmit()" class="btn btn-default" value="Tìm Kiếm" />
                     @if(ViewData["CartCount"] != "0"){
-                        <input type="button" class="btn btn-default" value="(@ViewData["CartCount"]) Xem hóa đơn" />
+                        <input type="button" onclick="GoToCart();" class="btn btn-default" value="(@ViewData["CartCount"]) Xem hóa đơn" />
                     }
                 </div>
             </div>
@@ -48,6 +48,9 @@
     </tr>
 </table>
 <script>
+    function GoToCart() {
+        window.location = '../OrderDetail/Index';
+    }
     function filterFromSubmit() {
         //var e = document.getElementById("CatID");
         //var cid = e.options[e.selectedIndex].value;
@@ -148,7 +151,7 @@
         }
     }
     </table>
-    <span style="float:right;">Sản phẩm đã chọn: (@ViewData["CartCount"]) &gt;&gt; <a href="../Order/Index"> Xem hóa đơn</a></span> 
+    <span style="float:right;">Sản phẩm đã chọn: (@ViewData["CartCount"]) &gt;&gt; <a href="../OrderDetail/Index"> Xem hóa đơn</a></span> 
     
     <input type="hidden" name="Cart" id="Cart" value="@ViewData["Cart"].ToString()" />
     <input type="hidden" name="Page" id="Page" value="@ViewData["Page"].ToString()" /> 

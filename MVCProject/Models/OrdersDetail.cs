@@ -14,14 +14,16 @@ namespace MVCProject.Models
     
     public partial class OrdersDetail
     {
-        public int ID { get; set; }
-        public Nullable<int> IDProduct { get; set; }
-        public Nullable<long> Price { get; set; }
-        public Nullable<int> Amount { get; set; }
-        public Nullable<bool> ReturnGood { get; set; }
+        public long ID { get; set; }
+        public long IDProduct { get; set; }
+        public decimal Price { get; set; }
+        public int Amount { get; set; }
+        public bool ReturnGood { get; set; }
         public Nullable<System.DateTime> DateOfOrder { get; set; }
         public Nullable<long> Tax { get; set; }
-        public Nullable<long> Total { get; set; }
+        public decimal Total { get; set; }
         public string Description { get; set; }
+        public string ProductCode { get; set; }
+        public bool RequestByUser { get; set; }
     }
 }

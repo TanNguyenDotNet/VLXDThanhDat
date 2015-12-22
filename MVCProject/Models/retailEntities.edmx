@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="RetailDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="RetailDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Orders">
           <Key>
             <PropertyRef Name="ID" />
@@ -24,22 +24,23 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IDProduct" Type="int" />
-          <Property Name="Price" Type="bigint" />
-          <Property Name="Amount" Type="int" />
-          <Property Name="ReturnGood" Type="bit" />
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDProduct" Type="bigint" Nullable="false" />
+          <Property Name="Price" Type="decimal" Precision="14" Scale="2" Nullable="false" />
+          <Property Name="Amount" Type="int" Nullable="false" />
+          <Property Name="ReturnGood" Type="bit" Nullable="false" />
           <Property Name="DateOfOrder" Type="datetime" />
-          <Property Name="Tax" Type="bigint" />
-          <Property Name="Total" Type="bigint" />
-          <Property Name="Description" Type="nvarchar" MaxLength="50" />
+          <Property Name="Tax" Type="float" />
+          <Property Name="Total" Type="decimal" Precision="14" Scale="2" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="ProductCode" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="RequestByUser" Type="bit" Nullable="false" />
         </EntityType>
         <EntityContainer Name="RetailDBModelStoreContainer">
           <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OrdersDetail" EntityType="Self.OrdersDetail" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="RetailDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -62,15 +63,17 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDProduct" Type="Int32" />
-          <Property Name="Price" Type="Int64" />
-          <Property Name="Amount" Type="Int32" />
-          <Property Name="ReturnGood" Type="Boolean" />
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDProduct" Type="Int64" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
+          <Property Name="Amount" Type="Int32" Nullable="false" />
+          <Property Name="ReturnGood" Type="Boolean" Nullable="false" />
           <Property Name="DateOfOrder" Type="DateTime" Precision="3" />
           <Property Name="Tax" Type="Int64" />
-          <Property Name="Total" Type="Int64" />
-          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Total" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ProductCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RequestByUser" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityContainer Name="retailEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Orders" EntityType="Self.Order" />
@@ -101,6 +104,8 @@
           <EntitySetMapping Name="OrdersDetails">
             <EntityTypeMapping TypeName="RetailDBModel.OrdersDetail">
               <MappingFragment StoreEntitySet="OrdersDetail">
+                <ScalarProperty Name="RequestByUser" ColumnName="RequestByUser" />
+                <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="IDProduct" ColumnName="IDProduct" />
                 <ScalarProperty Name="Price" ColumnName="Price" />

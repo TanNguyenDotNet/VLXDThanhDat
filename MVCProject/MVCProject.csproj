@@ -168,6 +168,7 @@
     <Compile Include="Controllers\CatalogController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LocationController.cs" />
+    <Compile Include="Controllers\OrderDetailController.cs" />
     <Compile Include="Controllers\ProductCodeController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\ProductNameController.cs" />
@@ -403,6 +404,7 @@
     <Content Include="Views\Shared\_Layout.Frontend.cshtml" />
     <Content Include="Views\Product\Home.cshtml" />
     <Content Include="Views\Product\_filterPartial.cshtml" />
+    <Content Include="Views\OrderDetail\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
