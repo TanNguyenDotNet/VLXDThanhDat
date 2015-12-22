@@ -17,6 +17,11 @@ namespace MVCProject.Controllers
         // GET: /OrderDetail/
         public ActionResult Index()
         {
+            if (Session["CartDetail"] == null)
+            {
+                string[] parts = Session["Cart"].ToString().Split(',');
+                string[,] cd = new string[parts.Length, 5];
+            }
             return View(db.OrdersDetails.ToList());
         }
 

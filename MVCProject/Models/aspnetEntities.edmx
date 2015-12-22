@@ -112,6 +112,7 @@
           <Property Name="IsState" Type="tinyint" />
           <Property Name="UserID" Type="varchar" MaxLength="50" />
           <Property Name="ProductName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="TaxID" Type="tinyint" />
         </EntityType>
         <EntityType Name="ProductCode">
           <Key>
@@ -119,7 +120,7 @@
           </Key>
           <Property Name="Group1" Type="varchar" MaxLength="5" />
           <Property Name="Group2" Type="varchar" MaxLength="5" />
-          <Property Name="CatID" Type="bit" />
+          <Property Name="CatID" Type="bit" Nullable="false" />
           <Property Name="ScrollNumber" Type="int" Nullable="false" />
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Active" Type="bit" />
@@ -197,6 +198,14 @@
           <Property Name="AccountBank" Type="varchar" MaxLength="50" />
           <Property Name="NameBank" Type="nvarchar" MaxLength="255" />
         </EntityType>
+        <EntityType Name="Tax">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Desc" Type="nvarchar" MaxLength="255" />
+          <Property Name="TaxRate" Type="float" />
+        </EntityType>
         <EntityType Name="Warranty">
           <Key>
             <PropertyRef Name="ID" />
@@ -206,7 +215,7 @@
           <Property Name="Value" Type="tinyint" />
           <Property Name="ID" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
-        <Association Name="FK__AspNetUse__RoleI__45F365D3">
+        <Association Name="FK__AspNetUse__RoleI__40F9A68C">
           <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -220,7 +229,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AspNetUse__User___440B1D61">
+        <Association Name="FK__AspNetUse__User___3F115E1A">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -234,7 +243,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AspNetUse__UserI__44FF419A">
+        <Association Name="FK__AspNetUse__UserI__40058253">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -248,7 +257,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AspNetUse__UserI__46E78A0C">
+        <Association Name="FK__AspNetUse__UserI__41EDCAC5">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -280,20 +289,21 @@
           <EntitySet Name="Promotion" EntityType="Self.Promotion" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PromotionType" EntityType="Self.PromotionType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Supplier" EntityType="Self.Supplier" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tax" EntityType="Self.Tax" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Warranty" EntityType="Self.Warranty" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__AspNetUse__RoleI__45F365D3" Association="Self.FK__AspNetUse__RoleI__45F365D3">
+          <AssociationSet Name="FK__AspNetUse__RoleI__40F9A68C" Association="Self.FK__AspNetUse__RoleI__40F9A68C">
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
-          <AssociationSet Name="FK__AspNetUse__User___440B1D61" Association="Self.FK__AspNetUse__User___440B1D61">
+          <AssociationSet Name="FK__AspNetUse__User___3F115E1A" Association="Self.FK__AspNetUse__User___3F115E1A">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
           </AssociationSet>
-          <AssociationSet Name="FK__AspNetUse__UserI__44FF419A" Association="Self.FK__AspNetUse__UserI__44FF419A">
+          <AssociationSet Name="FK__AspNetUse__UserI__40058253" Association="Self.FK__AspNetUse__UserI__40058253">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
           </AssociationSet>
-          <AssociationSet Name="FK__AspNetUse__UserI__46E78A0C" Association="Self.FK__AspNetUse__UserI__46E78A0C">
+          <AssociationSet Name="FK__AspNetUse__UserI__41EDCAC5" Association="Self.FK__AspNetUse__UserI__41EDCAC5">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
@@ -396,6 +406,7 @@
           <Property Name="IsState" Type="Byte" />
           <Property Name="UserID" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
           <Property Name="ProductName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TaxID" Type="Byte" />
         </EntityType>
         <EntityType Name="ProductName">
           <Key>
@@ -519,6 +530,7 @@
           <EntitySet Name="Warranties" EntityType="Models.Warranty" />
           <EntitySet Name="AppNetUserTypes" EntityType="Models.AppNetUserType" />
           <EntitySet Name="ProductImages" EntityType="Models.ProductImage" />
+          <EntitySet Name="Taxes" EntityType="Models.Tax" />
         </EntityContainer>
         <EntityType Name="ProductCode">
           <Key>
@@ -526,7 +538,7 @@
           </Key>
           <Property Name="Group1" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
           <Property Name="Group2" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="CatID" Type="Boolean" />
+          <Property Name="CatID" Type="Boolean" Nullable="false" />
           <Property Name="ScrollNumber" Type="Int32" Nullable="false" />
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Active" Type="Boolean" />
@@ -563,6 +575,14 @@
           <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ImageAddIn" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Component" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Tax">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Desc" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="TaxRate" Type="Double" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -643,6 +663,7 @@
           <EntitySetMapping Name="Products">
             <EntityTypeMapping TypeName="Models.Product">
               <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="TaxID" ColumnName="TaxID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="ItemCode" ColumnName="ItemCode" />
                 <ScalarProperty Name="Barcode" ColumnName="Barcode" />
@@ -781,6 +802,15 @@
                 <ScalarProperty Name="ImageLink" ColumnName="ImageLink" />
                 <ScalarProperty Name="Image" ColumnName="Image" />
                 <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Taxes">
+            <EntityTypeMapping TypeName="Models.Tax">
+              <MappingFragment StoreEntitySet="Tax">
+                <ScalarProperty Name="TaxRate" ColumnName="TaxRate" />
+                <ScalarProperty Name="Desc" ColumnName="Desc" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

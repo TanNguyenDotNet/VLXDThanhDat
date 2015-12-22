@@ -12,14 +12,10 @@ namespace MVCProject.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class ProductCode
+    public partial class Tax
     {
-        public string Group1 { get; set; }
-        public string Group2 { get; set; }
-        public bool CatID { get; set; }
-        public int ScrollNumber { get; set; }
-        public int ID { get; set; }
-        public Nullable<bool> Active { get; set; }
-        public string CatCode { get; set; }
+        public byte ID { get; set; }
+        public string Desc { get; set; }
+        public Nullable<double> TaxRate { get; set; }
     }
 }

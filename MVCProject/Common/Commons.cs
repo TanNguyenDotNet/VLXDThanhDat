@@ -82,6 +82,15 @@ namespace MVCProject.Common
                     Text = d.Code
                 });
         }
+        public static dynamic GetTaxList(Models.aspnetEntities db)
+        {
+            return db.Taxes.AsEnumerable()
+                .Select(d => new SelectListItem
+                {
+                    Value = d.ID.ToString(),
+                    Text = d.Desc
+                });
+        }
 
         public static string GenItemCode(Models.aspnetEntities db, out int useCatCode, string itemType)
         {

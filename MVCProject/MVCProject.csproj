@@ -266,6 +266,9 @@
     <Compile Include="Models\Supplier.cs">
       <DependentUpon>aspnetEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Tax.cs">
+      <DependentUpon>aspnetEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Warranty.cs">
       <DependentUpon>aspnetEntities.tt</DependentUpon>
     </Compile>

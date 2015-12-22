@@ -32,5 +32,6 @@ namespace MVCProject.Models
         public Nullable<byte> IsState { get; set; }
         public string UserID { get; set; }
         public string ProductName { get; set; }
+        public Nullable<byte> TaxID { get; set; }
     }
 }

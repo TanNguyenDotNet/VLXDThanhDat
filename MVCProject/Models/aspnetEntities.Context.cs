@@ -42,5 +42,6 @@ namespace MVCProject.Models
         public virtual DbSet<Warranty> Warranties { get; set; }
         public virtual DbSet<AppNetUserType> AppNetUserTypes { get; set; }
         public virtual DbSet<ProductImage> ProductImages { get; set; }
+        public virtual DbSet<Tax> Taxes { get; set; }
     }
 }

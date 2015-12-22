@@ -93,6 +93,7 @@ namespace MVCProject.Controllers
             ViewBag.CatalogList = Common.Commons.GetCatalogList(db, 0);
             ViewBag.SupplierList = Common.Commons.GetSupplierList(db);
             ViewBag.WarrantyList = Common.Commons.GetWarrantyList(db);
+            ViewBag.TaxList = Common.Commons.GetTaxList(db);
             ViewData["UseCatCode"] = useCatCode;
             ViewData["CatCode"] = db.Catalogs.Select(d => d).ToList();
             return View(p);
@@ -103,7 +104,7 @@ namespace MVCProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="ID,ItemCode,Barcode,CatID,SKU,SupplierID,ImageLink,Adwords,Show,DateCreate,Color,Dimension,Unit,Warranty,IsDel,IsState,UserID,ProductName")] Product product)
+        public ActionResult Create([Bind(Include = "TaxID,ID,ItemCode,Barcode,CatID,SKU,SupplierID,ImageLink,Adwords,Show,DateCreate,Color,Dimension,Unit,Warranty,IsDel,IsState,UserID,ProductName")] Product product)
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
@@ -166,6 +167,7 @@ namespace MVCProject.Controllers
             Common.Commons.GenItemCode(db, out useCatCode, "SP");
             ViewBag.CatalogList = Common.Commons.GetCatalogList(db, 0);
             ViewBag.SupplierList = Common.Commons.GetSupplierList(db);
+            ViewBag.TaxList = Common.Commons.GetTaxList(db);
             ViewBag.WarrantyList = Common.Commons.GetWarrantyList(db);
             ViewData["UseCatCode"] = useCatCode;
             ViewData["CatCode"] = db.Catalogs.Select(d=>d).ToList();
@@ -177,7 +179,7 @@ namespace MVCProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="ID,ItemCode,Barcode,CatID,SKU,SupplierID,ImageLink,Adwords,Show,DateCreate,Color,Dimension,Unit,Warranty,IsDel,IsState,UserID,ProductName")] Product product)
+        public ActionResult Edit([Bind(Include="TaxID,ID,ItemCode,Barcode,CatID,SKU,SupplierID,ImageLink,Adwords,Show,DateCreate,Color,Dimension,Unit,Warranty,IsDel,IsState,UserID,ProductName")] Product product)
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
