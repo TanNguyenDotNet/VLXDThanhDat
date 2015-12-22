@@ -12,7 +12,6 @@
 @using (Html.BeginForm("Home", "Product", FormMethod.Get, new { id = "productViewForm" }))
 {
 <h2>Sản phẩm</h2>
-<h4>Tìm kiếm:</h4>
 <table class="table">
     <tr>
         <td align="right" width="10%">
@@ -40,6 +39,9 @@
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
                     <input type="button" onclick="filterFromSubmit()" class="btn btn-default" value="Tìm Kiếm" />
+                    @if(ViewData["CartCount"] != "0"){
+                        <input type="button" class="btn btn-default" value="(@ViewData["CartCount"]) Xem hóa đơn" />
+                    }
                 </div>
             </div>
         </td>
@@ -47,10 +49,27 @@
 </table>
 <script>
     function filterFromSubmit() {
-        var e = document.getElementById("CatID");
-        var cid = e.options[e.selectedIndex].value;
-        window.location = '../Product/Home?CatID=' + cid + '&Name=' + document.getElementById("Name").value;
+        //var e = document.getElementById("CatID");
+        //var cid = e.options[e.selectedIndex].value;
+        //window.location = '../Product/Home?CatID=' + cid + '&Name=' + document.getElementById("Name").value;
+        productViewForm.submit();
     }
+
+    function AddToCart(code) {
+        var val = document.getElementById("Cart").value;
+        if(val.indexOf(code) == -1)
+        {
+            if(val != '') val += ',';
+            val += code;
+            document.getElementById("Cart").value = val;
+            productViewForm.submit();
+            alert("Thêm thành công!");
+        }
+        else
+            alert("Đã có!");
+    }
+
+
 </script>
 
 <table class="table">
@@ -68,6 +87,9 @@
         </th>
         <th>
             Bảo hành
+        </th>
+        <th width="12%">
+            Thêm đơn hàng
         </th>
     </tr>
     @if (Model.Count() > 0) 
@@ -117,9 +139,18 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Warranty)
                 </td>
+                <td align="center">
+                    <a href="#" onclick="AddToCart('@item.ItemCode');">
+                        <img class='add-button-disable' src='../Images/Control/add-image.png' alt='@item.ProductName' />
+                    </a>
+                </td>
             </tr>
         }
     }
     </table>
+    <span style="float:right;">Sản phẩm đã chọn: (@ViewData["CartCount"]) &gt;&gt; <a href="../Order/Index"> Xem hóa đơn</a></span> 
+    
+    <input type="hidden" name="Cart" id="Cart" value="@ViewData["Cart"].ToString()" />
+    <input type="hidden" name="Page" id="Page" value="@ViewData["Page"].ToString()" /> 
 }
 

@@ -22,21 +22,35 @@ namespace MVCProject.Controllers
             if (!Request.IsAuthenticated)
                 return null;
 
-            string cid = Request.QueryString["CatID"];
-            string name = Request.QueryString["Name"];
+            string Cart = "", Page = "1", cid = "", name = "";
+            if (Request.QueryString["CatID"] != null) cid = Request.QueryString["CatID"];
+            if (Request.QueryString["Name"] != null) name = Request.QueryString["Name"];
+            if (Request.QueryString["Cart"] != null) Cart = Request.QueryString["Cart"];
+            if (Request.QueryString["page"] != null) Page = Request.QueryString["page"];
+
+            if (Cart != "" && (Session["Cart"] == null || Session["Cart"].ToString() != Cart)) 
+                Session["Cart"] = Cart;
+            if (Cart == "" && Session["Cart"] != null && Session["Cart"].ToString() != "")
+                Cart = Session["Cart"].ToString();
+
+            ViewData["Cart"] = Cart;
+            ViewData["Page"] = Page;
+            ViewData["CartCount"] = Cart != "" ? Cart.Split(',').Length.ToString() : "0";
+
             long lcid = 0;
             try { 
                 cid = cid == "" ? "0" : cid;
                 lcid = long.Parse(cid);
             }
-            catch { lcid = 0; }
+            catch { lcid = 0; cid = "0"; }
 
             ViewData["ImageList"] = db.ProductImages.Where(c => c.Component == "Product").ToList();
             ViewData["CatList"] = db.Catalogs.Select(d => d).ToList();
-            if (cid != null && cid != "" && name != null && name != "")
+
+            if (lcid > 0 && name != null && name != "")
                 return View(db.Products.Where(c => c.CatID == lcid
                     && c.ProductName.Contains(name)));
-            else if (cid != null && cid != "")
+            else if (lcid > 0)
                 return View(db.Products.Where(c => c.CatID == lcid).ToList());
             else if (name != null && name != "")
                 return View(db.Products.Where(c => c.ProductName.Contains(name)).ToList());
