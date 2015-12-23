@@ -51,3 +51,12 @@ a img.add-button-disable:hover {
     opacity: 1;
     filter: alpha(opacity=100);
 }
+
+.quantity-box {
+    width: 50%;
+    line-height:25px; 
+    border: solid 1px #CCC;
+    text-align: center;
+}
+
+th { text-align: center; }

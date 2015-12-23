@@ -14,48 +14,17 @@ namespace MVCProject.Controllers
     public class ProductController : Controller
     {
         private aspnetEntities db = new aspnetEntities();
-
         private string reval = "";
         private string introImg = "";
+
+        #region Local actions
         public ActionResult Home()
         {
             if (!Request.IsAuthenticated)
                 return null;
 
-            string Cart = "", Page = "1", cid = "", name = "";
-            if (Request.QueryString["CatID"] != null) cid = Request.QueryString["CatID"];
-            if (Request.QueryString["Name"] != null) name = Request.QueryString["Name"];
-            if (Request.QueryString["Cart"] != null) Cart = Request.QueryString["Cart"];
-            if (Request.QueryString["page"] != null) Page = Request.QueryString["page"];
-
-            if (Cart != "" && (Session["Cart"] == null || Session["Cart"].ToString() != Cart)) 
-                Session["Cart"] = Cart;
-            if (Cart == "" && Session["Cart"] != null && Session["Cart"].ToString() != "")
-                Cart = Session["Cart"].ToString();
-
-            ViewData["Cart"] = Cart;
-            ViewData["Page"] = Page;
-            ViewData["CartCount"] = Cart != "" ? Cart.Split(',').Length.ToString() : "0";
-
-            long lcid = 0;
-            try { 
-                cid = cid == "" ? "0" : cid;
-                lcid = long.Parse(cid);
-            }
-            catch { lcid = 0; cid = "0"; }
-
-            ViewData["ImageList"] = db.ProductImages.Where(c => c.Component == "Product").ToList();
-            ViewData["CatList"] = db.Catalogs.Select(d => d).ToList();
-
-            if (lcid > 0 && name != null && name != "")
-                return View(db.Products.Where(c => c.CatID == lcid
-                    && c.ProductName.Contains(name)));
-            else if (lcid > 0)
-                return View(db.Products.Where(c => c.CatID == lcid).ToList());
-            else if (name != null && name != "")
-                return View(db.Products.Where(c => c.ProductName.Contains(name)).ToList());
-            else
-                return View(db.Products.ToList());
+            IEnumerable<Models.Product> list = GetList();
+            return View(list);
         }
         // GET: /Product/
         public ActionResult Index()
@@ -95,7 +64,7 @@ namespace MVCProject.Controllers
             ViewBag.WarrantyList = Common.Commons.GetWarrantyList(db);
             ViewBag.TaxList = Common.Commons.GetTaxList(db);
             ViewData["UseCatCode"] = useCatCode;
-            ViewData["CatCode"] = db.Catalogs.Select(d => d).ToList();
+            ViewData["CatCode"] = db.Catalogs.ToList();
             return View(p);
         }
 
@@ -122,32 +91,6 @@ namespace MVCProject.Controllers
             return View(product);
         }
 
-        private void SaveImage(string image, string addIn, string itemCode, string component, string imageLink)
-        {
-            if (image != "")
-            {
-                if (addIn == "Intro")
-                {
-                    var list = db.ProductImages.Where(c => c.ProductCode == itemCode 
-                        && c.Component == component && c.ImageAddIn == addIn).ToList();
-                    if (list != null && list.Count > 0)
-                    {
-                        db.ProductImages.Remove(list[0]);
-                        db.SaveChanges();
-                    }
-                }
-
-                Models.ProductImage pi = new ProductImage();
-                pi.Image = image;
-                pi.ImageAddIn = addIn;
-                pi.ProductCode = itemCode;
-                pi.Component = component;
-                pi.ImageLink = imageLink;
-                db.ProductImages.Add(pi);
-                db.SaveChanges();
-            }
-        }
-
         // GET: /Product/Edit/5
         public ActionResult Edit(long? id)
         {
@@ -170,7 +113,7 @@ namespace MVCProject.Controllers
             ViewBag.TaxList = Common.Commons.GetTaxList(db);
             ViewBag.WarrantyList = Common.Commons.GetWarrantyList(db);
             ViewData["UseCatCode"] = useCatCode;
-            ViewData["CatCode"] = db.Catalogs.Select(d=>d).ToList();
+            ViewData["CatCode"] = db.Catalogs.Select(d => d).ToList();
             return View(product);
         }
 
@@ -179,7 +122,7 @@ namespace MVCProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="TaxID,ID,ItemCode,Barcode,CatID,SKU,SupplierID,ImageLink,Adwords,Show,DateCreate,Color,Dimension,Unit,Warranty,IsDel,IsState,UserID,ProductName")] Product product)
+        public ActionResult Edit([Bind(Include = "TaxID,ID,ItemCode,Barcode,CatID,SKU,SupplierID,ImageLink,Adwords,Show,DateCreate,Color,Dimension,Unit,Warranty,IsDel,IsState,UserID,ProductName")] Product product)
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
@@ -225,6 +168,17 @@ namespace MVCProject.Controllers
             return RedirectToAction("Index");
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        } 
+        #endregion
+
+        #region Functions
         private string Upload()
         {
             try
@@ -259,13 +213,71 @@ namespace MVCProject.Controllers
             catch { return null; }
         }
 
-        protected override void Dispose(bool disposing)
+
+        private void SaveImage(string image, string addIn, string itemCode, string component, string imageLink)
         {
-            if (disposing)
+            if (image != "")
             {
-                db.Dispose();
+                if (addIn == "Intro")
+                {
+                    var list = db.ProductImages.Where(c => c.ProductCode == itemCode
+                        && c.Component == component && c.ImageAddIn == addIn).ToList();
+                    if (list != null && list.Count > 0)
+                    {
+                        db.ProductImages.Remove(list[0]);
+                        db.SaveChanges();
+                    }
+                }
+
+                Models.ProductImage pi = new ProductImage();
+                pi.Image = image;
+                pi.ImageAddIn = addIn;
+                pi.ProductCode = itemCode;
+                pi.Component = component;
+                pi.ImageLink = imageLink;
+                db.ProductImages.Add(pi);
+                db.SaveChanges();
             }
-            base.Dispose(disposing);
         }
+
+        IEnumerable<Models.Product> GetList()
+        {
+            string Cart = "", Page = "1", cid = "", name = "";
+            if (Request.QueryString["CatID"] != null) cid = Request.QueryString["CatID"];
+            if (Request.QueryString["Name"] != null) name = Request.QueryString["Name"];
+            if (Request.QueryString["Cart"] != null) Cart = Request.QueryString["Cart"];
+            if (Request.QueryString["page"] != null) Page = Request.QueryString["page"];
+
+            if (Cart != "" && (Session["Cart"] == null || Session["Cart"].ToString() != Cart))
+                Session["Cart"] = Cart;
+            if (Cart == "" && Session["Cart"] != null && Session["Cart"].ToString() != "")
+                Cart = Session["Cart"].ToString();
+
+            ViewData["Cart"] = Cart;
+            ViewData["Page"] = Page;
+            ViewData["CartCount"] = Cart != "" ? Cart.Split(',').Length.ToString() : "0";
+
+            long lcid = 0;
+            try
+            {
+                cid = cid == "" ? "0" : cid;
+                lcid = long.Parse(cid);
+            }
+            catch { lcid = 0; cid = "0"; }
+
+            ViewData["ImageList"] = db.ProductImages.Where(c => c.Component == "Product").ToList();
+            ViewData["CatList"] = db.Catalogs.Select(d => d).ToList();
+
+            if (lcid > 0 && name != null && name != "")
+                return db.Products.Where(c => c.CatID == lcid
+                    && c.ProductName.Contains(name));
+            else if (lcid > 0)
+                return db.Products.Where(c => c.CatID == lcid).ToList();
+            else if (name != null && name != "")
+                return db.Products.Where(c => c.ProductName.Contains(name)).ToList();
+            else
+                return db.Products.ToList();
+        } 
+        #endregion
     }
 }

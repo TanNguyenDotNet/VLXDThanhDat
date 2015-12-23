@@ -22,14 +22,22 @@ namespace MVCProject.Controllers
             return View(GenCart());
         }
 
+        [HttpPost]
+        public ActionResult Index([Bind(Include = "ID,IDProduct,Price,Amount,ReturnGood,DateOfOrder,Tax,Total,Description")] OrdersDetail ordersdetail)
+        {
+            return View(GenCart());
+        }
+
         private IEnumerable<Models.OrdersDetail> GenCart()
         {
+            if (Session["Cart"] == null) return null;
             string[] parts = Session["Cart"].ToString().Split(',');
             string[,] cd = new string[parts.Length, 5];
             List<Models.OrdersDetail> listOd = new List<OrdersDetail>();
 
             var li = _db.Products.Where(c => parts.Contains(c.ItemCode)).ToList();
             int index = 0;
+            double Total = 0;
             foreach (var i in li)
             {
                 var price = _db.ProductPrices.Single(c => c.ProductID == i.ID);
@@ -38,8 +46,10 @@ namespace MVCProject.Controllers
                 od.IDProduct = i.ID;
                 od.Price = price.Price;
                 od.Amount = 1;
-                od.Tax = (long)_db.Taxes.Single(c => c.ID == i.TaxID).TaxRate;
+                od.Tax = _db.Taxes.Single(c => c.ID == i.TaxID).TaxRate;
                 od.RequestByUser = false;
+                double thue = (double)od.Price * (double)(od.Tax / 100);
+                Total += od.Total = ((double)price.Price + thue);
                 listOd.Add(od);
 
                 cd[index, 0] = od.IDProduct.ToString();
@@ -49,6 +59,7 @@ namespace MVCProject.Controllers
                 index++;
             }
 
+            ViewData["Total"] = Total.ToString("#,###.00");
             return listOd;
         }
 
