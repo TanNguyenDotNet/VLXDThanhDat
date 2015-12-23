@@ -13,16 +13,42 @@ namespace MVCProject.Controllers
     public class OrderDetailController : Controller
     {
         private retailEntities db = new retailEntities();
+        private aspnetEntities _db = new aspnetEntities();
 
         // GET: /OrderDetail/
         public ActionResult Index()
         {
-            if (Session["CartDetail"] == null)
+            return View(GenCart());
+        }
+
+        private IEnumerable<Models.OrdersDetail> GenCart()
+        {
+            string[] parts = Session["Cart"].ToString().Split(',');
+            string[,] cd = new string[parts.Length, 5];
+            List<Models.OrdersDetail> listOd = new List<OrdersDetail>();
+
+            var li = _db.Products.Where(c => parts.Contains(c.ItemCode)).ToList();
+            int index = 0;
+            foreach (var i in li)
             {
-                string[] parts = Session["Cart"].ToString().Split(',');
-                string[,] cd = new string[parts.Length, 5];
+                var price = _db.ProductPrices.Single(c => c.ProductID == i.ID);
+
+                Models.OrdersDetail od = new OrdersDetail();
+                od.IDProduct = i.ID;
+                od.Price = price.Price;
+                od.Amount = 1;
+                od.Tax = (long)_db.Taxes.Single(c => c.ID == i.TaxID).TaxRate;
+                od.RequestByUser = false;
+                listOd.Add(od);
+
+                cd[index, 0] = od.IDProduct.ToString();
+                cd[index, 1] = od.Price.ToString("#,###.00");
+                cd[index, 2] = od.Amount.ToString();
+                cd[index, 3] = od.Tax.ToString();
+                index++;
             }
-            return View(db.OrdersDetails.ToList());
+
+            return listOd;
         }
 
         // GET: /OrderDetail/Details/5

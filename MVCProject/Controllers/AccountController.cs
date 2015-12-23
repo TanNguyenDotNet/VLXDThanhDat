@@ -88,7 +88,9 @@ namespace MVCProject.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    string en = Security.EncryptString(model.UserName + "~" + 
+                    string enu = Security.EncryptString("User:" + model.UserName + "~" + 
+                        model.UserType, false, EncryptType.TripleDES);
+                    string en = Security.EncryptString(model.UserName + "~" +
                         model.UserType, false, EncryptType.TripleDES);
                     Models.AppNetUserType ut = new AppNetUserType {
                         Username = en,

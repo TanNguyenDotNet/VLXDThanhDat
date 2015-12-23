@@ -215,7 +215,7 @@
           <Property Name="Value" Type="tinyint" />
           <Property Name="ID" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
-        <Association Name="FK__AspNetUse__RoleI__40F9A68C">
+        <Association Name="FK__AspNetUse__RoleI__1BC821DD">
           <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -229,7 +229,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AspNetUse__User___3F115E1A">
+        <Association Name="FK__AspNetUse__User___19DFD96B">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -243,7 +243,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AspNetUse__UserI__40058253">
+        <Association Name="FK__AspNetUse__UserI__1AD3FDA4">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -257,7 +257,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AspNetUse__UserI__41EDCAC5">
+        <Association Name="FK__AspNetUse__UserI__1CBC4616">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -291,19 +291,19 @@
           <EntitySet Name="Supplier" EntityType="Self.Supplier" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tax" EntityType="Self.Tax" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Warranty" EntityType="Self.Warranty" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__AspNetUse__RoleI__40F9A68C" Association="Self.FK__AspNetUse__RoleI__40F9A68C">
+          <AssociationSet Name="FK__AspNetUse__RoleI__1BC821DD" Association="Self.FK__AspNetUse__RoleI__1BC821DD">
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
-          <AssociationSet Name="FK__AspNetUse__User___3F115E1A" Association="Self.FK__AspNetUse__User___3F115E1A">
+          <AssociationSet Name="FK__AspNetUse__User___19DFD96B" Association="Self.FK__AspNetUse__User___19DFD96B">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
           </AssociationSet>
-          <AssociationSet Name="FK__AspNetUse__UserI__40058253" Association="Self.FK__AspNetUse__UserI__40058253">
+          <AssociationSet Name="FK__AspNetUse__UserI__1AD3FDA4" Association="Self.FK__AspNetUse__UserI__1AD3FDA4">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
           </AssociationSet>
-          <AssociationSet Name="FK__AspNetUse__UserI__41EDCAC5" Association="Self.FK__AspNetUse__UserI__41EDCAC5">
+          <AssociationSet Name="FK__AspNetUse__UserI__1CBC4616" Association="Self.FK__AspNetUse__UserI__1CBC4616">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
