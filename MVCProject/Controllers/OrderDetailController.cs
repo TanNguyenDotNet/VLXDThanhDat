@@ -15,6 +15,7 @@ namespace MVCProject.Controllers
         private retailEntities db = new retailEntities();
         private aspnetEntities _db = new aspnetEntities();
 
+
         // GET: /OrderDetail/
         public ActionResult Index()
         {
