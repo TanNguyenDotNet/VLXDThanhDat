@@ -17,9 +17,9 @@ namespace MVCProject.Models
     {
         public long ID { get; set; }
         [Display(Name = "Sản phẩm")]
-        public double IDProduct { get; set; }
+        public long IDProduct { get; set; }
         [Display(Name = "Giá")]
-        public decimal Price { get; set; }
+        public double Price { get; set; }
         [Display(Name = "Sô lượng")]
         public int Amount { get; set; }
         [Display(Name = "Hàng trả")]
@@ -27,7 +27,7 @@ namespace MVCProject.Models
         [Display(Name = "Ngày lập")]
         public Nullable<System.DateTime> DateOfOrder { get; set; }
         [Display(Name = "Thuế suất")]
-        public Nullable<double> Tax { get; set; }
+        public float Tax { get; set; }
         [Display(Name = "Tổng cộng")]
         public double Total { get; set; }
         [Display(Name = "Mô tả")]

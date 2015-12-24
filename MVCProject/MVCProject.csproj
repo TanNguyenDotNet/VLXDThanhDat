@@ -276,8 +276,8 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\dbo.sql" />
-    <Content Include="App_Data\ProductImage.sql" />
+    <Content Include="App_Data\db_231215.sql" />
+    <Content Include="App_Data\retail.sql" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\jquery.datetimepicker.css" />
@@ -286,6 +286,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\Control\add-image.png" />
+    <Content Include="Images\Control\diff-removed.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <EntityDeploy Include="Models\aspnetEntities.edmx">
@@ -305,7 +306,6 @@
       <DependentUpon>aspnetEntities.edmx</DependentUpon>
       <LastGenOutput>aspnetEntities.cs</LastGenOutput>
     </Content>
-    <Content Include="App_Data\aspnet1.bak" />
     <EntityDeploy Include="Models\retailEntities.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>retailEntities.Designer.cs</LastGenOutput>

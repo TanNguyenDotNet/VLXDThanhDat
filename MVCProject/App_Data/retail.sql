@@ -1,17 +1,17 @@
 /*
 Navicat SQL Server Data Transfer
 
-Source Server         : DESKTOP-C77JCIQ,1433
-Source Server Version : 110000
-Source Host           : DESKTOP-C77JCIQ:1433
+Source Server         : TS24-THEANH
+Source Server Version : 105000
+Source Host           : TS24-THEANH:1433
 Source Database       : 2016_RetailDB
 Source Schema         : dbo
 
 Target Server Type    : SQL Server
-Target Server Version : 110000
+Target Server Version : 105000
 File Encoding         : 65001
 
-Date: 2015-12-23 00:44:06
+Date: 2015-12-24 16:44:00
 */
 
 
@@ -23,14 +23,17 @@ GO
 CREATE TABLE [dbo].[Orders] (
 [ID] int NOT NULL ,
 [IDAccount] nvarchar(50) NOT NULL ,
-[DateCreate] datetime NULL ,
-[DateShip] datetime NULL ,
+[DateCreate] varchar(20) NULL ,
+[DateShip] varchar(20) NULL ,
 [TotalWithoutTax] bigint NULL ,
 [Tax] bigint NULL ,
 [Total] bigint NULL ,
 [Discount] bigint NULL ,
 [DeliveryMan] nvarchar(50) NULL ,
-[Description] nvarchar(256) NULL 
+[Description] nvarchar(256) NULL ,
+[State] varchar(2) NOT NULL DEFAULT ('0') ,
+[UserID] varchar(50) NULL ,
+[DateProcessed] varchar(20) NULL 
 )
 
 

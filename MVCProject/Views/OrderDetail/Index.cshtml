@@ -7,7 +7,7 @@
 
 <h2>Chi tiết đơn hàng</h2>
 
-@using (Html.BeginForm("Index", "OrderDetail"))
+@using (Html.BeginForm("Index", "OrderDetail", FormMethod.Get, new { id = "cartDetail" }))
 {
     <table class="table">
         <tr>
@@ -29,6 +29,7 @@
             <th width="15%">
                 @Html.DisplayNameFor(model => model.Total)
             </th>
+            <th></th>
         </tr>
     @if (Model != null && Model.Count() > 0)
     {
@@ -36,14 +37,17 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Description)
+                    @{
+            var p = ((IEnumerable<MVCProject.Models.Product>)ViewData["ProductList"]).Single(c => c.ID == item.IDProduct);
+            @Html.Raw(p.ProductName);
+                    }
                 </td>
                 <td align="right">
                     @item.Price.ToString("#,###.00")
                 </td>
-                <td align="center">
-                    <input type="text" value="@item.Amount" name="quan_@item.IDProduct" id="quan_@item.IDProduct"
-                            class="quantity-box" />
+                <td align="center"> 
+                    <input type="text" value="@item.Amount" name="quan_@item.IDProduct" id="quan_@item.IDProduct" maxlength="4"
+                            class="quantity-box" onended="alert('Ok')" />
                 </td>
                 <td>
                     @DateTime.Now.ToString("dd/MM/yyyy")
@@ -54,15 +58,26 @@
                 <td align="right">
                     @item.Total.ToString("#,###.00")
                 </td>
+                <td align="center">
+                    <a href="#" onclick="RemoveFromCart('@item.IDProduct');">
+                        <img class='add-button-disable' src='../Images/Control/diff-removed.png' alt='Bỏ chọn @item.ProductCode' />
+                    </a>
+                </td>
             </tr>
         }
 
         <tr>
-            <td><input type="submit" value="Lưu Lại" class="btn btn-default" /></td>
+            <td><input type="submit" value="Cập nhật đơn hàng" class="btn btn-default" /></td>
             <td colspan="4" align="right">Tổng cộng: </td>
             <td align="right">@ViewData["Total"]</td>
+            <td></td>
         </tr>
     }
 </table>
+<script>
+    function RemoveFromCart(id) {
+        window.location = "../OrderDetail/Index/" + id;
+    }
+</script>
 
 }
