@@ -50,8 +50,9 @@ namespace MVCProject.Controllers
                 if (user != null)
                 {
                     await SignInAsync(user, model.RememberMe);
-                    string en = Security.EncryptString(model.UserName + "~BackendUser", false, EncryptType.TripleDES);
-                    var l = (new Models.aspnetEntities()).AppNetUserTypes.Where(d => d.UserType == en);
+                    string en = Security.EncryptString("User:" + model.UserName + "~BackendUser", false, EncryptType.TripleDES);
+                    var db = new Models.aspnetEntities();
+                    var l = db.AppNetUserTypes.Where(d => d.Username == en).ToList();
                     returnUrl = "~/Product/Index";
                     if (l == null || (l.ToList()).Count == 0)
                         returnUrl = "~/Product/Home";
@@ -93,8 +94,17 @@ namespace MVCProject.Controllers
                     string en = Security.EncryptString(model.UserName + "~" +
                         model.UserType, false, EncryptType.TripleDES);
                     Models.AppNetUserType ut = new AppNetUserType {
-                        Username = en,
-                        UserType = en
+                        Username = enu,
+                        UserType = en,
+                        Email = "",
+                        Address = "",
+                        Phone="",
+                        DateCreate = DateTime.Now.ToString("yyyyMMdd"),
+                        Expire = DateTime.Now.AddDays(365).ToString("yyyyMMdd"),
+                        LocationID = 0,
+                        State = "0",
+                        TaxID = "",
+                        DisplayName = ""
                     };
                     Models.aspnetEntities db = new Models.aspnetEntities();
                     db.AppNetUserTypes.Add(ut);

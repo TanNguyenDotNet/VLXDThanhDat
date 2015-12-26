@@ -1,0 +1,94 @@
+﻿@model MVCProject.Models.AppNetUserType
+
+@{
+    ViewBag.Title = "Thông tin đại lý";
+    Layout = "~/Views/Shared/_Layout.Frontend.cshtml";
+}
+
+<h2>Thông tin đại lý</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <h4>Địa chỉ nhận hàng</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.Username)
+        @Html.HiddenFor(model => model.UserType)
+        @Html.HiddenFor(model => model.DateCreate)
+        @Html.HiddenFor(model => model.Expire)
+        <div class="form-group">
+            @Html.LabelFor(model => model.Username, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.Label(ViewData["UserName"].ToString(), new { @class = "control-label col-md-2" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.DisplayName, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.DisplayName, new { @class = "form-control", @maxlength = "20" })
+                @Html.ValidationMessageFor(model => model.DisplayName)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.TaxID, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.TaxID, new { @class = "form-control", @maxlength = "20" })
+                @Html.ValidationMessageFor(model => model.TaxID)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Address, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Address, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Address)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.District, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.District, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.District)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.LocationID, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.LocationID, (IEnumerable<SelectListItem>)ViewBag.LocationList,
+                    "Chọn tỉnh/thành phố", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.LocationID)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Email)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Fax, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Fax, new { @class = "form-control", @maxlength = "20" })
+                @Html.ValidationMessageFor(model => model.Fax)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Phone, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Phone, new { @class = "form-control", @maxlength = "20" })
+                @Html.ValidationMessageFor(model => model.Phone)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Xác nhận thông tin" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

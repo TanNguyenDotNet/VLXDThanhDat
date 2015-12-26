@@ -11,7 +11,7 @@ Target Server Type    : SQL Server
 Target Server Version : 110000
 File Encoding         : 65001
 
-Date: 2015-12-23 00:44:39
+Date: 2015-12-26 16:02:29
 */
 
 
@@ -43,11 +43,18 @@ DROP TABLE [dbo].[AppNetUserType]
 GO
 CREATE TABLE [dbo].[AppNetUserType] (
 [Username] varchar(150) NOT NULL ,
-[Email] varchar(150) NULL ,
+[Email] varchar(150) NOT NULL ,
 [Fax] varchar(20) NULL ,
-[Address] nvarchar(255) NULL ,
-[Phone] varchar(20) NULL ,
-[UserType] varchar(255) NOT NULL 
+[Address] nvarchar(255) NOT NULL ,
+[Phone] varchar(20) NOT NULL ,
+[UserType] varchar(255) NOT NULL ,
+[DateCreate] varchar(10) NOT NULL ,
+[Expire] varchar(12) NOT NULL ,
+[LocationID] int NOT NULL ,
+[District] nvarchar(255) NULL ,
+[State] varchar(2) NOT NULL ,
+[TaxID] varchar(15) NULL ,
+[DisplayName] nvarchar(MAX) NOT NULL 
 )
 
 
@@ -56,9 +63,9 @@ GO
 -- ----------------------------
 -- Records of AppNetUserType
 -- ----------------------------
-INSERT INTO [dbo].[AppNetUserType] ([Username], [Email], [Fax], [Address], [Phone], [UserType]) VALUES (N'/Xb+vEEU+fdzx6arqSFq+i1Rj5AADGGy', null, null, null, null, N'/Xb+vEEU+fdzx6arqSFq+i1Rj5AADGGy');
+INSERT INTO [dbo].[AppNetUserType] ([Username], [Email], [Fax], [Address], [Phone], [UserType], [DateCreate], [Expire], [LocationID], [District], [State], [TaxID], [DisplayName]) VALUES (N'C9Dt+UfFetHUV/+VcpE+Sm+6iXyjCDnU', N'', null, N'', N'', N'/Xb+vEEU+fdzx6arqSFq+i1Rj5AADGGy', N'20151226', N'20161225', N'0', null, N'0', N'', N'');
 GO
-INSERT INTO [dbo].[AppNetUserType] ([Username], [Email], [Fax], [Address], [Phone], [UserType]) VALUES (N'Z0poAgWsndt4gHvrbDO9ulHK6JLeYiAk', null, null, null, null, N'Z0poAgWsndt4gHvrbDO9ulHK6JLeYiAk');
+INSERT INTO [dbo].[AppNetUserType] ([Username], [Email], [Fax], [Address], [Phone], [UserType], [DateCreate], [Expire], [LocationID], [District], [State], [TaxID], [DisplayName]) VALUES (N'OFjNpry0Ot2xMaMLR8OJuqH9W1rrsy4eLVGPkAAMYbI=', N'accounting@safecert.com.vn', N'22222222222222222222', N'198A Mã Lò, Bình Trị Đông A', N'22222222222222222222', N'Z0poAgWsndt4gHvrbDO9ulHK6JLeYiAk', N'20151226', N'201512260227', N'113', N'Bình Tân', N'1', N'0389311234', N'Anh Phan');
 GO
 
 -- ----------------------------
@@ -155,9 +162,9 @@ GO
 -- ----------------------------
 -- Records of AspNetUsers
 -- ----------------------------
-INSERT INTO [dbo].[AspNetUsers] ([Id], [UserName], [PasswordHash], [SecurityStamp], [Discriminator]) VALUES (N'715dd99f-cabc-4bd9-952e-8e8b6b8a8798', N'anhphan', N'AHfUHlA+lciEbXoiwBKvSuO7WHRds1ExxmRuBuU1ikYAUt+wfSiRwRgCBPvI+zfYEw==', N'03cbd85a-e76d-4e1e-9e09-4d4479181ef3', N'ApplicationUser');
+INSERT INTO [dbo].[AspNetUsers] ([Id], [UserName], [PasswordHash], [SecurityStamp], [Discriminator]) VALUES (N'd23377c4-1b3a-40a6-b789-2fa4edadad3d', N'admin', N'AJig9eSOUqGxE1myDzsuguXRzLK8VoGzc/SWl6gppOGlLcNoav8xFe4fIqJZ8ZnxAQ==', N'0f284dc1-e56b-4747-aaca-bb416b28ec36', N'ApplicationUser');
 GO
-INSERT INTO [dbo].[AspNetUsers] ([Id], [UserName], [PasswordHash], [SecurityStamp], [Discriminator]) VALUES (N'bc20f110-7217-4c18-ac83-b10509901063', N'admin', N'AAfq2o84+vt7ZbI164KGkLYS9uaG28U8nF7cn8Ij7a0U5k83MCA+7+RR0HYRGzV+0A==', N'78f9ec09-62b5-4cb2-8e92-3e8dece713c3', N'ApplicationUser');
+INSERT INTO [dbo].[AspNetUsers] ([Id], [UserName], [PasswordHash], [SecurityStamp], [Discriminator]) VALUES (N'dcdc6c90-f9c7-486e-a84f-2b5879a0a7b9', N'anhphan', N'ANTs9vFUelfy7fP/Vc9S2emKp7QJ0Cz+ijLDI5Qbofe92c22iq6yhp4J9dPHVYM5tw==', N'6589725c-6db9-4c25-9c69-2ff6c4296d70', N'ApplicationUser');
 GO
 
 -- ----------------------------
@@ -267,7 +274,7 @@ INSERT INTO [dbo].[Location] ([ID], [LocationName], [LocationCode], [Order]) VAL
 GO
 INSERT INTO [dbo].[Location] ([ID], [LocationName], [LocationCode], [Order]) VALUES (N'89', N'Tỉnh Thanh Hoá', N'38', N'89');
 GO
-INSERT INTO [dbo].[Location] ([ID], [LocationName], [LocationCode], [Order]) VALUES (N'90', N'Tỉnh Nghệ An', N'40', N'90');
+INSERT INTO [dbo].[Location] ([ID], [LocationName], [LocationCode], [Order]) VALUES (N'90', N'Tỉnh Nghệ An', N'40', N'9');
 GO
 INSERT INTO [dbo].[Location] ([ID], [LocationName], [LocationCode], [Order]) VALUES (N'91', N'Tỉnh Hà Tĩnh', N'42', N'91');
 GO
@@ -287,11 +294,11 @@ INSERT INTO [dbo].[Location] ([ID], [LocationName], [LocationCode], [Order]) VAL
 GO
 INSERT INTO [dbo].[Location] ([ID], [LocationName], [LocationCode], [Order]) VALUES (N'99', N'Tỉnh Phú Yên', N'54', N'99');
 GO
-INSERT INTO [dbo].[Location] ([ID], [LocationName], [LocationCode], [Order]) VALUES (N'100', N'Tỉnh Khánh Hoà', N'56', N'100');
+INSERT INTO [dbo].[Location] ([ID], [LocationName], [LocationCode], [Order]) VALUES (N'100', N'Tỉnh Khánh Hoà', N'56', N'11');
 GO
 INSERT INTO [dbo].[Location] ([ID], [LocationName], [LocationCode], [Order]) VALUES (N'101', N'Tỉnh Ninh Thuận', N'58', N'101');
 GO
-INSERT INTO [dbo].[Location] ([ID], [LocationName], [LocationCode], [Order]) VALUES (N'102', N'Tỉnh Bình Thuận', N'60', N'102');
+INSERT INTO [dbo].[Location] ([ID], [LocationName], [LocationCode], [Order]) VALUES (N'102', N'Tỉnh Bình Thuận', N'60', N'17');
 GO
 INSERT INTO [dbo].[Location] ([ID], [LocationName], [LocationCode], [Order]) VALUES (N'103', N'Tỉnh Kon Tum', N'62', N'103');
 GO
@@ -301,13 +308,13 @@ INSERT INTO [dbo].[Location] ([ID], [LocationName], [LocationCode], [Order]) VAL
 GO
 INSERT INTO [dbo].[Location] ([ID], [LocationName], [LocationCode], [Order]) VALUES (N'106', N'Tỉnh Đắk Nông', N'67', N'106');
 GO
-INSERT INTO [dbo].[Location] ([ID], [LocationName], [LocationCode], [Order]) VALUES (N'107', N'Tỉnh Lâm Đồng', N'68', N'107');
+INSERT INTO [dbo].[Location] ([ID], [LocationName], [LocationCode], [Order]) VALUES (N'107', N'Tỉnh Lâm Đồng', N'68', N'10');
 GO
-INSERT INTO [dbo].[Location] ([ID], [LocationName], [LocationCode], [Order]) VALUES (N'108', N'Tỉnh Bình Phước', N'70', N'108');
+INSERT INTO [dbo].[Location] ([ID], [LocationName], [LocationCode], [Order]) VALUES (N'108', N'Tỉnh Bình Phước', N'70', N'12');
 GO
 INSERT INTO [dbo].[Location] ([ID], [LocationName], [LocationCode], [Order]) VALUES (N'109', N'Tỉnh Tây Ninh', N'72', N'109');
 GO
-INSERT INTO [dbo].[Location] ([ID], [LocationName], [LocationCode], [Order]) VALUES (N'110', N'Tỉnh Bình Dương', N'74', N'110');
+INSERT INTO [dbo].[Location] ([ID], [LocationName], [LocationCode], [Order]) VALUES (N'110', N'Tỉnh Bình Dương', N'74', N'16');
 GO
 INSERT INTO [dbo].[Location] ([ID], [LocationName], [LocationCode], [Order]) VALUES (N'111', N'Tỉnh Đồng Nai', N'75', N'6');
 GO
@@ -315,15 +322,15 @@ INSERT INTO [dbo].[Location] ([ID], [LocationName], [LocationCode], [Order]) VAL
 GO
 INSERT INTO [dbo].[Location] ([ID], [LocationName], [LocationCode], [Order]) VALUES (N'113', N'Thành phố Hồ Chí Minh', N'79', N'2');
 GO
-INSERT INTO [dbo].[Location] ([ID], [LocationName], [LocationCode], [Order]) VALUES (N'114', N'Tỉnh Long An', N'80', N'114');
+INSERT INTO [dbo].[Location] ([ID], [LocationName], [LocationCode], [Order]) VALUES (N'114', N'Tỉnh Long An', N'80', N'13');
 GO
-INSERT INTO [dbo].[Location] ([ID], [LocationName], [LocationCode], [Order]) VALUES (N'115', N'Tỉnh Tiền Giang', N'82', N'115');
+INSERT INTO [dbo].[Location] ([ID], [LocationName], [LocationCode], [Order]) VALUES (N'115', N'Tỉnh Tiền Giang', N'82', N'15');
 GO
 INSERT INTO [dbo].[Location] ([ID], [LocationName], [LocationCode], [Order]) VALUES (N'116', N'Tỉnh Bến Tre', N'83', N'116');
 GO
 INSERT INTO [dbo].[Location] ([ID], [LocationName], [LocationCode], [Order]) VALUES (N'117', N'Tỉnh Trà Vinh', N'84', N'117');
 GO
-INSERT INTO [dbo].[Location] ([ID], [LocationName], [LocationCode], [Order]) VALUES (N'118', N'Tỉnh Vĩnh Long', N'86', N'118');
+INSERT INTO [dbo].[Location] ([ID], [LocationName], [LocationCode], [Order]) VALUES (N'118', N'Tỉnh Vĩnh Long', N'86', N'14');
 GO
 INSERT INTO [dbo].[Location] ([ID], [LocationName], [LocationCode], [Order]) VALUES (N'119', N'Tỉnh Đồng Tháp', N'87', N'119');
 GO
@@ -409,7 +416,7 @@ CREATE TABLE [dbo].[ProductCode] (
 
 
 GO
-DBCC CHECKIDENT(N'[dbo].[ProductCode]', RESEED, 16)
+DBCC CHECKIDENT(N'[dbo].[ProductCode]', RESEED, 17)
 GO
 
 -- ----------------------------
@@ -423,13 +430,15 @@ INSERT INTO [dbo].[ProductCode] ([Group1], [Group2], [CatID], [ScrollNumber], [I
 GO
 INSERT INTO [dbo].[ProductCode] ([Group1], [Group2], [CatID], [ScrollNumber], [ID], [Active], [CatCode]) VALUES (N'SP2', N'HH', N'0', N'11', N'12', N'0', N'SP');
 GO
-INSERT INTO [dbo].[ProductCode] ([Group1], [Group2], [CatID], [ScrollNumber], [ID], [Active], [CatCode]) VALUES (N'SP', N'2015', N'1', N'105', N'13', N'1', N'SP');
+INSERT INTO [dbo].[ProductCode] ([Group1], [Group2], [CatID], [ScrollNumber], [ID], [Active], [CatCode]) VALUES (N'SP', N'2015', N'1', N'107', N'13', N'1', N'SP');
 GO
 INSERT INTO [dbo].[ProductCode] ([Group1], [Group2], [CatID], [ScrollNumber], [ID], [Active], [CatCode]) VALUES (N'KM', N'2015', N'0', N'0', N'14', N'0', N'KM');
 GO
-INSERT INTO [dbo].[ProductCode] ([Group1], [Group2], [CatID], [ScrollNumber], [ID], [Active], [CatCode]) VALUES (N'KM1', N'2015', N'0', N'8', N'15', N'1', N'KM');
+INSERT INTO [dbo].[ProductCode] ([Group1], [Group2], [CatID], [ScrollNumber], [ID], [Active], [CatCode]) VALUES (N'KM1', N'2015', N'0', N'9', N'15', N'1', N'KM');
 GO
 INSERT INTO [dbo].[ProductCode] ([Group1], [Group2], [CatID], [ScrollNumber], [ID], [Active], [CatCode]) VALUES (N'SP4', N'2015', N'1', N'58', N'16', N'0', N'SP');
+GO
+INSERT INTO [dbo].[ProductCode] ([Group1], [Group2], [CatID], [ScrollNumber], [ID], [Active], [CatCode]) VALUES (N'HD', N'2016', N'0', N'14', N'17', N'1', N'OC');
 GO
 SET IDENTITY_INSERT [dbo].[ProductCode] OFF
 GO
@@ -592,8 +601,6 @@ GO
 INSERT INTO [dbo].[PromotionType] ([ProTypeName], [AddType], [ExRate], [ID]) VALUES (N'Trừ tiền mặt giá bán', N'-', N'.00', N'2');
 GO
 INSERT INTO [dbo].[PromotionType] ([ProTypeName], [AddType], [ExRate], [ID]) VALUES (N'Cộng thêm 1 sản phẩm', N'+P', N'1.00', N'3');
-GO
-INSERT INTO [dbo].[PromotionType] ([ProTypeName], [AddType], [ExRate], [ID]) VALUES (N'Cộng thêm 2 sản phẩm', N'+P', N'2.00', N'4');
 GO
 SET IDENTITY_INSERT [dbo].[PromotionType] OFF
 GO

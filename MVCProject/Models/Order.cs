@@ -16,13 +16,17 @@ namespace MVCProject.Models
     {
         public int ID { get; set; }
         public string IDAccount { get; set; }
-        public Nullable<System.DateTime> DateCreate { get; set; }
-        public Nullable<System.DateTime> DateShip { get; set; }
-        public Nullable<long> TotalWithoutTax { get; set; }
-        public Nullable<long> Tax { get; set; }
-        public Nullable<long> Total { get; set; }
-        public Nullable<long> Discount { get; set; }
+        public string DateCreate { get; set; }
+        public string DateShip { get; set; }
+        public decimal TotalWithoutTax { get; set; }
+        public string Tax { get; set; }
+        public decimal Total { get; set; }
+        public decimal Discount { get; set; }
         public string DeliveryMan { get; set; }
         public string Description { get; set; }
+        public string State { get; set; }
+        public string DateProcessed { get; set; }
+        public string TaxID { get; set; }
+        public string OrderCode { get; set; }
     }
 }

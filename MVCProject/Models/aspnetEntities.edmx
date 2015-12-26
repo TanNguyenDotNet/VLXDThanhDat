@@ -20,11 +20,18 @@
             <PropertyRef Name="Username" />
           </Key>
           <Property Name="Username" Type="varchar" MaxLength="150" Nullable="false" />
-          <Property Name="Email" Type="varchar" MaxLength="150" />
+          <Property Name="Email" Type="varchar" MaxLength="150" Nullable="false" />
           <Property Name="Fax" Type="varchar" MaxLength="20" />
-          <Property Name="Address" Type="nvarchar" MaxLength="255" />
-          <Property Name="Phone" Type="varchar" MaxLength="20" />
+          <Property Name="Address" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Phone" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="UserType" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="DateCreate" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Expire" Type="varchar" MaxLength="12" Nullable="false" />
+          <Property Name="LocationID" Type="int" Nullable="false" />
+          <Property Name="District" Type="nvarchar" MaxLength="255" />
+          <Property Name="State" Type="varchar" MaxLength="2" Nullable="false" />
+          <Property Name="TaxID" Type="varchar" MaxLength="15" />
+          <Property Name="DisplayName" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="AspNetRoles">
           <Key>
@@ -215,7 +222,7 @@
           <Property Name="Value" Type="tinyint" />
           <Property Name="ID" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
-        <Association Name="FK__AspNetUse__RoleI__1BC821DD">
+        <Association Name="FK__AspNetUse__RoleI__40F9A68C">
           <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -229,7 +236,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AspNetUse__User___19DFD96B">
+        <Association Name="FK__AspNetUse__User___3F115E1A">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -243,7 +250,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AspNetUse__UserI__1AD3FDA4">
+        <Association Name="FK__AspNetUse__UserI__40058253">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -257,7 +264,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AspNetUse__UserI__1CBC4616">
+        <Association Name="FK__AspNetUse__UserI__41EDCAC5">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -291,19 +298,19 @@
           <EntitySet Name="Supplier" EntityType="Self.Supplier" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tax" EntityType="Self.Tax" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Warranty" EntityType="Self.Warranty" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__AspNetUse__RoleI__1BC821DD" Association="Self.FK__AspNetUse__RoleI__1BC821DD">
+          <AssociationSet Name="FK__AspNetUse__RoleI__40F9A68C" Association="Self.FK__AspNetUse__RoleI__40F9A68C">
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
-          <AssociationSet Name="FK__AspNetUse__User___19DFD96B" Association="Self.FK__AspNetUse__User___19DFD96B">
+          <AssociationSet Name="FK__AspNetUse__User___3F115E1A" Association="Self.FK__AspNetUse__User___3F115E1A">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
           </AssociationSet>
-          <AssociationSet Name="FK__AspNetUse__UserI__1AD3FDA4" Association="Self.FK__AspNetUse__UserI__1AD3FDA4">
+          <AssociationSet Name="FK__AspNetUse__UserI__40058253" Association="Self.FK__AspNetUse__UserI__40058253">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
           </AssociationSet>
-          <AssociationSet Name="FK__AspNetUse__UserI__1CBC4616" Association="Self.FK__AspNetUse__UserI__1CBC4616">
+          <AssociationSet Name="FK__AspNetUse__UserI__41EDCAC5" Association="Self.FK__AspNetUse__UserI__41EDCAC5">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
@@ -558,11 +565,18 @@
             <PropertyRef Name="Username" />
           </Key>
           <Property Name="Username" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="Email" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Fax" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="UserType" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="DateCreate" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Expire" Type="String" MaxLength="12" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LocationID" Type="Int32" Nullable="false" />
+          <Property Name="District" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="2" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TaxID" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="DisplayName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="ProductImage">
           <Key>
@@ -784,6 +798,13 @@
           <EntitySetMapping Name="AppNetUserTypes">
             <EntityTypeMapping TypeName="Models.AppNetUserType">
               <MappingFragment StoreEntitySet="AppNetUserType">
+                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+                <ScalarProperty Name="TaxID" ColumnName="TaxID" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="District" ColumnName="District" />
+                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
+                <ScalarProperty Name="Expire" ColumnName="Expire" />
+                <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
                 <ScalarProperty Name="UserType" ColumnName="UserType" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
                 <ScalarProperty Name="Address" ColumnName="Address" />

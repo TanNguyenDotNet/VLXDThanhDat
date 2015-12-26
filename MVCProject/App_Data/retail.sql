@@ -1,19 +1,17 @@
 /*
 Navicat SQL Server Data Transfer
 
-Source Server         : TS24-THEANH
-Source Server Version : 105000
-Source Host           : TS24-THEANH:1433
+Source Server         : DESKTOP-C77JCIQ,1433
+Source Server Version : 110000
+Source Host           : DESKTOP-C77JCIQ:1433
 Source Database       : 2016_RetailDB
 Source Schema         : dbo
 
 Target Server Type    : SQL Server
-Target Server Version : 105000
+Target Server Version : 110000
 File Encoding         : 65001
 
-
-
-Date: 2015-12-24 16:44:00
+Date: 2015-12-26 16:02:02
 */
 
 
@@ -23,27 +21,44 @@ Date: 2015-12-24 16:44:00
 DROP TABLE [dbo].[Orders]
 GO
 CREATE TABLE [dbo].[Orders] (
-[ID] int NOT NULL ,
-[IDAccount] nvarchar(50) NOT NULL ,
-[DateCreate] varchar(20) NULL ,
+[IDAccount] varchar(50) NOT NULL ,
+[DateCreate] varchar(20) NOT NULL ,
 [DateShip] varchar(20) NULL ,
-[TotalWithoutTax] bigint NULL ,
-[Tax] bigint NULL ,
-[Total] bigint NULL ,
-[Discount] bigint NULL ,
+[TotalWithoutTax] decimal(14,2) NOT NULL ,
+[Tax] varchar(10) NULL ,
+[Total] decimal(14,2) NOT NULL ,
+[Discount] decimal(14,2) NOT NULL ,
 [DeliveryMan] nvarchar(50) NULL ,
 [Description] nvarchar(256) NULL ,
 [State] varchar(2) NOT NULL DEFAULT ('0') ,
-[UserID] varchar(50) NULL ,
-[DateProcessed] varchar(20) NULL 
+[DateProcessed] varchar(20) NULL ,
+[TaxID] varchar(15) NULL ,
+[OrderCode] varchar(50) NULL ,
+[ID] bigint NOT NULL IDENTITY(1,1) 
 )
 
 
+GO
+DBCC CHECKIDENT(N'[dbo].[Orders]', RESEED, 5)
 GO
 
 -- ----------------------------
 -- Records of Orders
 -- ----------------------------
+SET IDENTITY_INSERT [dbo].[Orders] ON
+GO
+INSERT INTO [dbo].[Orders] ([IDAccount], [DateCreate], [DateShip], [TotalWithoutTax], [Tax], [Total], [Discount], [DeliveryMan], [Description], [State], [DateProcessed], [TaxID], [OrderCode], [ID]) VALUES (N'dcdc6c90-f9c7-486e-a84f-2b5879a0a7b9', N'201512261259', N'', N'350000.00', N'10', N'385000.00', N'.00', N'', N'', N'1', N'', N'0', N'HD.2016.0000000005', N'1');
+GO
+INSERT INTO [dbo].[Orders] ([IDAccount], [DateCreate], [DateShip], [TotalWithoutTax], [Tax], [Total], [Discount], [DeliveryMan], [Description], [State], [DateProcessed], [TaxID], [OrderCode], [ID]) VALUES (N'dcdc6c90-f9c7-486e-a84f-2b5879a0a7b9', N'201512261350', N'', N'250000.00', N'10', N'275000.00', N'.00', N'', N'', N'1', N'', N'0', N'HD.2016.0000000010', N'2');
+GO
+INSERT INTO [dbo].[Orders] ([IDAccount], [DateCreate], [DateShip], [TotalWithoutTax], [Tax], [Total], [Discount], [DeliveryMan], [Description], [State], [DateProcessed], [TaxID], [OrderCode], [ID]) VALUES (N'dcdc6c90-f9c7-486e-a84f-2b5879a0a7b9', N'201512261516', N'', N'.00', N'0', N'.00', N'.00', N'', N'', N'1', N'', N'0', N'HD.2016.0000000011', N'3');
+GO
+INSERT INTO [dbo].[Orders] ([IDAccount], [DateCreate], [DateShip], [TotalWithoutTax], [Tax], [Total], [Discount], [DeliveryMan], [Description], [State], [DateProcessed], [TaxID], [OrderCode], [ID]) VALUES (N'dcdc6c90-f9c7-486e-a84f-2b5879a0a7b9', N'201512261522', N'', N'.00', N'0', N'.00', N'.00', N'', N'', N'1', N'', N'0', N'HD.2016.0000000013', N'4');
+GO
+INSERT INTO [dbo].[Orders] ([IDAccount], [DateCreate], [DateShip], [TotalWithoutTax], [Tax], [Total], [Discount], [DeliveryMan], [Description], [State], [DateProcessed], [TaxID], [OrderCode], [ID]) VALUES (N'dcdc6c90-f9c7-486e-a84f-2b5879a0a7b9', N'201512261523', N'', N'.00', N'0', N'.00', N'.00', N'', N'', N'1', N'', N'0', N'HD.2016.0000000014', N'5');
+GO
+SET IDENTITY_INSERT [dbo].[Orders] OFF
+GO
 
 -- ----------------------------
 -- Table structure for [dbo].[OrdersDetail]
@@ -57,20 +72,42 @@ CREATE TABLE [dbo].[OrdersDetail] (
 [Amount] int NOT NULL ,
 [ReturnGood] bit NOT NULL ,
 [DateOfOrder] datetime NULL ,
-[Tax] float(53) NULL ,
+[Tax] varchar(10) NULL ,
 [Total] decimal(14,2) NOT NULL ,
-[Description] nvarchar(MAX) NULL ,
+[Description] nvarchar(255) NOT NULL ,
 [ProductCode] varchar(50) NOT NULL ,
-[RequestByUser] bit NOT NULL 
+[RequestByUser] bit NOT NULL ,
+[OrderCode] varchar(50) NULL ,
+[Discount] decimal(14,2) NULL 
 )
 
 
+GO
+DBCC CHECKIDENT(N'[dbo].[OrdersDetail]', RESEED, 15)
 GO
 
 -- ----------------------------
 -- Records of OrdersDetail
 -- ----------------------------
 SET IDENTITY_INSERT [dbo].[OrdersDetail] ON
+GO
+INSERT INTO [dbo].[OrdersDetail] ([ID], [IDProduct], [Price], [Amount], [ReturnGood], [DateOfOrder], [Tax], [Total], [Description], [ProductCode], [RequestByUser], [OrderCode], [Discount]) VALUES (N'1', N'10004', N'50000.00', N'7', N'0', N'2015-12-26 12:58:33.617', N'10', N'385000.00', N'', N'ON.SP.2015.0000000026', N'0', N'HD.2016.0000000005', N'.00');
+GO
+INSERT INTO [dbo].[OrdersDetail] ([ID], [IDProduct], [Price], [Amount], [ReturnGood], [DateOfOrder], [Tax], [Total], [Description], [ProductCode], [RequestByUser], [OrderCode], [Discount]) VALUES (N'8', N'10005', N'120000.00', N'15', N'0', N'2015-12-26 13:47:02.413', N'10', N'1980000.00', N'', N'ON.SP.2015.0000000043', N'0', N'HD.2016.0000000009', N'.00');
+GO
+INSERT INTO [dbo].[OrdersDetail] ([ID], [IDProduct], [Price], [Amount], [ReturnGood], [DateOfOrder], [Tax], [Total], [Description], [ProductCode], [RequestByUser], [OrderCode], [Discount]) VALUES (N'9', N'0', N'.00', N'2', N'0', N'2015-12-26 13:47:02.457', N'0', N'.00', N'', N'', N'1', N'HD.2016.0000000009', null);
+GO
+INSERT INTO [dbo].[OrdersDetail] ([ID], [IDProduct], [Price], [Amount], [ReturnGood], [DateOfOrder], [Tax], [Total], [Description], [ProductCode], [RequestByUser], [OrderCode], [Discount]) VALUES (N'10', N'10004', N'50000.00', N'5', N'0', N'2015-12-26 13:50:46.467', N'10', N'275000.00', N'', N'ON.SP.2015.0000000026', N'0', N'HD.2016.0000000010', N'.00');
+GO
+INSERT INTO [dbo].[OrdersDetail] ([ID], [IDProduct], [Price], [Amount], [ReturnGood], [DateOfOrder], [Tax], [Total], [Description], [ProductCode], [RequestByUser], [OrderCode], [Discount]) VALUES (N'11', N'0', N'.00', N'8', N'0', N'2015-12-26 13:50:46.607', N'0', N'.00', N'', N'', N'1', N'HD.2016.0000000010', null);
+GO
+INSERT INTO [dbo].[OrdersDetail] ([ID], [IDProduct], [Price], [Amount], [ReturnGood], [DateOfOrder], [Tax], [Total], [Description], [ProductCode], [RequestByUser], [OrderCode], [Discount]) VALUES (N'12', N'0', N'.00', N'7', N'0', N'2015-12-26 15:16:05.947', N'0', N'.00', N'', N'', N'1', N'HD.2016.0000000011', null);
+GO
+INSERT INTO [dbo].[OrdersDetail] ([ID], [IDProduct], [Price], [Amount], [ReturnGood], [DateOfOrder], [Tax], [Total], [Description], [ProductCode], [RequestByUser], [OrderCode], [Discount]) VALUES (N'13', N'0', N'.00', N'7', N'0', N'2015-12-26 15:18:27.270', N'0', N'.00', N'', N'', N'1', N'HD.2016.0000000012', N'.00');
+GO
+INSERT INTO [dbo].[OrdersDetail] ([ID], [IDProduct], [Price], [Amount], [ReturnGood], [DateOfOrder], [Tax], [Total], [Description], [ProductCode], [RequestByUser], [OrderCode], [Discount]) VALUES (N'14', N'0', N'.00', N'2', N'0', N'2015-12-26 15:21:55.110', N'0', N'.00', N'', N'', N'1', N'HD.2016.0000000013', N'.00');
+GO
+INSERT INTO [dbo].[OrdersDetail] ([ID], [IDProduct], [Price], [Amount], [ReturnGood], [DateOfOrder], [Tax], [Total], [Description], [ProductCode], [RequestByUser], [OrderCode], [Discount]) VALUES (N'15', N'0', N'.00', N'2', N'0', N'2015-12-26 15:23:17.697', N'0', N'.00', N'Sản phẩm 1|ádsadadasd', N'', N'1', N'HD.2016.0000000014', N'.00');
 GO
 SET IDENTITY_INSERT [dbo].[OrdersDetail] OFF
 GO

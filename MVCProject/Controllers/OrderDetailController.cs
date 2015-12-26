@@ -6,6 +6,8 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using MVCProject.Common;
 using MVCProject.Models;
 
 namespace MVCProject.Controllers
@@ -15,114 +17,106 @@ namespace MVCProject.Controllers
         private retailEntities db = new retailEntities();
         private aspnetEntities _db = new aspnetEntities();
 
-
         // GET: /OrderDetail/
         public ActionResult Index(long? id)
         {
-            if (id != null)
-            {
-                var p = _db.Products.Find(id);
-                string code = Session["Cart"].ToString();
-                if (code.IndexOf("," + p.ItemCode) != -1)
-                    code = code.Replace("," + p.ItemCode, "");
-                else
-                    code = code.Replace(p.ItemCode + ",", "");
-                Session["Cart"] = code;
-                Response.Redirect("~/OrderDetail/Index");
+            if (!Request.IsAuthenticated)
                 return null;
-            }
 
+            if (!AddToCart(id))
+                return null;
+
+            ViewData["CartRequestDetail"] = Session["CartRequestDetail"];
             return View(GenCartDetails());
         }
 
         [HttpPost]
         public ActionResult Index()
         {
+            if (!Request.IsAuthenticated)
+                return null;
+
+            ViewData["CartRequestDetail"] = Session["CartRequestDetail"];
             return View(GenCartDetails());
         }
 
-        // GET: /OrderDetail/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Addreq()
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            OrdersDetail ordersdetail = db.OrdersDetails.Find(id);
-            if (ordersdetail == null)
-            {
-                return HttpNotFound();
-            }
-            return View(ordersdetail);
+            if (!Request.IsAuthenticated)
+                return null;
+
+            AddRequest();
+            return null;
+        }
+
+        // GET: /OrderDetail/Details/5
+        public ActionResult Details()
+        {
+            if (!Request.IsAuthenticated)
+                return null;
+
+            string enu = Security.EncryptString("User:" + User.Identity.GetUserName() + "~FrontendUser", false, EncryptType.TripleDES);
+            var u = _db.AppNetUserTypes.Find(enu);
+            var l = _db.Locations.Find(u.LocationID);
+
+            ViewData["Location"] = l;
+            ViewData["AccountInfo"] = u;
+            ViewData["CartRequestDetail"] = Session["CartRequestDetail"];
+
+            return View(GenCartDetails());
+        }
+
+        public ActionResult AdmView()
+        {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
+
+            return View(AdminViewOrder());
+        }
+
+        public ActionResult UserView()
+        {
+            if (!Request.IsAuthenticated)
+                return null;
+
+            return View(AdminViewOrder());
         }
 
         // GET: /OrderDetail/Create
         public ActionResult Create()
         {
-            return View();
+            if (!Request.IsAuthenticated)
+                return null;
+
+            GetCart();
+            return null;
         }
 
-        // POST: /OrderDetail/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="ID,IDProduct,Price,Amount,ReturnGood,DateOfOrder,Tax,Total,Description")] OrdersDetail ordersdetail)
+        public ActionResult Create(int? id)
         {
-            if (ModelState.IsValid)
-            {
-                db.OrdersDetails.Add(ordersdetail);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            return View(ordersdetail);
+            return null;
         }
 
         // GET: /OrderDetail/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            OrdersDetail ordersdetail = db.OrdersDetails.Find(id);
-            if (ordersdetail == null)
-            {
-                return HttpNotFound();
-            }
-            return View(ordersdetail);
+            return null;
         }
 
-        // POST: /OrderDetail/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="ID,IDProduct,Price,Amount,ReturnGood,DateOfOrder,Tax,Total,Description")] OrdersDetail ordersdetail)
+        public ActionResult Edit()
         {
-            if (ModelState.IsValid)
-            {
-                db.Entry(ordersdetail).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(ordersdetail);
+            return null;
         }
 
         // GET: /OrderDetail/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            OrdersDetail ordersdetail = db.OrdersDetails.Find(id);
-            if (ordersdetail == null)
-            {
-                return HttpNotFound();
-            }
-            return View(ordersdetail);
+            return null;
         }
 
         // POST: /OrderDetail/Delete/5
@@ -130,10 +124,7 @@ namespace MVCProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            OrdersDetail ordersdetail = db.OrdersDetails.Find(id);
-            db.OrdersDetails.Remove(ordersdetail);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            return null;
         }
 
         protected override void Dispose(bool disposing)
@@ -146,6 +137,171 @@ namespace MVCProject.Controllers
         }
 
         #region Functions
+        private IEnumerable<Models.OrdersDetail> AdminViewOrder()
+        {
+            string code = Request.QueryString["code"];
+            if (code == null) return null;
+            var o = db.Orders.Single(c => c.OrderCode == code);
+            if(o.State=="0")
+            {
+                o.State = "1";
+                db.SaveChanges();
+            }
+            var us = _db.AspNetUsers.Single(c => c.Id == o.IDAccount);
+            string enu = Security.EncryptString("User:" + us.UserName + "~FrontendUser", false, EncryptType.TripleDES);
+            var u = _db.AppNetUserTypes.Find(enu);
+            var l = _db.Locations.Find(u.LocationID);
+            
+            ViewData["Location"] = l;
+            ViewData["AccountInfo"] = u;
+
+            var list = db.OrdersDetails.Where(c => c.OrderCode == code).ToList();
+            List<Models.Product> lp = new List<Product>();
+            foreach (var od in list)
+            {
+                if (od.IDProduct > 0)
+                {
+                    var p = _db.Products.Single(c => c.ID == od.IDProduct);
+                    lp.Add(p);
+                }
+            }
+
+            ViewData["ProductList"] = lp;
+            return list;
+        }
+        private void GetCart()
+        {
+            List<Models.OrdersDetail> li = (List<Models.OrdersDetail>)GenCartDetails();
+            if (li == null) li = new List<OrdersDetail>();
+
+            List<string> list = new List<string>();
+            if (Session["CartRequestDetail"] != null)
+                list = (List<string>)Session["CartRequestDetail"];
+
+            int ucat = 0;
+            string code = Common.Commons.GenItemCode(_db, out ucat, "OC");
+
+            if (list.Count > 0)
+            {
+                foreach (string s in list)
+                {
+                    string[] parts = s.Split('|');
+                    Models.OrdersDetail od = new OrdersDetail
+                    {
+                        Amount = int.Parse(parts[1]),
+                        DateOfOrder = DateTime.Now,
+                        Description = parts[0] + "|" + parts[2],
+                        IDProduct = 0,
+                        OrderCode = code,
+                        Price = 0,
+                        ProductCode = "",
+                        RequestByUser = true,
+                        ReturnGood = false,
+                        Tax = "0",
+                        Total = 0
+                    };
+                    li.Add(od);
+                }
+            }
+
+            if (li.Count > 0)
+            {
+                decimal dicount = 0, tax = decimal.Parse(li[0].Tax), taxid = 0, total = 0, totalouttax = 0;
+                
+                foreach (Models.OrdersDetail od in li)
+                {
+                    if (!od.RequestByUser)
+                    {
+                        dicount += (decimal)od.Discount;
+                        totalouttax += (decimal)(od.Amount * od.Price);
+                        total += od.Total;
+                    }
+
+                    od.DateOfOrder = DateTime.Now;
+                    od.OrderCode = code;
+
+                    if (od.IDProduct > 0)
+                    {
+                        var p = _db.Products.Single(c => c.ID == od.IDProduct);
+                        od.ProductCode = p.ItemCode;
+                    }
+                    else
+                    {
+                        od.ProductCode = "";
+                        od.Discount = 0;
+                    }
+
+                    db.OrdersDetails.Add(od);
+                    db.SaveChanges();
+                }
+
+                try
+                {
+                    db.Orders.Add(new Order
+                    {
+                        DateCreate = DateTime.Now.ToString("yyyyMMddHHmm"),
+                        DateProcessed = "",
+                        DateShip = "",
+                        DeliveryMan = "",
+                        Description = "",
+                        Discount = dicount,
+                        IDAccount = User.Identity.GetUserId(),
+                        OrderCode = code,
+                        State = "0",
+                        Tax = tax.ToString(),
+                        TaxID = taxid.ToString(),
+                        Total = total,
+                        TotalWithoutTax = totalouttax
+                    });
+
+                    db.SaveChanges();
+                    Response.Redirect("~/Order/Success/?code=" + code);
+                }
+                catch { 
+                    db.OrdersDetails.RemoveRange(li);
+                }
+            }
+        }
+
+        private bool AddToCart(long? id)
+        {
+            if (id != null)
+            {
+                var p = _db.Products.Find(id);
+                string code = Session["Cart"].ToString();
+                if (code.IndexOf("," + p.ItemCode) != -1)
+                    code = code.Replace("," + p.ItemCode, "");
+                else if (code.IndexOf(p.ItemCode + ",") != -1)
+                    code = code.Replace(p.ItemCode + ",", "");
+                else
+                    code = code.Replace(p.ItemCode, "");
+
+                Session["Cart"] = code;
+                Response.Redirect("~/OrderDetail/Index");
+                return false;
+            }
+
+            return true;
+        }
+
+        private void AddRequest()
+        {
+            List<string> list = new List<string>();
+            if (Session["CartRequestDetail"] != null)
+                list = (List<string>)Session["CartRequestDetail"];
+
+            if (list.Count < 10)
+            {
+                string name = Request.QueryString["ProductName"];
+                string desc = Request.QueryString["Description"];
+                string quan = Request.QueryString["Quantity"];
+                list.Add(string.Format("{0}|{1}|{2}", name, quan, desc));
+            }
+
+            Session["CartRequestDetail"] = list;
+            Response.Redirect("~/OrderDetail/Index");
+        }
+
         private IEnumerable<Models.OrdersDetail> SetDetailForm(List<Product> li, string[,] cd)
         {
             if(cd.Length == 0) 
@@ -154,17 +310,51 @@ namespace MVCProject.Controllers
             double Total = 0;
             List<Models.OrdersDetail> listOd = new List<OrdersDetail>();
 
-            for(int i =0; i < cd.GetLength(0); i++)
+            string enu = Security.EncryptString("User:" + User.Identity.GetUserName() + "~FrontendUser", false, EncryptType.TripleDES);
+            var u = _db.AppNetUserTypes.Find(enu);
+
+            for(int i = 0; i < cd.GetLength(0); i++)
             {
                 Models.OrdersDetail od = new OrdersDetail();
                 od.IDProduct = long.Parse(cd[i, 0]);
-                od.Price = double.Parse(cd[i, 1]);
+                od.Price = decimal.Parse(cd[i, 1]);
                 od.Amount = int.Parse(cd[i, 2]);
-                od.Tax = cd[i,3] != "" ? float.Parse(cd[i, 3]) : 0;
+                od.Tax = (cd[i,3] != "" ? float.Parse(cd[i, 3]) : 0).ToString();
                 od.RequestByUser = false;
-                double thue = (double)od.Price * (double)(od.Tax / 100);
-                Total += od.Total = od.Amount * ((double) od.Price + thue);
 
+                decimal discount = 0;
+                var p = (from prom in _db.Promotions 
+                        join promtype in _db.PromotionTypes
+                        on prom.PromotionTypeID equals promtype.ID
+                        where prom.ProductID == od.IDProduct && prom.Active == true
+                            && prom.StartDate >= DateTime.Now && prom.EndDate <= DateTime.Now
+                            && (prom.LocationID == 0 || prom.LocationID == u.LocationID)
+                            && !promtype.AddType.Contains("P")
+                        select new {
+                            prom.PromotionValue,
+                            promtype.AddType,
+                            promtype.ExRate
+                        });
+
+                if (p != null && p.Count() > 0)
+                {
+                    foreach (var item in p)
+                    {
+                        if (item.ExRate > 0)
+                        {
+                            discount += (decimal)(od.Price * (item.PromotionValue / item.ExRate));
+                        }
+                        else
+                            discount += item.PromotionValue;
+                    }
+                }
+
+                od.Discount = (discount * od.Amount);
+                double thue = (double)od.Price * (double)(double.Parse(od.Tax) / 100);
+                od.Total = (decimal) (od.Amount * ((double)od.Price + thue));
+                od.Total = od.Total - (discount * od.Amount);
+
+                Total += (double) od.Total;
                 listOd.Add(od);
             }
 
@@ -172,12 +362,19 @@ namespace MVCProject.Controllers
             ViewData["Total"] = Total.ToString("#,###.00");
 
             Session["CartDetails"] = cd;
+
+            if ((listOd == null || listOd.Count == 0) && (cd == null || cd.GetLength(0) == 0))
+            {
+                Response.Redirect("~/Product/Home");
+                return null;
+            }
+
             return listOd;
         }
 
         private IEnumerable<Models.OrdersDetail> GenCartDetails()
         {
-            if (Session["Cart"] == null)
+            if (Session["Cart"] == null || Session["Cart"].ToString() == "")
                 return null;
             string[] parts = Session["Cart"].ToString().Split(',');
             string[,] cd = new string[parts.Length, 4];

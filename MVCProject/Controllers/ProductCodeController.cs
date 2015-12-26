@@ -66,8 +66,12 @@ namespace MVCProject.Controllers
                     db.SaveChanges();
                     if (pc.CatCode == "SP")
                         return RedirectToAction("../Product/Index");
-                    else
+                    else if (pc.CatCode == "OC")
+                        return RedirectToAction("../Order/Index");
+                    else if (pc.CatCode == "KM")
                         return RedirectToAction("../Promotion/Index");
+                    else
+                        return null;
                 }
 
                 return RedirectToAction("Index");

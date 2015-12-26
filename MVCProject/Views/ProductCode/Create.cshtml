@@ -68,7 +68,15 @@
 }
 
 <div>
-    @Html.ActionLink("Về danh sách", "Index", "Product")
+    @{
+        string backType = Request.QueryString["Code"];
+        string com = "Product";
+        if (backType == "KM")
+        { com = "Promotion"; }
+        else if (backType == "OC")
+        { com = "Order"; }
+    }
+    @Html.ActionLink("Về danh sách", "Index", com)
 </div>
 
 @section Scripts {

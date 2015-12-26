@@ -1,0 +1,117 @@
+﻿@model IEnumerable<MVCProject.Models.OrdersDetail>
+
+@{
+    ViewBag.Title = "UserView";
+    Layout = "~/Views/Shared/_Layout.Frontend.cshtml";
+    MVCProject.Models.AppNetUserType u = (MVCProject.Models.AppNetUserType)ViewData["AccountInfo"];
+    MVCProject.Models.Location l = (MVCProject.Models.Location)ViewData["Location"];
+    string lname = l != null ? l.LocationName : "";
+}
+
+
+<h2>Thông tin đơn hàng</h2>
+
+<br style="clear:both" />
+<h4>I. Thông tin đại lý:</h4>
+<table class="account-info">
+    <tr>
+        <td>Tên cá nhân/đại lý: <strong>@u.DisplayName</strong></td>
+        <td width="30%">Mã số thuế: <strong>@u.TaxID</strong></td>
+    </tr>
+    <tr>
+        <td>Địa chỉ: <strong>@u.Address @u.District</strong></td>
+        <td>Tỉnh/thành phố: <strong>@lname</strong></td>
+    </tr>
+    <tr>
+        <td>Điện thoại: <strong>@u.Phone</strong> - Fax: <strong>@u.Fax</strong></td>
+        <td>Email: <strong>@u.Email</strong></td>
+    </tr>
+</table>
+<h4>II. Sản phẩm yêu cầu:</h4>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.IDProduct)
+        </th>
+        <th width="15%">
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th width="15%">
+            @Html.DisplayNameFor(model => model.Amount)
+        </th>
+        <th width="15%">
+            @Html.DisplayNameFor(model => model.DateOfOrder)
+        </th>
+        <th width="15%">
+            @Html.DisplayNameFor(model => model.Tax)
+        </th>
+        <th width="15%">
+            @Html.DisplayNameFor(model => model.Total)
+        </th>
+
+    </tr>
+    @if (Model != null && Model.Count() > 0)
+    {
+        foreach (var item in Model)
+        {
+            if (item.RequestByUser) { continue; }
+            <tr>
+                <td>
+                    @{
+            var p = ((IEnumerable<MVCProject.Models.Product>)ViewData["ProductList"]).Single(c => c.ID == item.IDProduct);
+            @Html.Raw(p.ProductName);
+                    }
+                    @item.IDProduct
+                </td>
+                <td align="right">
+                    @item.Price.ToString("#,###.00")
+                </td>
+                <td align="right">
+                    @item.Amount
+                </td>
+                <td>
+                    @DateTime.Now.ToString("dd/MM/yyyy")
+                </td>
+                <td align="right">
+                    @Html.DisplayFor(modelItem => item.Tax)%
+                </td>
+                <td align="right">
+                    @item.Total.ToString("#,###.00")
+                </td>
+            </tr>
+        }
+
+        <tr>
+            <td colspan="5" align="right">Tổng cộng: </td>
+            <td align="right">@ViewData["Total"]</td>
+        </tr>
+    }
+</table>
+<br style="clear:both;" />
+@if (Model != null && Model.Count() > 0)
+{
+    <h4>III. Sản phẩm ngoài danh mục:</h4>
+    <table class="table">
+        <tr>
+            <th align="left">
+                @Html.DisplayNameFor(model => model.IDProduct)
+            </th>
+            <th align="left">
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+            <th align="left">
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            if (!item.RequestByUser || item.Description == "") { continue; }
+            <tr>
+                <td>@item.Description.Split('|')[0]</td>
+                <td>@item.Amount</td>
+                <td>@item.Description.Split('|')[1]</td>
+            </tr>
+        }
+    </table>
+}
+

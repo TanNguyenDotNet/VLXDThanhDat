@@ -3,12 +3,14 @@
 @{
     ViewBag.Title = "Chi tiết đơn hàng";
     Layout = "~/Views/Shared/_Layout.Frontend.cshtml";
+    List<string> list = (List<string>)ViewData["CartRequestDetail"];
 }
-
-<h2>Chi tiết đơn hàng</h2>
 
 @using (Html.BeginForm("Index", "OrderDetail", FormMethod.Get, new { id = "cartDetail" }))
 {
+    if (Model != null && Model.Count() > 0) 
+{ 
+<h2>Chi tiết đơn hàng</h2>
     <table class="table">
         <tr>
             <th>
@@ -73,11 +75,83 @@
             <td></td>
         </tr>
     }
-</table>
+    </table>
+
 <script>
     function RemoveFromCart(id) {
         window.location = "../OrderDetail/Index/" + id;
     }
 </script>
+} 
+}
+<br style="clear:both;" />
+@if ((Model != null && Model.Count() > 0) ||  (list != null && list.Count > 0))
+{ 
+<div class="form-group">
+    <div style="float:right;">
+        <input type="button" value="Xác Nhận Đơn Hàng" 
+               onclick="if(confirm('Xác nhận yêu cầu đơn hàng!') == true) { window.location = '../Agent/AgentInfo'; }" class="btn btn-default" />
+    </div>
+</div>
+}
+<br style="clear:both;" />
+@if (list != null && list.Count > 0)
+{
+    <h2>Đơn hàng yêu cầu</h2>
+    <table class="table">
+        <tr>
+            <th align="left" width="30%">
+                @Html.DisplayNameFor(model => model.IDProduct)
+            </th>
+            <th align="left">
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+            <th align="left">
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+        </tr>
+        @foreach (string s in list)
+        {
+            <tr>
+                <td>@s.Split('|')[0]</td>
+                <td>@s.Split('|')[1]</td>
+                <td>@s.Split('|')[2]</td>
+            </tr>
+        }
+    </table>
+}
 
+@using (Html.BeginForm("Addreq", "OrderDetail", FormMethod.Get, new { id = "cartRequestDetail" }))
+{
+    <h2>Thông tin yêu cầu</h2>
+    <div class="form-horizontal">
+        <h4>(Yêu cầu sản phẩm không có trong danh mục)</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            <span class="control-label col-md-2">Tên sản phẩm:</span>
+            <div class="col-md-10">
+                <input type="text" name="ProductName" id="ProductName" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group">
+            <span class="control-label col-md-2">Số lượng:</span>
+            <div class="col-md-10">
+                <input type="text" name="Quantity" id="Quantity" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group">
+            <span class="control-label col-md-2">Mô tả thông tin hàng hóa:</span>
+            <div class="col-md-10">
+                <textarea name="Description" id="Description" class="form-control"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Gửi Yêu Cầu" class="btn btn-default" />
+                <input type="reset" value="Nhập Lại" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
 }

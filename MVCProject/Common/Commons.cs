@@ -110,7 +110,7 @@ namespace MVCProject.Common
             if (!req.IsAuthenticated)
                 res.Redirect("~/Account/Login");
 
-            string en = Security.EncryptString(username + "~BackendUser", false, EncryptType.TripleDES);
+            string en = Security.EncryptString("User:" + username + "~BackendUser", false, EncryptType.TripleDES);
             Models.aspnetEntities db = new Models.aspnetEntities();
             bool redirect = false;
             try

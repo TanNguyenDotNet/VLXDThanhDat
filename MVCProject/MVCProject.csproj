@@ -165,9 +165,12 @@
     <Compile Include="Common\Commons.cs" />
     <Compile Include="Common\Security.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AgentController.cs" />
+    <Compile Include="Controllers\AspNetUserTypeController.cs" />
     <Compile Include="Controllers\CatalogController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LocationController.cs" />
+    <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\OrderDetailController.cs" />
     <Compile Include="Controllers\ProductCodeController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
@@ -276,7 +279,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\db_231215.sql" />
+    <Content Include="App_Data\db_261215.sql" />
     <Content Include="App_Data\retail.sql" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
@@ -408,6 +411,13 @@
     <Content Include="Views\Product\Home.cshtml" />
     <Content Include="Views\Product\_filterPartial.cshtml" />
     <Content Include="Views\OrderDetail\Index.cshtml" />
+    <Content Include="Views\Agent\AgentInfo.cshtml" />
+    <Content Include="Views\Order\Index.cshtml" />
+    <Content Include="Views\OrderDetail\Details.cshtml" />
+    <Content Include="Views\Order\Success.cshtml" />
+    <Content Include="Views\Order\OrderList.cshtml" />
+    <Content Include="Views\OrderDetail\AdmView.cshtml" />
+    <Content Include="Views\OrderDetail\UserView.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

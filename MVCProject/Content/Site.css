@@ -60,3 +60,6 @@ a img.add-button-disable:hover {
 }
 
 th { text-align: center; }
+
+table.account-info { width: 100%; }
+table.account-info td { padding: 5px; }

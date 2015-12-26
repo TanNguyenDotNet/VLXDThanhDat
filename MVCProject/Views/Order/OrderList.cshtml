@@ -1,0 +1,73 @@
+﻿@model IEnumerable<MVCProject.Models.Order>
+
+@{
+    ViewBag.Title = "Danh sách đơn hàng";
+    Layout = "~/Views/Shared/_Layout.Frontend.cshtml";
+}
+
+<h2>Danh sách đơn hàng</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            Mã đơn hàng
+        </th>
+        <th>
+            Ngày tạo
+        </th>
+        <th>
+            Tổng tiền chưa khấu trừ
+        </th>
+        <th>
+            Thuế suất
+        </th>
+        <th>
+            Tổng thanh toán
+        </th>
+        <th>
+            Giảm giá
+        </th>
+        <th>
+            Ngày xử lý
+        </th>
+        <th>
+            Tình trạng
+        </th>
+    </tr>
+    @if (Model != null && Model.Count() > 0)
+    {
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a href="../OrderDetail/UserView/?code=@item.OrderCode">@item.OrderCode</a>
+                </td>
+                <td align="center">
+                    @DateTime.ParseExact(item.DateCreate, "yyyyMMddHHmm", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy")
+                </td>
+                <td align="right">
+                    @item.TotalWithoutTax.ToString("#,###.00")
+                </td>
+                <td align="right">
+                    @item.Tax
+                </td>
+                <td align="right">
+                    @item.Total.ToString("#,###.00")
+                </td>
+                <td align="right">
+                    @item.Discount.ToString("#,###.00")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateProcessed)
+                </td>
+                <td>
+                    @{
+            string state = item.State == "0" ? "Chờ xử lý" : item.State == "1" ? "Đã xem" :
+                item.State == "2" ? "Đã xử lý" : item.State == "2" ? "Đã chuyển hàng" : "";
+                    }
+                    @state
+                </td>
+            </tr>
+        }
+    }
+</table>

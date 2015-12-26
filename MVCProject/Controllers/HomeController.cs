@@ -23,6 +23,11 @@ namespace MVCProject.Controllers
                     Response.Redirect("~/Product/Home");
                     return null;
                 }
+                else
+                {
+                    Response.Redirect("~/Product/Index");
+                    return null;
+                }
             }
             else
                 Response.Redirect("~/Account/Login");

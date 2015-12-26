@@ -1,0 +1,13 @@
+﻿
+@{
+    ViewBag.Title = "Success";
+    Layout = "~/Views/Shared/_Layout.Frontend.cshtml";
+}
+
+<h2>Gửi yêu cầu thành công</h2>
+<h4>Khách hàng đã gửi yêu cầu thành công với mã đơn hàng là: @Request.QueryString["code"]</h4>
+
+<div>
+    @Html.ActionLink("Về danh sách", "OrderList")
+</div>
+
