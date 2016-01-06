@@ -290,6 +290,14 @@
     <Content Include="Content\Site.css" />
     <Content Include="Images\Control\add-image.png" />
     <Content Include="Images\Control\diff-removed.png" />
+    <Content Include="Images\Details\IMG_21122015_5268801.jpg" />
+    <Content Include="Images\Details\IMG_21122015_7002026.png" />
+    <Content Include="Images\Details\no-image.png" />
+    <Content Include="Images\Intro\IMG_21122015_2730545.jpg" />
+    <Content Include="Images\Intro\IMG_21122015_4818283.png" />
+    <Content Include="Images\Intro\IMG_21122015_9027834.png" />
+    <Content Include="Images\Intro\no-image.png" />
+    <Content Include="Images\no-image.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <EntityDeploy Include="Models\aspnetEntities.edmx">

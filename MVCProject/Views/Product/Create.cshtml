@@ -103,10 +103,14 @@
             <span class="control-label col-md-2">ĐVT:</span>
             <div class="col-md-10">
                 <select name="Unit" id="Unit" class="form-control">
-                    <option value="Cái" @if (Model.Unit == "Cai") { @Html.Raw(" selected='selected'")  }>Cái</option>
-                    <option value="Chiếc" @if (Model.Unit == "Chiếc") { @Html.Raw(" selected='selected'")  }>Chiếc</option>
-                    <option value="Cây" @if (Model.Unit == "Cây") { @Html.Raw(" selected='selected'")  }>Cây</option>
-                    <option value="Ống" @if (Model.Unit == "Ống") { @Html.Raw(" selected='selected'")   }>Ống</option>
+                    <option value="Cái" @if (Model.Unit == "Cai") { @Html.Raw(" selected='selected'")    }>Cái</option>
+                    <option value="Chiếc" @if (Model.Unit == "Chiếc") { @Html.Raw(" selected='selected'")    }>Chiếc</option>
+                    <option value="Cây" @if (Model.Unit == "Cây") { @Html.Raw(" selected='selected'")    }>Cây</option>
+                    <option value="Ống" @if (Model.Unit == "Ống") { @Html.Raw(" selected='selected'")     }>Ống</option>
+                    <option value="Thùng" @if (Model.Unit == "Thùng") { @Html.Raw(" selected='selected'")      }>Thùng</option>
+                    <option value="Hộp" @if (Model.Unit == "Hộp") { @Html.Raw(" selected='selected'")       }>Hộp</option>
+                    <option value="Kg" @if (Model.Unit == "Kg") { @Html.Raw(" selected='selected'")        }>Kg</option>
+                    <option value="Gam" @if (Model.Unit == "Gam") { @Html.Raw(" selected='selected'")         }>Gam</option>
                 </select>
                 @Html.ValidationMessageFor(model => model.Unit)
             </div>

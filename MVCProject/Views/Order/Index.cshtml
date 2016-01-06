@@ -19,7 +19,7 @@
             Ngày tạo
         </th>
         <th>
-            Tổng tiền chưa khấu trừ
+            Tổng tiền trước thuế
         </th>
         <th>
             Thuế suất
@@ -32,6 +32,9 @@
         </th>
         <th>
             Ngày xử lý
+        </th>
+        <th>
+            Ngày giao
         </th>
         <th>
             Tình trạng
@@ -60,8 +63,22 @@
                 <td align="right">
                     @item.Discount.ToString("#,###.00")
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DateProcessed)
+                <td align="center">
+                    @{
+                        string sdate = "";
+                        if (item.DateProcessed != null && item.DateProcessed != "")
+                        {
+                            sdate = (DateTime.ParseExact(item.DateProcessed, "yyyyMMddHHmm", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy"));
+                        }
+                    }
+                    @sdate
+                </td>
+                <td align="center">
+                    @if (item.DateShip != null && item.DateShip != "")
+                    {
+                        sdate = (DateTime.ParseExact(item.DateShip, "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy"));
+                    }
+                    @sdate
                 </td>
                 <td>
                     @{

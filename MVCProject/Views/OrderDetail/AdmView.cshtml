@@ -9,13 +9,50 @@
     string lname = l != null ? l.LocationName : "";
 }
 
+@using (Html.BeginForm("Complete", "Order", FormMethod.Get, new { id = "completeOrderForm" }))
+{
+    if(ViewData["State"].ToString() != "2")
+    {
+        <br style="clear:both" />
+        <input type="hidden" id="OrderCode" name="OrderCode" value="@ViewData["OrderCode"]" />
+        <table>
+            <tr>
+                <td width="40%">
+                    <div class="form-group">
+                        Người giao:
+                    </div>
+                </td>
+                <td width="40%">
+                    <div class="form-group">
+                        Ngày giao:
+                    </div>
+                </td>
+                <td align="left">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input class="form-control" type="text" name="DeliveryMan" id="DeliveryMan" />
+                </td>
+                <td>
+                    <input class="form-control" type="text" name="DateShip" id="DateShip" />
+                </td>
+                <td>
+                    <input type="button" value="Xác Nhận Đơn Hàng"
+               onclick="if (confirm('Xác nhận yêu cầu?') == true) { completeOrderForm.submit(); }" class="btn btn-default" />
+                </td>
+            </tr>
+        </table>
+        <script>
+            $('#DateShip').datetimepicker({
+                value: '@DateTime.Now.ToString("yyyyMMdd")', step: 1
+             });
+        </script>
+        <hr/>
+    }
+}
 <h2>Thông tin đơn hàng</h2>
-<div class="form-group">
-    <div style="float:right;">
-        <input type="button" value="Xác Nhận Đơn Hàng"
-               onclick="if(confirm('Xác nhận yêu cầu?') == true) { window.location = '../OrderDetail/Create'; }" class="btn btn-default" />
-    </div>
-</div>
+
 <br style="clear:both" />
 <h4>I. Thông tin đại lý:</h4>
 <table class="account-info">

@@ -154,6 +154,8 @@ namespace MVCProject.Controllers
             
             ViewData["Location"] = l;
             ViewData["AccountInfo"] = u;
+            ViewData["OrderCode"] = code;
+            ViewData["State"] = o.State;
 
             var list = db.OrdersDetails.Where(c => c.OrderCode == code).ToList();
             List<Models.Product> lp = new List<Product>();
@@ -400,9 +402,14 @@ namespace MVCProject.Controllers
                     }
                 }
 
-                var price = _db.ProductPrices.Single(c => c.ProductID == i.ID);
+                try
+                {
+                    var price = _db.ProductPrices.Single(c => c.ProductID == i.ID);
+                    cd[index, 1] = price.Price.ToString();
+                }
+                catch { cd[index, 1] = "0"; }
+                
                 cd[index, 0] = i.ID.ToString();
-                cd[index, 1] = price.Price.ToString();
                 string quan = Request.QueryString["quan_" + i.ID];
                 cd[index, 2] = Request.QueryString["quan_" + i.ID] != null &&
                     Request.QueryString["quan_" + i.ID] != "" ? Request.QueryString["quan_" + i.ID] : quanSession;

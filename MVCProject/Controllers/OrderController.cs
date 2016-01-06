@@ -39,5 +39,19 @@ namespace MVCProject.Controllers
             Session.Clear();
             return View();
         }
+
+        public ActionResult Complete(string orderCode, string deliveryMan, string dateShip)
+        {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
+            var o = db.Orders.Single(c => c.OrderCode == orderCode);
+            o.DeliveryMan = deliveryMan;
+            o.DateShip = DateTime.Parse(dateShip).ToString("yyyyMMdd");
+            o.DateProcessed = DateTime.Now.ToString("yyyyMMddHHmm");
+            o.State = "2";
+            db.SaveChanges();
+            Response.Redirect("~/Order/Index");
+            return null;
+        }
     }
 }

@@ -36,7 +36,7 @@
           <Property Name="DateOfOrder" Type="datetime" />
           <Property Name="Tax" Type="varchar" MaxLength="10" />
           <Property Name="Total" Type="decimal" Precision="14" Scale="2" Nullable="false" />
-          <Property Name="Description" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="255" />
           <Property Name="ProductCode" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="RequestByUser" Type="bit" Nullable="false" />
           <Property Name="OrderCode" Type="varchar" MaxLength="50" />
@@ -81,7 +81,7 @@
           <Property Name="DateOfOrder" Type="DateTime" Precision="3" />
           <Property Name="Tax" Type="String" MaxLength="10" Unicode="false" FixedLength="false" />
           <Property Name="Total" Type="Decimal" Nullable="false" Precision="14" Scale="2" />
-          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="ProductCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="RequestByUser" Type="Boolean" Nullable="false" />
           <Property Name="OrderCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
