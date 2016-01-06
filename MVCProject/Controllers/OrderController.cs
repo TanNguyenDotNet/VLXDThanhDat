@@ -27,7 +27,9 @@ namespace MVCProject.Controllers
             if (!Request.IsAuthenticated)
                 Response.Redirect("~/Account/Login");
 
-            return View(db.Orders.ToList());
+            Session.RemoveAll();
+            Response.Redirect("~/Product/Home");
+            return null;
         }
 
         public ActionResult OrderList()
