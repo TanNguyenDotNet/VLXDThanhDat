@@ -16,7 +16,7 @@ namespace MVCProject.Controllers
         public ActionResult AgentInfo()
         {
             if (!Request.IsAuthenticated)
-                return null;
+                Response.Redirect("~/Account/Login");
 
             string enu = Security.EncryptString("User:" + User.Identity.GetUserName() + "~FrontendUser", false, EncryptType.TripleDES);
             var u = db.AppNetUserTypes.Find(enu);
@@ -36,7 +36,7 @@ namespace MVCProject.Controllers
             AppNetUserType appnetusertype)
         {
             if (!Request.IsAuthenticated)
-                return null;
+                Response.Redirect("~/Account/Login");
 
             if (ModelState.IsValid)
             {

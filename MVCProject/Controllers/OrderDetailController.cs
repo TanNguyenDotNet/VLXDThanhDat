@@ -21,7 +21,7 @@ namespace MVCProject.Controllers
         public ActionResult Index(long? id)
         {
             if (!Request.IsAuthenticated)
-                return null;
+                Response.Redirect("~/Account/Login");
 
             if (!AddToCart(id))
                 return null;
@@ -34,7 +34,7 @@ namespace MVCProject.Controllers
         public ActionResult Index()
         {
             if (!Request.IsAuthenticated)
-                return null;
+                Response.Redirect("~/Account/Login");
 
             ViewData["CartRequestDetail"] = Session["CartRequestDetail"];
             return View(GenCartDetails());
@@ -43,7 +43,7 @@ namespace MVCProject.Controllers
         public ActionResult Addreq()
         {
             if (!Request.IsAuthenticated)
-                return null;
+                Response.Redirect("~/Account/Login");
 
             AddRequest();
             return null;
@@ -53,7 +53,7 @@ namespace MVCProject.Controllers
         public ActionResult Details()
         {
             if (!Request.IsAuthenticated)
-                return null;
+                Response.Redirect("~/Account/Login");
 
             string enu = Security.EncryptString("User:" + User.Identity.GetUserName() + "~FrontendUser", false, EncryptType.TripleDES);
             var u = _db.AppNetUserTypes.Find(enu);
@@ -77,7 +77,7 @@ namespace MVCProject.Controllers
         public ActionResult UserView()
         {
             if (!Request.IsAuthenticated)
-                return null;
+                Response.Redirect("~/Account/Login");
 
             return View(AdminViewOrder());
         }
@@ -86,7 +86,7 @@ namespace MVCProject.Controllers
         public ActionResult Create()
         {
             if (!Request.IsAuthenticated)
-                return null;
+                Response.Redirect("~/Account/Login");
 
             GetCart();
             return null;
@@ -297,7 +297,12 @@ namespace MVCProject.Controllers
                 string name = Request.QueryString["ProductName"];
                 string desc = Request.QueryString["Description"];
                 string quan = Request.QueryString["Quantity"];
-                list.Add(string.Format("{0}|{1}|{2}", name, quan, desc));
+                int iquan = 0;
+                Int32.TryParse(quan, out iquan);
+                if (name != null && name != "" && iquan > 0)
+                {      
+                    list.Add(string.Format("{0}|{1}|{2}", name, quan, desc));
+                }
             }
 
             Session["CartRequestDetail"] = list;
@@ -307,7 +312,7 @@ namespace MVCProject.Controllers
         private IEnumerable<Models.OrdersDetail> SetDetailForm(List<Product> li, string[,] cd)
         {
             if(cd.Length == 0) 
-                return null;
+                Response.Redirect("~/Account/Login");
 
             double Total = 0;
             List<Models.OrdersDetail> listOd = new List<OrdersDetail>();

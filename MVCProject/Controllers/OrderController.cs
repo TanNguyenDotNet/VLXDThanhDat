@@ -22,6 +22,16 @@ namespace MVCProject.Controllers
             return View(db.Orders.ToList()); 
         }
 
+        public ActionResult Cancel()
+        {
+            if (!Request.IsAuthenticated)
+                Response.Redirect("~/Account/Login");
+
+            Session.RemoveAll();
+            Response.Redirect("~/Product/Home");
+            return null;
+        }
+
         public ActionResult OrderList()
         {
             if (!Request.IsAuthenticated)
@@ -34,7 +44,7 @@ namespace MVCProject.Controllers
         public ActionResult Success()
         {
             if (!Request.IsAuthenticated)
-                return null;
+                Response.Redirect("~/Account/Login");
 
             Session.Clear();
             return View();
