@@ -38,7 +38,7 @@ namespace MVCProject.Controllers
             try
             {
                 if (!Request.IsAuthenticated)
-                    return null;
+                    Response.Redirect("~/Account/Login");
 
                 if (ModelState.IsValid)
                 {

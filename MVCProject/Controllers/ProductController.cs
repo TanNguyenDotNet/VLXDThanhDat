@@ -21,7 +21,7 @@ namespace MVCProject.Controllers
         public ActionResult Home()
         {
             if (!Request.IsAuthenticated)
-                return null;
+                Response.Redirect("~/Account/Login");
 
             IEnumerable<Models.Product> list = GetList();
             return View(list);
@@ -30,7 +30,7 @@ namespace MVCProject.Controllers
         public ActionResult Index()
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
-                return null;
+                Response.Redirect("~/Account/Login");
             return View(db.Products.ToList());
         }
 
