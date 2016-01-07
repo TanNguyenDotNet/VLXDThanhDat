@@ -14,7 +14,6 @@ namespace MVCProject.Models
     
     public partial class Order
     {
-        public int ID { get; set; }
         public string IDAccount { get; set; }
         public string DateCreate { get; set; }
         public string DateShip { get; set; }
@@ -28,5 +27,6 @@ namespace MVCProject.Models
         public string DateProcessed { get; set; }
         public string TaxID { get; set; }
         public string OrderCode { get; set; }
+        public long ID { get; set; }
     }
 }
