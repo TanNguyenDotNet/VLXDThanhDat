@@ -33,5 +33,6 @@ namespace MVCProject.Models
         public string UserID { get; set; }
         public string ProductName { get; set; }
         public Nullable<byte> TaxID { get; set; }
+        public Nullable<decimal> Price { get; set; }
     }
 }

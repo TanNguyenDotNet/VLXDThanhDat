@@ -1,16 +1,43 @@
-﻿@model IEnumerable<MVCProject.Models.Product>
-
+﻿@model PagedList.IPagedList<MVCProject.Models.Product>
+@using PagedList.Mvc;
 @{
     ViewBag.Title = "Danh sách";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    string size = Request.QueryString["size"];
+    if (size == null || size == "") { size = "20"; }
 }
 
+@using (Html.BeginForm("Index", "Product", FormMethod.Get, new { id = "productViewForm" }))
+{
 <h2>Sản phẩm</h2>
 
 <p>
     @Html.ActionLink("Thêm mới", "Create") :::: <a href="../ProductCode/Create/?code=SP">Cấu hình mã sản phẩm</a>
     | @Html.ActionLink("Giá sản phẩm", "Index", "ProductPrice")
 </p>
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page, order = ViewBag.Order, filter = ViewBag.Filter, size=size }))
+<table class="table">
+    <tr>
+        <td align="right">
+            Sản phẩm:
+        </td>
+        <td align="left" width="15%">
+            <input class="form-control" type="text" name="filter" id="filter" value="@Request.QueryString["filter"]" />
+        </td>
+        <td align="right" width="10%">
+            Số dòng:
+        </td>
+        <td align="left" width="7%">
+            <select class="form-control" name="size" id="size" onchange="productViewForm.submit();">
+                @for (int s = 10; s <= 50; s += 10)
+                {
+                    <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'") }>@s</option>
+                }
+            </select>
+        </td>
+    </tr>
+</table>
+
 <table class="table">
     <tr>
         <th>
@@ -36,6 +63,9 @@
         </th>
         <th>
             ĐVT
+        </th>
+        <th>
+            Giá
         </th>
         <th>
            BH
@@ -79,6 +109,9 @@
             @Html.DisplayFor(modelItem => item.Unit)
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.Price)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.Warranty)
         </td>
         <td>
@@ -92,3 +125,4 @@
 }
 
 </table>
+}

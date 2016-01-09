@@ -1,24 +1,27 @@
-﻿@model IEnumerable<MVCProject.Models.Product>
+﻿@model PagedList.IPagedList<MVCProject.Models.Product>
+@using PagedList.Mvc;
 @{
     ViewBag.Title = "Sản phẩm";
     Layout = "~/Views/Shared/_Layout.Frontend.cshtml";
     List<MVCProject.Models.ProductImage> imgList = (List<MVCProject.Models.ProductImage>)ViewData["ImageList"];
     
     string cid = Request.QueryString["CatID"] == null ? "0" : Request.QueryString["CatID"];
-    string name = Request.QueryString["Name"];
     List<MVCProject.Models.Catalog> listCat = (List<MVCProject.Models.Catalog>)ViewData["CatList"];
+    string size = Request.QueryString["size"];
+    if (size == null || size == "") { size = "20"; }
 }
 
 @using (Html.BeginForm("Home", "Product", FormMethod.Get, new { id = "productViewForm" }))
 {
 <h2>Sản phẩm</h2>
+@Html.PagedListPager(Model, page => Url.Action("Home", new { page }))
 <table class="table">
     <tr>
         <td align="right" width="10%">
             Danh mục:
         </td>
         <td align="left" width="25%">
-            <select class="form-control" name="CatID" id="CatID" onchange="filterFromSubmit()">
+            <select class="form-control" name="catid" id="catid" onchange="filterFromSubmit()">
                 <option>Chọn danh mục</option>
                 @foreach (var i in listCat)
                 {
@@ -33,7 +36,18 @@
             Sản phẩm:
         </td>
         <td align="left" width="25%">
-            <input class="form-control" type="text" name="Name" id="Name" value="@name" />
+            <input class="form-control" type="text" name="filter" id="filter" value="@Request.QueryString["filter"]" />
+        </td>
+        <td align="right" width="7%">
+            Số dòng:
+        </td>
+        <td align="left" width="7%">
+            <select class="form-control" name="size" id="size" onchange="productViewForm.submit();">
+                @for (int s = 10; s <= 50; s += 10)
+                {
+                    <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")  }>@s</option>
+                }
+            </select>
         </td>
         <td>
             <div class="form-group">
@@ -89,6 +103,9 @@
             ĐVT
         </th>
         <th>
+            Giá
+        </th>
+        <th>
             Bảo hành
         </th>
         <th width="12%">
@@ -140,6 +157,9 @@
                     @Html.DisplayFor(modelItem => item.Unit)
                 </td>
                 <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.Warranty)
                 </td>
                 <td align="center">
@@ -151,7 +171,8 @@
         }
     }
     </table>
-    <span style="float:right;">Sản phẩm đã chọn: (@ViewData["CartCount"]) &gt;&gt; <a href="../OrderDetail/Index"> Xem hóa đơn</a></span> 
+    
+    <span style="float:right;">Sản phẩm đã chọn: (@ViewData["CartCount"]) &gt;&gt; <a href="../OrderDetail/Index"> Xem hóa đơn</a></span>
     
     <input type="hidden" name="Cart" id="Cart" value="@ViewData["Cart"].ToString()" />
     <input type="hidden" name="Page" id="Page" value="@ViewData["Page"].ToString()" /> 

@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using MVCProject.Models;
 using Microsoft.AspNet.Identity;
+using PagedList;
 
 namespace MVCProject.Controllers
 {
@@ -18,21 +19,26 @@ namespace MVCProject.Controllers
         private string introImg = "";
 
         #region Local actions
-        public ActionResult Home()
+        public ActionResult Home(int? page, int? size, string filter, string order, string catid)
         {
             if (!Request.IsAuthenticated)
                 Response.Redirect("~/Account/Login");
 
-            IEnumerable<Models.Product> list = GetList();
-            return View(list);
+            IEnumerable<Models.Product> list = GetList(filter, order, catid);
+            return View(list.ToPagedList(page == null || 
+                page == 0 ? 1 : (int)page, size == null || size == 0 ? 20 : (int)size));
         }
         // GET: /Product/
-        public ActionResult Index()
+        public ActionResult Index(int? page, int? size, string filter, string order)
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 Response.Redirect("~/Account/Login");
-            return View(db.Products.ToList());
+            var list = GetAdminList(filter, order);
+            return View(list.ToPagedList(page == null || 
+                page == 0 ? 1 : (int)page, size == null || size == 0 ? 20 : (int)size));
         }
+
+        
 
         // GET: /Product/Details/5
         public ActionResult Details(long? id)
@@ -240,27 +246,23 @@ namespace MVCProject.Controllers
             }
         }
 
-        IEnumerable<Models.Product> GetList()
+        IEnumerable<Models.Product> GetList(string filter, string order, string cid)
         {
-            string Cart = "", Page = "1", cid = "", name = "";
-            if (Request.QueryString["CatID"] != null) cid = Request.QueryString["CatID"];
-            if (Request.QueryString["Name"] != null) name = Request.QueryString["Name"];
+            string Cart = "";
             if (Request.QueryString["Cart"] != null) Cart = Request.QueryString["Cart"];
-            if (Request.QueryString["page"] != null) Page = Request.QueryString["page"];
-
+            
             if (Cart != "" && (Session["Cart"] == null || Session["Cart"].ToString() != Cart))
                 Session["Cart"] = Cart;
             if (Cart == "" && Session["Cart"] != null && Session["Cart"].ToString() != "")
                 Cart = Session["Cart"].ToString();
 
             ViewData["Cart"] = Cart;
-            ViewData["Page"] = Page;
             ViewData["CartCount"] = Cart != "" ? Cart.Split(',').Length.ToString() : "0";
 
             long lcid = 0;
             try
             {
-                cid = cid == "" ? "0" : cid;
+                cid = cid == null || cid == "" ? "0" : cid;
                 lcid = long.Parse(cid);
             }
             catch { lcid = 0; cid = "0"; }
@@ -268,16 +270,61 @@ namespace MVCProject.Controllers
             ViewData["ImageList"] = db.ProductImages.Where(c => c.Component == "Product").ToList();
             ViewData["CatList"] = db.Catalogs.Select(d => d).ToList();
 
-            if (lcid > 0 && name != null && name != "")
-                return db.Products.Where(c => c.CatID == lcid
-                    && c.ProductName.Contains(name));
+            IEnumerable<Models.Product> list = null;
+            if (lcid > 0 && filter != null && filter != "")
+                list = db.Products.Where(c => c.CatID == lcid
+                    && c.ProductName.Contains(filter));
             else if (lcid > 0)
-                return db.Products.Where(c => c.CatID == lcid).ToList();
-            else if (name != null && name != "")
-                return db.Products.Where(c => c.ProductName.Contains(name)).ToList();
+                list = db.Products.Where(c => c.CatID == lcid).ToList();
+            else if (filter != null && filter != "")
+                list = db.Products.Where(c => c.ProductName.Contains(filter)).ToList();
             else
-                return db.Products.ToList();
-        } 
+                list = db.Products.ToList();
+
+            list = OrderList(list, order);
+            ViewBag.Order = order == null ? "" : order;
+            ViewBag.Filter = filter == null ? "" : filter;
+            return list;
+        }
+
+        private IEnumerable<Models.Product> GetAdminList(string filter, string order)
+        {
+            IEnumerable<Models.Product> list = null;
+
+            if (filter != null && filter != "")
+                list = db.Products.Where(c => c.ProductName.Contains(filter));
+            else
+                list = db.Products;
+
+            OrderList(list, order);
+            ViewBag.Order = order == null ? "" : order;
+            ViewBag.Filter = filter == null ? "" : filter;
+            return list.ToList();
+        }
+
+        IEnumerable<Models.Product> OrderList(IEnumerable<Models.Product> list, string order)
+        {
+            if (list == null || list.Count() == 0)
+                return list;
+
+            switch (order)
+            {
+                case "price":
+                    list = list.OrderBy(s => s.Price);
+                    break;
+                case "price_desc":
+                    list = list.OrderByDescending(s => s.Price);
+                    break;
+                case "name_desc":
+                    list = list.OrderByDescending(s => s.ProductName);
+                    break;
+                default:
+                    list = list.OrderBy(s => s.ProductName);
+                    break;
+            }
+
+            return list;
+        }
         #endregion
     }
 }

@@ -27,7 +27,7 @@ namespace MVCProject.Controllers
             if (!Request.IsAuthenticated)
                 Response.Redirect("~/Account/Login");
 
-            Session.RemoveAll();
+            Session.Clear();
             Response.Redirect("~/Product/Home");
             return null;
         }
