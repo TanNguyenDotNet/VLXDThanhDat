@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using MVCProject.Models;
 using Microsoft.AspNet.Identity;
 using PagedList;
+using MVCProject.Common;
 
 namespace MVCProject.Controllers
 {
@@ -24,16 +25,21 @@ namespace MVCProject.Controllers
             if (!Request.IsAuthenticated)
                 Response.Redirect("~/Account/Login");
 
-            IEnumerable<Models.Product> list = GetList(filter, order, catid);
-            return View(list.ToPagedList(page == null || 
+            InitItem(false);
+            SetLocationDetail();
+            IEnumerable<Models.Product> list = GetList(filter, order, catid == null || catid == "" ? "0" : catid);
+            return View(list.ToPagedList(page == null ||
                 page == 0 ? 1 : (int)page, size == null || size == 0 ? 20 : (int)size));
         }
+
         // GET: /Product/
-        public ActionResult Index(int? page, int? size, string filter, string order)
+        public ActionResult Index(int? page, int? size, string filter, string order, string catid)
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 Response.Redirect("~/Account/Login");
-            var list = GetAdminList(filter, order);
+
+            InitItem(false);
+            var list = GetList(filter, order, catid == null || catid == "" ? "0" : catid);
             return View(list.ToPagedList(page == null || 
                 page == 0 ? 1 : (int)page, size == null || size == 0 ? 20 : (int)size));
         }
@@ -248,17 +254,6 @@ namespace MVCProject.Controllers
 
         IEnumerable<Models.Product> GetList(string filter, string order, string cid)
         {
-            string Cart = "";
-            if (Request.QueryString["Cart"] != null) Cart = Request.QueryString["Cart"];
-            
-            if (Cart != "" && (Session["Cart"] == null || Session["Cart"].ToString() != Cart))
-                Session["Cart"] = Cart;
-            if (Cart == "" && Session["Cart"] != null && Session["Cart"].ToString() != "")
-                Cart = Session["Cart"].ToString();
-
-            ViewData["Cart"] = Cart;
-            ViewData["CartCount"] = Cart != "" ? Cart.Split(',').Length.ToString() : "0";
-
             long lcid = 0;
             try
             {
@@ -267,41 +262,44 @@ namespace MVCProject.Controllers
             }
             catch { lcid = 0; cid = "0"; }
 
-            ViewData["ImageList"] = db.ProductImages.Where(c => c.Component == "Product").ToList();
-            ViewData["CatList"] = db.Catalogs.Select(d => d).ToList();
-
             IEnumerable<Models.Product> list = null;
             if (lcid > 0 && filter != null && filter != "")
                 list = db.Products.Where(c => c.CatID == lcid
                     && c.ProductName.Contains(filter));
             else if (lcid > 0)
-                list = db.Products.Where(c => c.CatID == lcid).ToList();
+                list = db.Products.Where(c => c.CatID == lcid);
             else if (filter != null && filter != "")
-                list = db.Products.Where(c => c.ProductName.Contains(filter)).ToList();
-            else
-                list = db.Products.ToList();
-
-            list = OrderList(list, order);
-            ViewBag.Order = order == null ? "" : order;
-            ViewBag.Filter = filter == null ? "" : filter;
-            return list;
-        }
-
-        private IEnumerable<Models.Product> GetAdminList(string filter, string order)
-        {
-            IEnumerable<Models.Product> list = null;
-
-            if (filter != null && filter != "")
                 list = db.Products.Where(c => c.ProductName.Contains(filter));
             else
                 list = db.Products;
 
-            OrderList(list, order);
+            list = OrderList(list, order);
+
             ViewBag.Order = order == null ? "" : order;
             ViewBag.Filter = filter == null ? "" : filter;
             return list.ToList();
         }
 
+        void InitItem(bool isAdmin)
+        {
+            if (!isAdmin)
+            {
+                string Cart = "";
+                if (Request.QueryString["Cart"] != null) Cart = Request.QueryString["Cart"];
+
+                if (Cart != "" && (Session["Cart"] == null || Session["Cart"].ToString() != Cart))
+                    Session["Cart"] = Cart;
+                if (Cart == "" && Session["Cart"] != null && Session["Cart"].ToString() != "")
+                    Cart = Session["Cart"].ToString();
+
+                ViewData["Cart"] = Cart;
+                ViewData["CartCount"] = Cart != "" ? Cart.Split(',').Length.ToString() : "0";
+                ViewData["ImageList"] = db.ProductImages.Where(c => c.Component == "Product").ToList();
+            }
+
+            ViewData["CatList"] = db.Catalogs.Select(d => d).ToList();
+        }
+        
         IEnumerable<Models.Product> OrderList(IEnumerable<Models.Product> list, string order)
         {
             if (list == null || list.Count() == 0)
@@ -324,6 +322,45 @@ namespace MVCProject.Controllers
             }
 
             return list;
+        }
+
+        private void SetLocationDetail()
+        {
+            var priceList = (from price in db.ProductPrices
+                             join p in db.Products
+                             on price.ProductID equals p.ID
+                             select new
+                             {
+                                 price.ProductID,
+                                 price.Price
+                             });
+            
+            Dictionary<long, decimal> pList = null;
+            if (priceList != null && priceList.Count() > 0)
+            {
+                pList = new Dictionary<long, decimal>();
+                foreach (var item in priceList)
+                    pList.Add(item.ProductID, item.Price);
+            }
+            ViewData["PriceList"] = pList;
+
+            var nameList = (from name in db.ProductNames
+                            join p in db.Products
+                            on name.ProductID equals p.ID
+                            select new
+                            {
+                                name.ProductID,
+                                name.Name
+                            });
+
+            Dictionary<long, string> nList = null;
+            if (nameList != null && nameList.Count() > 0)
+            {
+                nList = new Dictionary<long, string>();
+                foreach (var item in nameList)
+                    nList.Add(item.ProductID, item.Name);
+            }
+            ViewData["NameList"] = nList;
         }
         #endregion
     }

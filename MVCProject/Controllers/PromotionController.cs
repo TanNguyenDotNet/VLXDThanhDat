@@ -21,9 +21,11 @@ namespace MVCProject.Controllers
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
 
-            ViewData["ProductList"] = db.Products.Select(d => d).ToList();
+            GetProductName();
             return View(db.Promotions.ToList());
         }
+
+        
 
         // GET: /Promotion/Details/5
         public ActionResult Details(long? id)
@@ -164,6 +166,27 @@ namespace MVCProject.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private void GetProductName()
+        {
+            var nameList = (from pr in db.Promotions
+                            join p in db.Products
+                            on pr.ProductID equals p.ID
+                            select new
+                            {
+                                p.ID,
+                                p.ProductName
+                            });
+
+            Dictionary<long, string> nList = null;
+            if (nameList != null && nameList.Count() > 0)
+            {
+                nList = new Dictionary<long, string>();
+                foreach (var item in nameList)
+                    nList.Add(item.ID, item.ProductName);
+            }
+            ViewData["NameList"] = nList;
         }
     }
 }

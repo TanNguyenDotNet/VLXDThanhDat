@@ -41,7 +41,7 @@ input[type="checkbox"].input-validation-error {
     display: none;
 }
 
-img.product-intro { max-height: 64px; }
+img.product-intro { max-height: 32px; }
 a img.add-button-disable {
     opacity: 0.4;
     filter: alpha(opacity=40);

@@ -70,10 +70,10 @@
             <td align="right">
                 @item.Amount
             </td>
-            <td>
+            <td align="center">
                 @DateTime.Now.ToString("dd/MM/yyyy")
             </td>
-            <td align="right">
+            <td align="center">
                 @Html.DisplayFor(modelItem => item.Tax)%
             </td>
             <td align="right">
@@ -108,7 +108,7 @@
         {
             <tr>
                 <td>@s.Split('|')[0]</td>
-                <td>@s.Split('|')[1]</td>
+                <td align="center">@s.Split('|')[1]</td>
                 <td>@s.Split('|')[2]</td>
             </tr>
         }
