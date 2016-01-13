@@ -13,6 +13,9 @@
 <table class="table">
     <tr>
         <th>
+            In đơn hàng  
+        </th>
+        <th>
             Mã đơn hàng
         </th>
         <th>
@@ -45,6 +48,9 @@
         foreach (var item in Model)
         {
             <tr>
+                <td>
+                    <a href="../ReportView/Index/?code=@item.OrderCode">In</a>
+                </td>
                 <td>
                    <a href="../OrderDetail/AdmView/?code=@item.OrderCode">@item.OrderCode</a>
                 </td>
