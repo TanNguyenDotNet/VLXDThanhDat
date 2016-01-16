@@ -71,7 +71,7 @@ namespace MVCProject.Controllers
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
 
-            return View(AdminViewOrder());
+            return View(AdminViewOrder(1));
         }
 
         public ActionResult UserView()
@@ -79,7 +79,7 @@ namespace MVCProject.Controllers
             if (!Request.IsAuthenticated)
                 Response.Redirect("~/Account/Login");
 
-            return View(AdminViewOrder());
+            return View(AdminViewOrder(0));
         }
 
         // GET: /OrderDetail/Create
@@ -137,12 +137,12 @@ namespace MVCProject.Controllers
         }
 
         #region Functions
-        private IEnumerable<Models.OrdersDetail> AdminViewOrder()
+        private IEnumerable<Models.OrdersDetail> AdminViewOrder(int viewBy)
         {
             string code = Request.QueryString["code"];
             if (code == null) return null;
             var o = db.Orders.Single(c => c.OrderCode == code);
-            if(o.State=="0")
+            if(o.State=="0" && viewBy == 1)
             {
                 o.State = "1";
                 db.SaveChanges();
@@ -309,16 +309,13 @@ namespace MVCProject.Controllers
             Response.Redirect("~/OrderDetail/Index");
         }
 
-        private IEnumerable<Models.OrdersDetail> SetDetailForm(List<Product> li, string[,] cd)
+        private IEnumerable<Models.OrdersDetail> SetDetailForm(List<Product> li, string[,] cd, AppNetUserType u)
         {
             if(cd.Length == 0) 
                 Response.Redirect("~/Account/Login");
 
             double Total = 0;
             List<Models.OrdersDetail> listOd = new List<OrdersDetail>();
-
-            string enu = Security.EncryptString("User:" + User.Identity.GetUserName() + "~FrontendUser", false, EncryptType.TripleDES);
-            var u = _db.AppNetUserTypes.Find(enu);
 
             for(int i = 0; i < cd.GetLength(0); i++)
             {
@@ -389,6 +386,10 @@ namespace MVCProject.Controllers
             string[,] cdSession = null;
             if(Session["CartDetails"] != null)
                 cdSession = (string[,])Session["CartDetails"];
+
+            string enu = Security.EncryptString("User:" + User.Identity.GetUserName() + "~FrontendUser", false, EncryptType.TripleDES);
+            var u = _db.AppNetUserTypes.Find(enu);
+
             var li = _db.Products.Where(c => parts.Contains(c.ItemCode)).ToList();
 
             int index = 0;
@@ -407,12 +408,21 @@ namespace MVCProject.Controllers
                     }
                 }
 
+                ProductPrice price = null;
+
                 try
                 {
-                    var price = _db.ProductPrices.Single(c => c.ProductID == i.ID);
-                    cd[index, 1] = price.Price.ToString();
+                    if(u.LocationID > 0)
+                        price = _db.ProductPrices.OrderBy(c => c.ID).First(c => c.ProductID == i.ID && c.LocationID == u.LocationID);
+                    if(price == null || price.Price == 0)
+                        price = _db.ProductPrices.OrderBy(c=>c.ID).First(c => c.ProductID == i.ID);
                 }
                 catch { cd[index, 1] = "0"; }
+
+                if (price == null || price.Price == 0)
+                    cd[index, 1] = i.Price.ToString();
+                else
+                    cd[index, 1] = price.Price.ToString();
                 
                 cd[index, 0] = i.ID.ToString();
                 string quan = Request.QueryString["quan_" + i.ID];
@@ -424,7 +434,7 @@ namespace MVCProject.Controllers
                 index++;
             }
             
-            return SetDetailForm(li, cd);
+            return SetDetailForm(li, cd, u);
         }
         #endregion
     }

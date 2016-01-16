@@ -73,6 +73,9 @@ namespace MVCProject.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
+
             return View();
         }
 
@@ -83,6 +86,9 @@ namespace MVCProject.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
+
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser() { UserName = model.UserName };
@@ -110,8 +116,8 @@ namespace MVCProject.Controllers
                     db.AppNetUserTypes.Add(ut);
                     db.SaveChanges();
 
-                    await SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
+                    //await SignInAsync(user, isPersistent: false);
+                    //return RedirectToAction("Index", "Home");
                 }
                 else
                 {
@@ -120,7 +126,7 @@ namespace MVCProject.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            return View(model);
+            return RedirectToAction("Register", "Account");
         }
 
         //
@@ -163,6 +169,9 @@ namespace MVCProject.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Manage(ManageUserViewModel model)
         {
+            if (!Request.IsAuthenticated)
+                Response.Redirect("~/Account/Login");
+
             bool hasPassword = HasPassword();
             ViewBag.HasLocalPassword = hasPassword;
             ViewBag.ReturnUrl = Url.Action("Manage");
@@ -319,7 +328,7 @@ namespace MVCProject.Controllers
         {
             Session.RemoveAll();
             AuthenticationManager.SignOut();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Account");
         }
 
         //

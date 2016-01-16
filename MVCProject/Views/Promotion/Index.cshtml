@@ -3,6 +3,9 @@
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    Dictionary<long, string> nList = (Dictionary<long, string>)ViewData["NameList"];
+    string name = "";
 }
 
 <h2>Khuyến mãi</h2>
@@ -43,14 +46,13 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @if (((List<MVCProject.Models.Product>)ViewData["ProductList"]).Count > 0)
-            {
-                MVCProject.Models.Product i = ((List<MVCProject.Models.Product>)ViewData["ProductList"]).Single(s => s.ID == item.ProductID);
-                if (i != null)
-                {
-                    @Html.Raw(i.ProductName);
-                }
-            }
+           @if(nList != null && nList.Count > 0 && nList.Keys.Contains(item.ID)){
+                        name = nList[item.ID];
+                    }
+                    else { 
+                        name = ""; 
+                    }
+                    @name
             </td>
         <td>
             @Html.ActionLink(item.Title, "Edit", new { id = item.ID })

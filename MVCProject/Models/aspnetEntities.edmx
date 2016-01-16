@@ -87,7 +87,7 @@
           <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="LocationID" Type="int" />
           <Property Name="Code" Type="varchar" MaxLength="5" />
-          <Property Name="UserID" Type="varchar" MaxLength="50" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="128" />
         </EntityType>
         <EntityType Name="Location">
           <Key>
@@ -118,9 +118,10 @@
           <Property Name="Warranty" Type="varchar" MaxLength="5" />
           <Property Name="IsDel" Type="bit" Nullable="false" />
           <Property Name="IsState" Type="tinyint" />
-          <Property Name="UserID" Type="varchar" MaxLength="50" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="128" />
           <Property Name="ProductName" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="TaxID" Type="tinyint" />
+          <Property Name="Price" Type="decimal" Precision="14" Scale="2" />
         </EntityType>
         <EntityType Name="ProductCode">
           <Key>
@@ -154,7 +155,7 @@
           <Property Name="ProductID" Type="bigint" Nullable="false" />
           <Property Name="Name" Type="nvarchar(max)" />
           <Property Name="LocationID" Type="int" />
-          <Property Name="UserId" Type="varchar" MaxLength="50" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" />
         </EntityType>
         <EntityType Name="ProductPrice">
           <Key>
@@ -165,7 +166,7 @@
           <Property Name="Price" Type="decimal" Precision="14" Scale="2" Nullable="false" />
           <Property Name="Created" Type="date" />
           <Property Name="Description" Type="nvarchar(max)" />
-          <Property Name="UserID" Type="varchar" MaxLength="50" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="128" />
           <Property Name="LocationID" Type="int" />
         </EntityType>
         <EntityType Name="Promotion">
@@ -176,7 +177,7 @@
           <Property Name="PromotionCode" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="StartDate" Type="datetime" />
           <Property Name="EndDate" Type="datetime" />
-          <Property Name="UserID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="128" />
           <Property Name="Created" Type="date" />
           <Property Name="PromotionTypeID" Type="int" Nullable="false" />
           <Property Name="PromotionValue" Type="decimal" Precision="14" Scale="2" Nullable="false" />
@@ -223,7 +224,7 @@
           <Property Name="Value" Type="tinyint" />
           <Property Name="ID" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
-        <Association Name="FK__AspNetUse__RoleI__40F9A68C">
+        <Association Name="FK__AspNetUse__RoleI__3FD07829">
           <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -237,7 +238,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AspNetUse__User___3F115E1A">
+        <Association Name="FK__AspNetUse__User___3DE82FB7">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -251,7 +252,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AspNetUse__UserI__40058253">
+        <Association Name="FK__AspNetUse__UserI__3EDC53F0">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -265,7 +266,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AspNetUse__UserI__41EDCAC5">
+        <Association Name="FK__AspNetUse__UserI__40C49C62">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -299,19 +300,19 @@
           <EntitySet Name="Supplier" EntityType="Self.Supplier" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tax" EntityType="Self.Tax" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Warranty" EntityType="Self.Warranty" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__AspNetUse__RoleI__40F9A68C" Association="Self.FK__AspNetUse__RoleI__40F9A68C">
+          <AssociationSet Name="FK__AspNetUse__RoleI__3FD07829" Association="Self.FK__AspNetUse__RoleI__3FD07829">
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
-          <AssociationSet Name="FK__AspNetUse__User___3F115E1A" Association="Self.FK__AspNetUse__User___3F115E1A">
+          <AssociationSet Name="FK__AspNetUse__User___3DE82FB7" Association="Self.FK__AspNetUse__User___3DE82FB7">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
           </AssociationSet>
-          <AssociationSet Name="FK__AspNetUse__UserI__40058253" Association="Self.FK__AspNetUse__UserI__40058253">
+          <AssociationSet Name="FK__AspNetUse__UserI__3EDC53F0" Association="Self.FK__AspNetUse__UserI__3EDC53F0">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
           </AssociationSet>
-          <AssociationSet Name="FK__AspNetUse__UserI__41EDCAC5" Association="Self.FK__AspNetUse__UserI__41EDCAC5">
+          <AssociationSet Name="FK__AspNetUse__UserI__40C49C62" Association="Self.FK__AspNetUse__UserI__40C49C62">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
@@ -382,7 +383,7 @@
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="LocationID" Type="Int32" />
           <Property Name="Code" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="UserID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Location">
           <Key>
@@ -413,9 +414,10 @@
           <Property Name="Warranty" Type="String" MaxLength="5" Unicode="false" FixedLength="false" />
           <Property Name="IsDel" Type="Boolean" Nullable="false" />
           <Property Name="IsState" Type="Byte" />
-          <Property Name="UserID" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="UserID" Type="String" MaxLength="128" Unicode="true" FixedLength="false" />
           <Property Name="ProductName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="TaxID" Type="Byte" />
+          <Property Name="Price" Type="Decimal" Precision="14" Scale="2" />
         </EntityType>
         <EntityType Name="ProductName">
           <Key>
@@ -425,7 +427,7 @@
           <Property Name="ProductID" Type="Int64" Nullable="false" />
           <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="LocationID" Type="Int32" />
-          <Property Name="UserId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="ProductPrice">
           <Key>
@@ -436,7 +438,7 @@
           <Property Name="Price" Type="Decimal" Precision="14" Scale="2" Nullable="false" />
           <Property Name="Created" Type="DateTime" Precision="0" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="UserID" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="UserID" Type="String" MaxLength="128" Unicode="true" FixedLength="false" />
           <Property Name="LocationID" Type="Int32" />
         </EntityType>
         <EntityType Name="Promotion">
@@ -448,7 +450,7 @@
           <Property Name="PromotionCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="StartDate" Type="DateTime" Precision="3" />
           <Property Name="EndDate" Type="DateTime" Precision="3" />
-          <Property Name="UserID" Type="String" MaxLength="50" Nullable="false" Unicode="false" FixedLength="false" />
+          <Property Name="UserID" Type="String" MaxLength="128" Unicode="true" FixedLength="false" />
           <Property Name="Created" Type="DateTime" Precision="0" />
           <Property Name="PromotionTypeID" Type="Int32" Nullable="false" />
           <Property Name="PromotionValue" Type="Decimal" Precision="14" Scale="2" Nullable="false" />
@@ -680,6 +682,7 @@
           <EntitySetMapping Name="Products">
             <EntityTypeMapping TypeName="Models.Product">
               <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="TaxID" ColumnName="TaxID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="ItemCode" ColumnName="ItemCode" />

@@ -1,16 +1,62 @@
-﻿@model IEnumerable<MVCProject.Models.Product>
-
+﻿@model PagedList.IPagedList<MVCProject.Models.Product>
+@using PagedList.Mvc;
 @{
     ViewBag.Title = "Danh sách";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    string cid = Request.QueryString["CatID"] == null ? "0" : Request.QueryString["CatID"];
+    List<MVCProject.Models.Catalog> listCat = (List<MVCProject.Models.Catalog>)ViewData["CatList"];
+    string size = Request.QueryString["size"];
+    if (size == null || size == "") { size = "20"; }
+    string catid = Request.QueryString["catid"];
+    if (catid == null || catid == "") { catid = "0"; }
 }
 
+@using (Html.BeginForm("Index", "Product", FormMethod.Get, new { id = "productViewForm" }))
+{
 <h2>Sản phẩm</h2>
 
 <p>
     @Html.ActionLink("Thêm mới", "Create") :::: <a href="../ProductCode/Create/?code=SP">Cấu hình mã sản phẩm</a>
     | @Html.ActionLink("Giá sản phẩm", "Index", "ProductPrice")
 </p>
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page, order = ViewBag.Order, 
+    filter = ViewBag.Filter, size=size, catid=catid }))
+<table class="table">
+    <tr>
+        <td align="right" width="10%">
+            Danh mục:
+        </td>
+        <td align="left" width="18%">
+            <select class="form-control" name="catid" id="catid" onchange="productViewForm.submit()">
+                <option value="0">Chọn danh mục</option>
+                @foreach (var i in listCat)
+                {
+                    <option value="@i.ID" @if (i.ID.ToString() == cid) { @Html.Raw("selected='selected'")   }>
+                        @i.Title
+                    </option>
+                }
+            </select>
+        </td>
+        <td align="right" width="10%">
+            Sản phẩm:
+        </td>
+        <td align="left" width="18%">
+            <input class="form-control" type="text" name="filter" id="filter" value="@Request.QueryString["filter"]" />
+        </td>
+        <td align="right" width="7%">
+            Số dòng:
+        </td>
+        <td align="left" width="7%">
+            <select class="form-control" name="size" id="size" onchange="productViewForm.submit();">
+                @for (int s = 10; s <= 50; s += 10)
+                {
+                    <option value="@s" @if (size == s.ToString()) { @Html.Raw("selected='selected'")   }>@s</option>
+                }
+            </select>
+        </td>
+    </tr>
+</table>
+
 <table class="table">
     <tr>
         <th>
@@ -21,9 +67,6 @@
         </th>
         <th>
             Mã danh mục
-        </th>
-        <th>
-            SKU
         </th>
         <th>
             Nhà cung cấp
@@ -38,13 +81,16 @@
             ĐVT
         </th>
         <th>
+            Giá
+        </th>
+        <th>
            BH
         </th>
         <th>
            Đã xóa
         </th>
         <th>
-            #
+            Thêm
             </th>
     </tr>
 
@@ -53,14 +99,11 @@
         <td>
             @Html.ActionLink(item.ProductName, "Edit", new { id = item.ID })
         </td>
-        <td>
+        <td align="center">
             @Html.DisplayFor(modelItem => item.ItemCode)
         </td>
-        <td>
+        <td align="center">
             @Html.DisplayFor(modelItem => item.CatID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SKU)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.SupplierID)
@@ -78,6 +121,9 @@
         <td>
             @Html.DisplayFor(modelItem => item.Unit)
         </td>
+        <td align="center">
+            @double.Parse(item.Price.ToString()).ToString("#,###.00")
+        </td>
         <td>
             @Html.DisplayFor(modelItem => item.Warranty)
         </td>
@@ -85,10 +131,12 @@
             @Html.DisplayFor(modelItem => item.IsDel)
         </td>
         <td>
-            @Html.ActionLink("Thêm giá", "Create/" + item.ID, "ProductPrice") | 
-            @Html.ActionLink("Khuyến mãi", "Create/" + item.ID, "Promotion")
+            @Html.ActionLink("Tên", "Create/" + item.ID, "ProductName") | 
+            @Html.ActionLink("Giá", "Create/" + item.ID, "ProductPrice") | 
+            @Html.ActionLink("KM", "Create/" + item.ID, "Promotion")
         </td>
     </tr>
 }
 
 </table>
+}

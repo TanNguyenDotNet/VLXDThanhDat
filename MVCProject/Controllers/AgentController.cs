@@ -32,7 +32,7 @@ namespace MVCProject.Controllers
         }
 
         [HttpPost]
-        public ActionResult AgentInfo([Bind(Include = "Username,Email,Fax,Address,Phone,UserType,DateCreate,Expire,LocationID,District,State")] 
+        public ActionResult AgentInfo([Bind(Include = "Username,Email,Fax,Address,Phone,UserType,DateCreate,Expire,LocationID,District,State,TaxID,DisplayName")] 
             AppNetUserType appnetusertype)
         {
             if (!Request.IsAuthenticated)
@@ -40,11 +40,11 @@ namespace MVCProject.Controllers
 
             if (ModelState.IsValid)
             {
-                appnetusertype.Expire = DateTime.Now.ToString("yyyyMMddHHmm");
+                appnetusertype.Expire = DateTime.Now.AddYears(1).ToString("yyyyMMddHHmm");
                 appnetusertype.State = "1";
                 db.Entry(appnetusertype).State = EntityState.Modified;
                 db.SaveChanges();
-                Response.Redirect("~/OrderDetail/Bill");
+                Response.Redirect("~/OrderDetail/Details");
             }
             
             return null;

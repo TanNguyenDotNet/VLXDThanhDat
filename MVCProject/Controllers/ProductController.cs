@@ -8,6 +8,8 @@ using System.Web;
 using System.Web.Mvc;
 using MVCProject.Models;
 using Microsoft.AspNet.Identity;
+using PagedList;
+using MVCProject.Common;
 
 namespace MVCProject.Controllers
 {
@@ -18,21 +20,31 @@ namespace MVCProject.Controllers
         private string introImg = "";
 
         #region Local actions
-        public ActionResult Home()
+        public ActionResult Home(int? page, int? size, string filter, string order, string catid)
         {
             if (!Request.IsAuthenticated)
                 Response.Redirect("~/Account/Login");
 
-            IEnumerable<Models.Product> list = GetList();
-            return View(list);
+            InitItem(false);
+            SetLocationDetail();
+            IEnumerable<Models.Product> list = GetList(filter, order, catid == null || catid == "" ? "0" : catid);
+            return View(list.ToPagedList(page == null ||
+                page == 0 ? 1 : (int)page, size == null || size == 0 ? 20 : (int)size));
         }
+
         // GET: /Product/
-        public ActionResult Index()
+        public ActionResult Index(int? page, int? size, string filter, string order, string catid)
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 Response.Redirect("~/Account/Login");
-            return View(db.Products.ToList());
+
+            InitItem(false);
+            var list = GetList(filter, order, catid == null || catid == "" ? "0" : catid);
+            return View(list.ToPagedList(page == null || 
+                page == 0 ? 1 : (int)page, size == null || size == 0 ? 20 : (int)size));
         }
+
+        
 
         // GET: /Product/Details/5
         public ActionResult Details(long? id)
@@ -240,44 +252,116 @@ namespace MVCProject.Controllers
             }
         }
 
-        IEnumerable<Models.Product> GetList()
+        IEnumerable<Models.Product> GetList(string filter, string order, string cid)
         {
-            string Cart = "", Page = "1", cid = "", name = "";
-            if (Request.QueryString["CatID"] != null) cid = Request.QueryString["CatID"];
-            if (Request.QueryString["Name"] != null) name = Request.QueryString["Name"];
-            if (Request.QueryString["Cart"] != null) Cart = Request.QueryString["Cart"];
-            if (Request.QueryString["page"] != null) Page = Request.QueryString["page"];
-
-            if (Cart != "" && (Session["Cart"] == null || Session["Cart"].ToString() != Cart))
-                Session["Cart"] = Cart;
-            if (Cart == "" && Session["Cart"] != null && Session["Cart"].ToString() != "")
-                Cart = Session["Cart"].ToString();
-
-            ViewData["Cart"] = Cart;
-            ViewData["Page"] = Page;
-            ViewData["CartCount"] = Cart != "" ? Cart.Split(',').Length.ToString() : "0";
-
             long lcid = 0;
             try
             {
-                cid = cid == "" ? "0" : cid;
+                cid = cid == null || cid == "" ? "0" : cid;
                 lcid = long.Parse(cid);
             }
             catch { lcid = 0; cid = "0"; }
 
-            ViewData["ImageList"] = db.ProductImages.Where(c => c.Component == "Product").ToList();
-            ViewData["CatList"] = db.Catalogs.Select(d => d).ToList();
-
-            if (lcid > 0 && name != null && name != "")
-                return db.Products.Where(c => c.CatID == lcid
-                    && c.ProductName.Contains(name));
+            IEnumerable<Models.Product> list = null;
+            if (lcid > 0 && filter != null && filter != "")
+                list = db.Products.Where(c => c.CatID == lcid
+                    && c.ProductName.Contains(filter));
             else if (lcid > 0)
-                return db.Products.Where(c => c.CatID == lcid).ToList();
-            else if (name != null && name != "")
-                return db.Products.Where(c => c.ProductName.Contains(name)).ToList();
+                list = db.Products.Where(c => c.CatID == lcid);
+            else if (filter != null && filter != "")
+                list = db.Products.Where(c => c.ProductName.Contains(filter));
             else
-                return db.Products.ToList();
-        } 
+                list = db.Products;
+
+            list = OrderList(list, order);
+
+            ViewBag.Order = order == null ? "" : order;
+            ViewBag.Filter = filter == null ? "" : filter;
+            return list.ToList();
+        }
+
+        void InitItem(bool isAdmin)
+        {
+            if (!isAdmin)
+            {
+                string Cart = "";
+                if (Request.QueryString["Cart"] != null) Cart = Request.QueryString["Cart"];
+
+                if (Cart != "" && (Session["Cart"] == null || Session["Cart"].ToString() != Cart))
+                    Session["Cart"] = Cart;
+                if (Cart == "" && Session["Cart"] != null && Session["Cart"].ToString() != "")
+                    Cart = Session["Cart"].ToString();
+
+                ViewData["Cart"] = Cart;
+                ViewData["CartCount"] = Cart != "" ? Cart.Split(',').Length.ToString() : "0";
+                ViewData["ImageList"] = db.ProductImages.Where(c => c.Component == "Product").ToList();
+            }
+
+            ViewData["CatList"] = db.Catalogs.Select(d => d).ToList();
+        }
+        
+        IEnumerable<Models.Product> OrderList(IEnumerable<Models.Product> list, string order)
+        {
+            if (list == null || list.Count() == 0)
+                return list;
+
+            switch (order)
+            {
+                case "price":
+                    list = list.OrderBy(s => s.Price);
+                    break;
+                case "price_desc":
+                    list = list.OrderByDescending(s => s.Price);
+                    break;
+                case "name_desc":
+                    list = list.OrderByDescending(s => s.ProductName);
+                    break;
+                default:
+                    list = list.OrderBy(s => s.ProductName);
+                    break;
+            }
+
+            return list;
+        }
+
+        private void SetLocationDetail()
+        {
+            var priceList = (from price in db.ProductPrices
+                             join p in db.Products
+                             on price.ProductID equals p.ID
+                             select new
+                             {
+                                 price.ProductID,
+                                 price.Price
+                             });
+            
+            Dictionary<long, decimal> pList = null;
+            if (priceList != null && priceList.Count() > 0)
+            {
+                pList = new Dictionary<long, decimal>();
+                foreach (var item in priceList)
+                    pList.Add(item.ProductID, item.Price);
+            }
+            ViewData["PriceList"] = pList;
+
+            var nameList = (from name in db.ProductNames
+                            join p in db.Products
+                            on name.ProductID equals p.ID
+                            select new
+                            {
+                                name.ProductID,
+                                name.Name
+                            });
+
+            Dictionary<long, string> nList = null;
+            if (nameList != null && nameList.Count() > 0)
+            {
+                nList = new Dictionary<long, string>();
+                foreach (var item in nameList)
+                    nList.Add(item.ProductID, item.Name);
+            }
+            ViewData["NameList"] = nList;
+        }
         #endregion
     }
 }

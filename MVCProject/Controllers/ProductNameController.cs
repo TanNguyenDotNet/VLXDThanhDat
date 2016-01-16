@@ -20,6 +20,7 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
+
             return View(db.ProductNames.ToList());
         }
 
@@ -41,11 +42,18 @@ namespace MVCProject.Controllers
         }
 
         // GET: /ProductName/Create
-        public ActionResult Create()
+        public ActionResult Create(long? id)
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
-            return View();
+
+            var pp = new Models.ProductName();
+            if (id != null) pp.ProductID = (long)id;
+
+            ViewBag.ProductList = Common.Commons.GetProductList(db);
+            ViewBag.LocationList = Common.Commons.GetLocationList(db);
+
+            return View(pp);
         }
 
         // POST: /ProductName/Create
