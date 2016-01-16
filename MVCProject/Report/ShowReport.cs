@@ -27,7 +27,7 @@ namespace MVCProject.Report
         {
             //ReportParameter p1 = new ReportParameter("ShowBingMaps", "Visible");
             //ReportParameter p2 = new ReportParameter("ShowAll", "True");
-            return new ReportParameter[] { p1, p2 };
+            return null;// new ReportParameter[] { p1, p2 };
         }
     }
 }

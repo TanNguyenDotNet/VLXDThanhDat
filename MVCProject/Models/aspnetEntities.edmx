@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="Models.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Models.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -28,7 +28,7 @@
           <Property Name="DateCreate" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="Expire" Type="varchar" MaxLength="12" Nullable="false" />
           <Property Name="LocationID" Type="int" Nullable="false" />
-          <Property Name="District" Type="nvarchar" MaxLength="255" />
+          <Property Name="District" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="State" Type="varchar" MaxLength="2" Nullable="false" />
           <Property Name="TaxID" Type="varchar" MaxLength="15" />
           <Property Name="DisplayName" Type="nvarchar(max)" Nullable="false" />
@@ -224,7 +224,7 @@
           <Property Name="Value" Type="tinyint" />
           <Property Name="ID" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
-        <Association Name="FK__AspNetUse__RoleI__3FD07829">
+        <Association Name="FK__AspNetUse__RoleI__27C3E46E">
           <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -238,7 +238,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AspNetUse__User___3DE82FB7">
+        <Association Name="FK__AspNetUse__User___25DB9BFC">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -252,7 +252,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AspNetUse__UserI__3EDC53F0">
+        <Association Name="FK__AspNetUse__UserI__26CFC035">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -266,7 +266,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AspNetUse__UserI__40C49C62">
+        <Association Name="FK__AspNetUse__UserI__28B808A7">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -300,19 +300,19 @@
           <EntitySet Name="Supplier" EntityType="Self.Supplier" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tax" EntityType="Self.Tax" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Warranty" EntityType="Self.Warranty" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__AspNetUse__RoleI__3FD07829" Association="Self.FK__AspNetUse__RoleI__3FD07829">
+          <AssociationSet Name="FK__AspNetUse__RoleI__27C3E46E" Association="Self.FK__AspNetUse__RoleI__27C3E46E">
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
-          <AssociationSet Name="FK__AspNetUse__User___3DE82FB7" Association="Self.FK__AspNetUse__User___3DE82FB7">
+          <AssociationSet Name="FK__AspNetUse__User___25DB9BFC" Association="Self.FK__AspNetUse__User___25DB9BFC">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
           </AssociationSet>
-          <AssociationSet Name="FK__AspNetUse__UserI__3EDC53F0" Association="Self.FK__AspNetUse__UserI__3EDC53F0">
+          <AssociationSet Name="FK__AspNetUse__UserI__26CFC035" Association="Self.FK__AspNetUse__UserI__26CFC035">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
           </AssociationSet>
-          <AssociationSet Name="FK__AspNetUse__UserI__40C49C62" Association="Self.FK__AspNetUse__UserI__40C49C62">
+          <AssociationSet Name="FK__AspNetUse__UserI__28B808A7" Association="Self.FK__AspNetUse__UserI__28B808A7">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
@@ -577,7 +577,7 @@
           <Property Name="DateCreate" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Expire" Type="String" MaxLength="12" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="LocationID" Type="Int32" Nullable="false" />
-          <Property Name="District" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="District" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="State" Type="String" MaxLength="2" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="TaxID" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="DisplayName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />

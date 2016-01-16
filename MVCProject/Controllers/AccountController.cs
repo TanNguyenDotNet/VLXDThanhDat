@@ -109,8 +109,9 @@ namespace MVCProject.Controllers
                         Expire = DateTime.Now.AddDays(365).ToString("yyyyMMdd"),
                         LocationID = 0,
                         State = "0",
-                        TaxID = "",
-                        DisplayName = ""
+                        TaxID = "0",
+                        DisplayName = "",
+                        District = ""
                     };
                     Models.aspnetEntities db = new Models.aspnetEntities();
                     db.AppNetUserTypes.Add(ut);

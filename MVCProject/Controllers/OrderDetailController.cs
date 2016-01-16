@@ -219,6 +219,8 @@ namespace MVCProject.Controllers
                         total += od.Total;
                     }
 
+                    if (od.Description == null) od.Description = "";
+
                     od.DateOfOrder = DateTime.Now;
                     od.OrderCode = code;
 
