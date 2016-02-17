@@ -1,0 +1,64 @@
+﻿@model IEnumerable<MVCProject.Models.AspNetUser>
+
+@{
+    ViewBag.Title = "Danh sách người dùng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Dictionary<string,string> types = (Dictionary<string,string>)ViewBag.TypeList;
+    Dictionary<int,string> location = (Dictionary<int,string>)ViewBag.LocationList;
+    List<string> roles = (List<string>)ViewData["AccessList"];
+}
+<h2>@ViewBag.Title</h2>
+@if(roles.Contains("12")){
+<p>
+    @Html.ActionLink("Thêm mới", "Register")
+</p>
+}
+<table class="table">
+    <tr>
+        <th>
+            Tên đăng nhập
+        </th>
+        <th>
+            Tên cá nhân/đại lý
+        </th>
+        <th width="10%">#</th>
+    </tr>
+
+@foreach (var item in Model) {
+    string actname = "Phân quyền", action = "Roles";
+    string en = MVCProject.Common.Security.EncryptString("User:" + item.UserName + "~BackendUser", false, MVCProject.Common.EncryptType.TripleDES);
+    if (!types.Keys.Contains(en))
+    {
+        en = MVCProject.Common.Security.EncryptString("User:" + item.UserName + "~FrontendUser", false, MVCProject.Common.EncryptType.TripleDES);
+        actname = "Thông tin đại lý";
+        action = "Agent";
+    }
+    string name = "";
+    if (!types.Keys.Contains(en))
+    {
+        name = item.UserName;
+    }
+    else
+    {
+        name = types[en];
+    }
+    
+    if ((action == "Roles" && roles.Contains("14")) || (action == "Agent" && roles.Contains("13")))
+    { 
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+  
+                @name
+            </td>
+            <td>
+                @Html.ActionLink(actname, action, new { id = item.UserName })
+            </td>
+        </tr>
+    }
+    
+}
+
+</table>

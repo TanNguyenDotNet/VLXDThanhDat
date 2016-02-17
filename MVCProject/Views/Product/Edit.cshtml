@@ -48,6 +48,13 @@
                 @Html.ValidationMessageFor(model => model.SKU)
             </div>
         </div>
+        <div class="form-group">
+            <span class="control-label col-md-2">Giá</span>
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Price, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Price)
+            </div>
+        </div>
 
         <div class="form-group">
             <span class="control-label col-md-2">Danh mục</span>

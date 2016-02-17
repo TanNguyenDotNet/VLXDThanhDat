@@ -3,11 +3,15 @@
 @{
     ViewBag.Title = "Danh sách đơn hàng";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    List<string> roles = (List<string>)ViewData["AccessList"];
 }
 
 <h2>Danh sách đơn hàng</h2>
 <p>
+@if (roles.Contains("11"))
+{
     <a href="../ProductCode/Create/?code=OC">Cấu hình mã hóa đơn</a>
+}
 </p>
 
 <table class="table">
@@ -52,7 +56,13 @@
                     <a href="../ReportView/Index/?code=@item.OrderCode">In</a>
                 </td>
                 <td>
-                   <a href="../OrderDetail/AdmView/?code=@item.OrderCode">@item.OrderCode</a>
+@if (roles.Contains("15")) { 
+                   <a href="../OrderDetail/AdmView/?code=@item.OrderCode">@item.OrderCode</a> 
+}
+else
+{
+    @item.OrderCode
+}
                 </td>
                 <td align="center">
                     @DateTime.ParseExact(item.DateCreate, "yyyyMMddHHmm", System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy")

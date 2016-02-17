@@ -101,7 +101,7 @@ namespace MVCProject.Common
             useCatCode = ((bool) pc.CatID) ? 1 : 0;
             string code = (pc.Group1 != "" ? pc.Group1 + "." : "") +
                 (pc.Group2 != "" ? pc.Group2 + "." : "") +
-                string.Format("{0:0000000000}", pc.ScrollNumber);
+                string.Format("{0:000000}", pc.ScrollNumber);
             return code;
         }
 
@@ -113,6 +113,7 @@ namespace MVCProject.Common
             string en = Security.EncryptString("User:" + username + "~BackendUser", false, EncryptType.TripleDES);
             Models.aspnetEntities db = new Models.aspnetEntities();
             bool redirect = false;
+
             try
             {
                 var i = db.AppNetUserTypes.Where(d => d.Username == en).ToList();
@@ -120,9 +121,14 @@ namespace MVCProject.Common
                     redirect = true;
             }
             catch { return false; }
+
             if (redirect)
             {
-                res.Redirect("~/Product/Home");
+                try
+                {
+                    res.Redirect("~/Product/Home");
+                }
+                catch { }
                 return false;
             }
 
@@ -144,6 +150,50 @@ namespace MVCProject.Common
                 return reval;
             }
             catch { return ""; }
+        }
+
+        public static Dictionary<string, string> GetFullName(List<Models.AppNetUserType> types)
+        {
+            Dictionary<string, string> list = new Dictionary<string, string>();
+            foreach (Models.AppNetUserType type in types)
+                if (type.DisplayName != null && type.DisplayName != "")
+                    list.Add(type.Username, type.DisplayName);
+                else
+                    list.Add(type.Username, "");
+            return list;
+        }
+
+        public static Dictionary<int, string> GetCityName(List<Models.Location> citys)
+        {
+            Dictionary<int, string> list = new Dictionary<int, string>();
+            foreach (Models.Location type in citys)
+                if (type.LocationName != null && type.LocationName != "")
+                    list.Add(type.ID, type.LocationName);
+            return list;
+        }
+
+        public static bool CheckPermission(ViewDataDictionary ViewData, Models.aspnetEntities db, 
+            string username, string role)
+        {
+            string enu = Security.EncryptString("User:" + username + "~BackendUser", false, EncryptType.TripleDES);
+            var list = db.UserRoles.Where(c => c.UserName == enu).ToList();
+            List<string> access = new List<string>();
+            bool canaccess = false;
+            if (role == null || role == "")
+                canaccess = true;
+
+            if (list != null && list.Count() > 0)
+            {
+                foreach (var i in list)
+                {
+                    access.Add(i.RoleId);
+                    if (role != null && role != "" && role == i.RoleId)
+                        canaccess = true;
+                }
+            }
+            ViewData["AccessList"] = access;
+
+            return canaccess;
         }
     }
 }

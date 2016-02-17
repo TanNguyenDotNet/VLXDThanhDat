@@ -48,10 +48,15 @@ namespace MVCProject.Models
         [Required]
         [Display(Name = "Tên đăng nhập")]
         public string UserName { get; set; }
-
+        [Display(Name = "Tên cá nhân/đại lý")]
+        public string FullName { get; set; }
         [Required]
         [Display(Name = "Loại người dùng (Quyền)")]
         public string UserType { get; set; }
+
+        [Required]
+        [Display(Name = "Tỉnh/Thành phố")]
+        public string LocationID { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "Độ dài ít nhất {0} phải có  {2} ký tự.", MinimumLength = 6)]
