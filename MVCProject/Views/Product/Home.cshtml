@@ -175,7 +175,10 @@
                     }
                     else
                     {
-                        price = Double.Parse(item.Price.ToString());
+                        if(item.Price != null)
+                        {price = Double.Parse(item.Price.ToString());}
+                        else
+                        {price = 0;}
                     }
                     @price.ToString("#,###.00")
                 </td>

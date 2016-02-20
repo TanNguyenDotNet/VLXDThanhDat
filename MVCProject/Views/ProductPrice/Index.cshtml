@@ -6,11 +6,15 @@
 
     Dictionary<long, string> nList = (Dictionary<long, string>)ViewData["NameList"];
     string name = "";
+    List<string> roles = (List<string>)ViewData["AccessList"];
 }
 
 <h2>Giá sản phẩm</h2>
 <p>
+@if (roles.Contains("7"))
+{
     @Html.ActionLink("Thêm mới", "Create")
+}
 </p>
 <table class="table">
     <tr>
@@ -56,7 +60,11 @@
             @Html.DisplayFor(modelItem => item.LocationID)
         </td>
         <td>
-            @Html.ActionLink("Chỉnh sửa", "Edit", new { id=item.ID })
+            
+            @if (roles.Contains("8"))
+            {
+                @Html.ActionLink("Chỉnh sửa", "Edit", new { id=item.ID })
+            }
         </td>
     </tr>
 }

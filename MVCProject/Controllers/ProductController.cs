@@ -37,7 +37,8 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 Response.Redirect("~/Account/Login");
-
+            if (!Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), null))
+                return RedirectToAction("AccessDenied", "Account");
             InitItem(false);
             var list = GetList(filter, order, catid == null || catid == "" ? "0" : catid);
             return View(list.ToPagedList(page == null || 
@@ -49,18 +50,19 @@ namespace MVCProject.Controllers
         // GET: /Product/Details/5
         public ActionResult Details(long? id)
         {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
-                return null;
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Product product = db.Products.Find(id);
-            if (product == null)
-            {
-                return HttpNotFound();
-            }
-            return View(product);
+            //if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+            //    return null;
+            //if (id == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
+            //Product product = db.Products.Find(id);
+            //if (product == null)
+            //{
+            //    return HttpNotFound();
+            //}
+            //return View(product);
+            return null;
         }
 
         // GET: /Product/Create
@@ -68,6 +70,9 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
+            if (!Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "1"))
+                return RedirectToAction("AccessDenied", "Account");
+
             var p = new Models.Product();
             int useCatCode = 0;
             p.Barcode = p.SKU = p.ItemCode = Common.Commons.GenItemCode(db, out useCatCode, "SP");
@@ -85,10 +90,13 @@ namespace MVCProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "TaxID,ID,ItemCode,Barcode,CatID,SKU,SupplierID,ImageLink,Adwords,Show,DateCreate,Color,Dimension,Unit,Warranty,IsDel,IsState,UserID,ProductName")] Product product)
+        public ActionResult Create([Bind(Include = "Price,TaxID,ID,ItemCode,Barcode,CatID,SKU,SupplierID,ImageLink,Adwords,Show,DateCreate,Color,Dimension,Unit,Warranty,IsDel,IsState,UserID,ProductName")] Product product)
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
+            if (!Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "1"))
+                return RedirectToAction("AccessDenied", "Account");
+
             if (ModelState.IsValid)
             {
                 Upload();
@@ -108,6 +116,9 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
+            if (!Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "2"))
+                return RedirectToAction("AccessDenied", "Account");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -134,10 +145,13 @@ namespace MVCProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "TaxID,ID,ItemCode,Barcode,CatID,SKU,SupplierID,ImageLink,Adwords,Show,DateCreate,Color,Dimension,Unit,Warranty,IsDel,IsState,UserID,ProductName")] Product product)
+        public ActionResult Edit([Bind(Include = "Price,TaxID,ID,ItemCode,Barcode,CatID,SKU,SupplierID,ImageLink,Adwords,Show,DateCreate,Color,Dimension,Unit,Warranty,IsDel,IsState,UserID,ProductName")] Product product)
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
+            if (!Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "2"))
+                return RedirectToAction("AccessDenied", "Account");
+
             if (ModelState.IsValid)
             {
                 Upload();
@@ -153,18 +167,19 @@ namespace MVCProject.Controllers
         // GET: /Product/Delete/5
         public ActionResult Delete(long? id)
         {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
-                return null;
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Product product = db.Products.Find(id);
-            if (product == null)
-            {
-                return HttpNotFound();
-            }
-            return View(product);
+            //if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+            //    return null;
+            //if (id == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
+            //Product product = db.Products.Find(id);
+            //if (product == null)
+            //{
+            //    return HttpNotFound();
+            //}
+            //return View(product);
+            return null;
         }
 
         // POST: /Product/Delete/5
@@ -172,12 +187,13 @@ namespace MVCProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
-                return null;
-            Product product = db.Products.Find(id);
-            db.Products.Remove(product);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            //if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+            //    return null;
+            //Product product = db.Products.Find(id);
+            //db.Products.Remove(product);
+            //db.SaveChanges();
+            //return RedirectToAction("Index");
+            return null;
         }
 
         protected override void Dispose(bool disposing)
@@ -265,13 +281,13 @@ namespace MVCProject.Controllers
             IEnumerable<Models.Product> list = null;
             if (lcid > 0 && filter != null && filter != "")
                 list = db.Products.Where(c => c.CatID == lcid
-                    && c.ProductName.Contains(filter));
+                    && c.ProductName.Contains(filter) && c.Show == true);
             else if (lcid > 0)
                 list = db.Products.Where(c => c.CatID == lcid);
             else if (filter != null && filter != "")
-                list = db.Products.Where(c => c.ProductName.Contains(filter));
+                list = db.Products.Where(c => c.ProductName.Contains(filter) && c.Show == true);
             else
-                list = db.Products;
+                list = db.Products.Where(c => c.Show == true);
 
             list = OrderList(list, order);
 

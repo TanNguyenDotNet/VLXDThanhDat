@@ -6,13 +6,23 @@
 
     Dictionary<long, string> nList = (Dictionary<long, string>)ViewData["NameList"];
     string name = "";
+    List<string> roles = (List<string>)ViewData["AccessList"];
 }
 
 <h2>Khuyến mãi</h2>
 
 <p>
-    @Html.ActionLink("Thêm mới", "Create") ::::  @Html.ActionLink("Hình thức khuyến mãi", "Index", "PromotionType") |
+@if (roles.Contains("5"))
+{
+    @Html.ActionLink("Thêm mới", "Create")
+    @Html.Raw(" :::: ")
+}
+@Html.ActionLink("Hình thức khuyến mãi", "Index", "PromotionType")
+@if (roles.Contains("10"))
+{
+    @Html.Raw(" | ")
     <a href="../ProductCode/Create/?code=KM">Cấu hình mã khuyến mãi</a>
+}
 </p>
 <table class="table">
     <tr>
@@ -46,8 +56,8 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-           @if(nList != null && nList.Count > 0 && nList.Keys.Contains(item.ID)){
-                        name = nList[item.ID];
+           @if(nList != null && nList.Count > 0 && nList.Keys.Contains((long)item.ProductID)){
+                        name = nList[long.Parse(item.ProductID.ToString())];
                     }
                     else { 
                         name = ""; 
@@ -55,7 +65,15 @@
                     @name
             </td>
         <td>
-            @Html.ActionLink(item.Title, "Edit", new { id = item.ID })
+            
+            @if (roles.Contains("6"))
+            {
+                @Html.ActionLink(item.Title, "Edit", new { id = item.ID })
+            }
+            else
+            {
+                @item.Title
+            }
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Active)
@@ -63,16 +81,16 @@
         <td>
             @Html.DisplayFor(modelItem => item.PromotionCode)
         </td>
-        <td>
+        <td align="center">
             @DateTime.Parse(item.StartDate.ToString()).ToString("dd/MM/yyyy")
         </td>
-        <td>
+        <td align="center">
             @DateTime.Parse(item.EndDate.ToString()).ToString("dd/MM/yyyy")
         </td>
-        <td>
+        <td align="center">
             @DateTime.Parse(item.Created.ToString()).ToString("dd/MM/yyyy")
         </td>
-        <td>
+        <td align="right">
             @Html.DisplayFor(modelItem => item.PromotionValue)
         </td>
        

@@ -28,7 +28,7 @@
           <Property Name="DateCreate" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="Expire" Type="varchar" MaxLength="12" Nullable="false" />
           <Property Name="LocationID" Type="int" Nullable="false" />
-          <Property Name="District" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="District" Type="nvarchar" MaxLength="255" />
           <Property Name="State" Type="varchar" MaxLength="2" Nullable="false" />
           <Property Name="TaxID" Type="varchar" MaxLength="15" />
           <Property Name="DisplayName" Type="nvarchar(max)" Nullable="false" />
@@ -39,6 +39,8 @@
           </Key>
           <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Order" Type="int" Nullable="false" />
+          <Property Name="GroupName" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="AspNetUserClaims">
           <Key>
@@ -215,6 +217,14 @@
           <Property Name="Desc" Type="nvarchar" MaxLength="255" />
           <Property Name="TaxRate" Type="float" />
         </EntityType>
+        <EntityType Name="UserRoles">
+          <Key>
+            <PropertyRef Name="UserName" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserName" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="RoleId" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
         <EntityType Name="Warranty">
           <Key>
             <PropertyRef Name="ID" />
@@ -224,7 +234,7 @@
           <Property Name="Value" Type="tinyint" />
           <Property Name="ID" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
-        <Association Name="FK__AspNetUse__RoleI__27C3E46E">
+        <Association Name="FK__AspNetUse__RoleI__1E05700A">
           <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -238,7 +248,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AspNetUse__User___25DB9BFC">
+        <Association Name="FK__AspNetUse__User___1C1D2798">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -252,7 +262,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AspNetUse__UserI__26CFC035">
+        <Association Name="FK__AspNetUse__UserI__1D114BD1">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -266,7 +276,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AspNetUse__UserI__28B808A7">
+        <Association Name="FK__AspNetUse__UserI__1EF99443">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -299,20 +309,21 @@
           <EntitySet Name="PromotionType" EntityType="Self.PromotionType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Supplier" EntityType="Self.Supplier" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tax" EntityType="Self.Tax" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserRoles" EntityType="Self.UserRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Warranty" EntityType="Self.Warranty" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__AspNetUse__RoleI__27C3E46E" Association="Self.FK__AspNetUse__RoleI__27C3E46E">
+          <AssociationSet Name="FK__AspNetUse__RoleI__1E05700A" Association="Self.FK__AspNetUse__RoleI__1E05700A">
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
-          <AssociationSet Name="FK__AspNetUse__User___25DB9BFC" Association="Self.FK__AspNetUse__User___25DB9BFC">
+          <AssociationSet Name="FK__AspNetUse__User___1C1D2798" Association="Self.FK__AspNetUse__User___1C1D2798">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
           </AssociationSet>
-          <AssociationSet Name="FK__AspNetUse__UserI__26CFC035" Association="Self.FK__AspNetUse__UserI__26CFC035">
+          <AssociationSet Name="FK__AspNetUse__UserI__1D114BD1" Association="Self.FK__AspNetUse__UserI__1D114BD1">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
           </AssociationSet>
-          <AssociationSet Name="FK__AspNetUse__UserI__28B808A7" Association="Self.FK__AspNetUse__UserI__28B808A7">
+          <AssociationSet Name="FK__AspNetUse__UserI__1EF99443" Association="Self.FK__AspNetUse__UserI__1EF99443">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
@@ -338,6 +349,8 @@
           <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="AspNetUsers" Relationship="Self.AspNetUserRoles" FromRole="AspNetRoles" ToRole="AspNetUsers" />
+          <Property Name="Order" Type="Int32" Nullable="false" />
+          <Property Name="GroupName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="AspNetUserClaim">
           <Key>
@@ -542,6 +555,7 @@
           <EntitySet Name="AppNetUserTypes" EntityType="Models.AppNetUserType" />
           <EntitySet Name="ProductImages" EntityType="Models.ProductImage" />
           <EntitySet Name="Taxes" EntityType="Models.Tax" />
+          <EntitySet Name="UserRoles" EntityType="Models.UserRole" />
         </EntityContainer>
         <EntityType Name="ProductCode">
           <Key>
@@ -577,7 +591,7 @@
           <Property Name="DateCreate" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Expire" Type="String" MaxLength="12" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="LocationID" Type="Int32" Nullable="false" />
-          <Property Name="District" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="District" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="State" Type="String" MaxLength="2" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="TaxID" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="DisplayName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
@@ -602,6 +616,14 @@
           <Property Name="Desc" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="TaxRate" Type="Double" />
         </EntityType>
+        <EntityType Name="UserRole">
+          <Key>
+            <PropertyRef Name="UserName" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="RoleId" Type="String" Nullable="false" MaxLength="10" Unicode="false" FixedLength="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -621,6 +643,8 @@
           <EntitySetMapping Name="AspNetRoles">
             <EntityTypeMapping TypeName="Models.AspNetRole">
               <MappingFragment StoreEntitySet="AspNetRoles">
+                <ScalarProperty Name="GroupName" ColumnName="GroupName" />
+                <ScalarProperty Name="Order" ColumnName="Order" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
               </MappingFragment>
@@ -839,6 +863,14 @@
                 <ScalarProperty Name="TaxRate" ColumnName="TaxRate" />
                 <ScalarProperty Name="Desc" ColumnName="Desc" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserRoles">
+            <EntityTypeMapping TypeName="Models.UserRole">
+              <MappingFragment StoreEntitySet="UserRoles">
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

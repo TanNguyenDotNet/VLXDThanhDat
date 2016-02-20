@@ -20,26 +20,28 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
-
+            if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), null))
+                return RedirectToAction("AccessDenied", "Account");
             return View(db.Catalogs.ToList());
         }
 
         // GET: /Catalog/Details/5
         public ActionResult Details(int? id)
         {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
-                return null;
+            //if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+            //    return null;
 
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Catalog catalog = db.Catalogs.Find(id);
-            if (catalog == null)
-            {
-                return HttpNotFound();
-            }
-            return View(catalog);
+            //if (id == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
+            //Catalog catalog = db.Catalogs.Find(id);
+            //if (catalog == null)
+            //{
+            //    return HttpNotFound();
+            //}
+            //return View(catalog);
+            return null;
         }
 
         // GET: /Catalog/Create
@@ -47,6 +49,8 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
+            if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "3"))
+                return RedirectToAction("AccessDenied", "Account");
             
             ViewBag.LocationList = Common.Commons.GetLocationList(db);
             ViewBag.CatalogList = Common.Commons.GetCatalogList(db, -1);
@@ -62,6 +66,8 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
+            if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "3"))
+                return RedirectToAction("AccessDenied", "Account");
 
             if (ModelState.IsValid)
             {
@@ -78,6 +84,8 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
+            if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "4"))
+                return RedirectToAction("AccessDenied", "Account");
 
             ViewBag.LocationList = Common.Commons.GetLocationList(db);
             ViewBag.CatalogList = Common.Commons.GetCatalogList(db, id);
@@ -103,6 +111,8 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
+            if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "4"))
+                return RedirectToAction("AccessDenied", "Account");
 
             if (ModelState.IsValid)
             {
@@ -116,19 +126,20 @@ namespace MVCProject.Controllers
         // GET: /Catalog/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
-                return null;
+            //if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+            //    return null;
 
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Catalog catalog = db.Catalogs.Find(id);
-            if (catalog == null)
-            {
-                return HttpNotFound();
-            }
-            return View(catalog);
+            //if (id == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
+            //Catalog catalog = db.Catalogs.Find(id);
+            //if (catalog == null)
+            //{
+            //    return HttpNotFound();
+            //}
+            //return View(catalog);
+            return null;
         }
 
         // POST: /Catalog/Delete/5
@@ -136,13 +147,14 @@ namespace MVCProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
-                return null;
+            //if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+            //    return null;
 
-            Catalog catalog = db.Catalogs.Find(id);
-            db.Catalogs.Remove(catalog);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            //Catalog catalog = db.Catalogs.Find(id);
+            //db.Catalogs.Remove(catalog);
+            //db.SaveChanges();
+            //return RedirectToAction("Index");
+            return null;
         }
 
         protected override void Dispose(bool disposing)

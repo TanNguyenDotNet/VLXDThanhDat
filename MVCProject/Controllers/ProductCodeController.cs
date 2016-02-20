@@ -19,6 +19,11 @@ namespace MVCProject.Controllers
                 return null;
 
             string id = Request.QueryString["code"];
+            if ((id == "SP" && !MVCProject.Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "9"))
+                || (id == "KM" && !MVCProject.Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "10"))
+                || (id == "OC" && !MVCProject.Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "11")))
+                return RedirectToAction("AccessDenied", "Account");
+
             List<Models.ProductCode> item = db.ProductCodes.Where(d => (bool)d.Active == true && d.CatCode == id).ToList();
             if (item != null && item.Count > 0)
                 return View(item[0]);
@@ -37,8 +42,13 @@ namespace MVCProject.Controllers
                 return null;
             try
             {
-                if (!Request.IsAuthenticated)
-                    Response.Redirect("~/Account/Login");
+                if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                    return null;
+
+                if ((pc.CatCode == "SP" && !MVCProject.Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "9"))
+                || (pc.CatCode == "KM" && !MVCProject.Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "10"))
+                || (pc.CatCode == "OC" && !MVCProject.Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "11")))
+                    return RedirectToAction("AccessDenied", "Account");
 
                 if (ModelState.IsValid)
                 {

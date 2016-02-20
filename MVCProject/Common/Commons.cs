@@ -103,7 +103,7 @@ namespace MVCProject.Common
             useCatCode = ((bool) pc.CatID) ? 1 : 0;
             string code = (pc.Group1 != "" ? pc.Group1 + "." : "") +
                 (pc.Group2 != "" ? pc.Group2 + "." : "") +
-                string.Format("{0:0000000000}", pc.ScrollNumber);
+                string.Format("{0:000000}", pc.ScrollNumber);
             return code;
         }
 
@@ -115,6 +115,7 @@ namespace MVCProject.Common
             string en = Security.EncryptString("User:" + username + "~BackendUser", false, EncryptType.TripleDES);
             Models.aspnetEntities db = new Models.aspnetEntities();
             bool redirect = false;
+
             try
             {
                 var i = db.AppNetUserTypes.Where(d => d.Username == en).ToList();
@@ -122,9 +123,14 @@ namespace MVCProject.Common
                     redirect = true;
             }
             catch { return false; }
+
             if (redirect)
             {
+                try
+                {
                 res.Redirect("~/Product/Home");
+                }
+                catch { }
                 return false;
             }
 
@@ -146,24 +152,6 @@ namespace MVCProject.Common
                 return reval;
             }
             catch { return ""; }
-        }
-        public static DataTable ToDataTable<T>(this IList<T> data)
-        {
-            PropertyDescriptorCollection properties =
-                TypeDescriptor.GetProperties(typeof(T));
-            DataTable table = new DataTable();
-            foreach (PropertyDescriptor prop in properties)
-                table.Columns.Add(prop.Name, Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType);
-            foreach (T item in data)
-            {
-                DataRow row = table.NewRow();
-                foreach (PropertyDescriptor prop in properties)
-                    row[prop.Name] = prop.GetValue(item) ?? DBNull.Value;
-                table.Rows.Add(row);
-            }
-            //table.Columns.Remove("EntityState");
-            //table.Columns.Remove("EntityKey");
-            return table;
         }
     }
 }

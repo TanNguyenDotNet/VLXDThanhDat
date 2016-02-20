@@ -9,6 +9,8 @@
     if (size == null || size == "") { size = "20"; }
     string catid = Request.QueryString["catid"];
     if (catid == null || catid == "") { catid = "0"; }
+    
+    List<string> roles = (List<string>)ViewData["AccessList"];
 }
 
 @using (Html.BeginForm("Index", "Product", FormMethod.Get, new { id = "productViewForm" }))
@@ -16,8 +18,16 @@
 <h2>Sản phẩm</h2>
 
 <p>
-    @Html.ActionLink("Thêm mới", "Create") :::: <a href="../ProductCode/Create/?code=SP">Cấu hình mã sản phẩm</a>
-    | @Html.ActionLink("Giá sản phẩm", "Index", "ProductPrice")
+    @if(roles.Contains("1")){ 
+        @Html.ActionLink("Thêm mới", "Create") 
+        @Html.Raw(" :::: ")
+    }
+    @if(roles.Contains("9"))
+    {
+        <a href="../ProductCode/Create/?code=SP">Cấu hình mã sản phẩm</a> 
+        @Html.Raw("|") 
+    }
+    @Html.ActionLink("Giá sản phẩm", "Index", "ProductPrice")
 </p>
 @Html.PagedListPager(Model, page => Url.Action("Index", new { page, order = ViewBag.Order, 
     filter = ViewBag.Filter, size=size, catid=catid }))
@@ -97,7 +107,14 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.ActionLink(item.ProductName, "Edit", new { id = item.ID })
+            @if(roles.Contains("2"))
+            {
+                @Html.ActionLink(item.ProductName, "Edit", new { id = item.ID })
+            }
+            else
+            {
+                @item.ProductName
+            }
         </td>
         <td align="center">
             @Html.DisplayFor(modelItem => item.ItemCode)
@@ -122,7 +139,9 @@
             @Html.DisplayFor(modelItem => item.Unit)
         </td>
         <td align="center">
-            @double.Parse(item.Price.ToString()).ToString("#,###.00")
+            @if (item.Price != null){
+                double.Parse(item.Price.ToString()).ToString("#,###.00");
+            }
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Warranty)
@@ -131,9 +150,20 @@
             @Html.DisplayFor(modelItem => item.IsDel)
         </td>
         <td>
-            @Html.ActionLink("Tên", "Create/" + item.ID, "ProductName") | 
-            @Html.ActionLink("Giá", "Create/" + item.ID, "ProductPrice") | 
-            @Html.ActionLink("KM", "Create/" + item.ID, "Promotion")
+            @if(roles.Contains("17"))
+            {
+                @Html.ActionLink("Tên", "Create/" + item.ID, "ProductName") 
+                @Html.Raw(" | ")
+            }
+            @if (roles.Contains("7"))
+            {
+                @Html.ActionLink("Giá", "Create/" + item.ID, "ProductPrice")
+                @Html.Raw(" | ")
+            }
+            @if (roles.Contains("5"))
+            {
+                @Html.ActionLink("KM", "Create/" + item.ID, "Promotion")
+            }
         </td>
     </tr>
 }
