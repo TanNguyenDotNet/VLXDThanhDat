@@ -10,24 +10,18 @@ namespace MVCProject.Report
 {
     public class ShowReport
     {
-        public static ReportViewer ProcessShowReport(string ReportPath,string DataSetName, DataTable _ReportDataSource,params string[] _params)
+        public static ReportViewer ProcessShowReport(string ReportPath, string DataSetName, DataTable _ReportDataSource, List<ReportParameter> rptParams)
         {
             ReportViewer reportViewer = new ReportViewer();
             reportViewer.ProcessingMode = ProcessingMode.Local;
             reportViewer.SizeToReportContent = true;
             reportViewer.Width = Unit.Percentage(100);
             reportViewer.Height = Unit.Percentage(100);
-            reportViewer.ShowPrintButton = true;
+            reportViewer.ShowPrintButton = true; reportViewer.ShowRefreshButton = false;
             reportViewer.LocalReport.ReportPath = ReportPath;
             reportViewer.LocalReport.DataSources.Add(new ReportDataSource(DataSetName, _ReportDataSource));
-            reportViewer.LocalReport.SetParameters(GetParametersServer(_params));
+            reportViewer.LocalReport.SetParameters(rptParams);
             return reportViewer;
-        }
-        private static ReportParameter[] GetParametersServer(params string[] _params)
-        {
-            //ReportParameter p1 = new ReportParameter("ShowBingMaps", "Visible");
-            //ReportParameter p2 = new ReportParameter("ShowAll", "True");
-            return null;// new ReportParameter[] { p1, p2 };
         }
     }
 }
