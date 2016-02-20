@@ -7,12 +7,11 @@
     MVCProject.Models.AppNetUserType u = (MVCProject.Models.AppNetUserType)ViewData["AccountInfo"];
     MVCProject.Models.Location l = (MVCProject.Models.Location)ViewData["Location"];
     string lname = l != null ? l.LocationName : "";
-    List<string> roles = (List<string>)ViewData["AccessList"];
 }
 
 @using (Html.BeginForm("Complete", "Order", FormMethod.Get, new { id = "completeOrderForm" }))
 {
-    if(ViewData["State"].ToString() != "2" && roles.Contains("16"))
+    if(ViewData["State"].ToString() != "2")
     {
         <br style="clear:both" />
         <input type="hidden" id="OrderCode" name="OrderCode" value="@ViewData["OrderCode"]" />

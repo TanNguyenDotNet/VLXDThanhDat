@@ -20,28 +20,28 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
-            if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), null))
-                return RedirectToAction("AccessDenied", "Account");
+
             GetProductName();
             return View(db.Promotions.ToList());
         }
 
+        
+
         // GET: /Promotion/Details/5
         public ActionResult Details(long? id)
         {
-            //if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
-            //    return null;
-            //if (id == null)
-            //{
-            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            //}
-            //Promotion promotion = db.Promotions.Find(id);
-            //if (promotion == null)
-            //{
-            //    return HttpNotFound();
-            //}
-            //return View(promotion);
-            return null;
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Promotion promotion = db.Promotions.Find(id);
+            if (promotion == null)
+            {
+                return HttpNotFound();
+            }
+            return View(promotion);
         }
 
         // GET: /Promotion/Create
@@ -49,8 +49,6 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
-            if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "5"))
-                return RedirectToAction("AccessDenied", "Account");
             
             ViewBag.PromotionTypeList = Common.Commons.GetPromotionTypeList(db);
             ViewBag.LocationList = Common.Commons.GetLocationList(db);
@@ -74,8 +72,6 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
-            if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "5"))
-                return RedirectToAction("AccessDenied", "Account");
             if (ModelState.IsValid)
             {
                 if (promotion.LocationID == null)
@@ -98,8 +94,6 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
-            if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "6"))
-                return RedirectToAction("AccessDenied", "Account");
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -126,8 +120,6 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
-            if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "6"))
-                return RedirectToAction("AccessDenied", "Account");
             if (ModelState.IsValid)
             {
                 db.Entry(promotion).State = EntityState.Modified;
@@ -140,19 +132,18 @@ namespace MVCProject.Controllers
         // GET: /Promotion/Delete/5
         public ActionResult Delete(long? id)
         {
-            //if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
-            //    return null;
-            //if (id == null)
-            //{
-            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            //}
-            //Promotion promotion = db.Promotions.Find(id);
-            //if (promotion == null)
-            //{
-            //    return HttpNotFound();
-            //}
-            //return View(promotion);
-            return null;
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Promotion promotion = db.Promotions.Find(id);
+            if (promotion == null)
+            {
+                return HttpNotFound();
+            }
+            return View(promotion);
         }
 
         // POST: /Promotion/Delete/5
@@ -160,13 +151,12 @@ namespace MVCProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            //if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
-            //    return null;
-            //Promotion promotion = db.Promotions.Find(id);
-            //db.Promotions.Remove(promotion);
-            //db.SaveChanges();
-            //return RedirectToAction("Index");
-            return null;
+            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
+                return null;
+            Promotion promotion = db.Promotions.Find(id);
+            db.Promotions.Remove(promotion);
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)

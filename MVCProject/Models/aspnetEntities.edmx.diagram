@@ -4,11 +4,11 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="d72114f90c5f4217b51023ffd1dba818" Name="Diagram1" ZoomLevel="73">
+      <Diagram DiagramId="d72114f90c5f4217b51023ffd1dba818" Name="Diagram1">
         <EntityTypeShape EntityType="Models.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="5.75" IsExpanded="true" />
         <EntityTypeShape EntityType="Models.AspNetRole" Width="1.5" PointX="0.75" PointY="2.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="Models.AspNetUserClaim" Width="2" PointX="5.25" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Models.AspNetUserLogin" Width="1.875" PointX="5" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Models.AspNetUserClaim" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Models.AspNetUserLogin" Width="1.5" PointX="5.25" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="Models.AspNetUser" Width="1.5" PointX="3" PointY="2" IsExpanded="true" />
         <EntityTypeShape EntityType="Models.Catalog" Width="1.5" PointX="2.75" PointY="6.75" IsExpanded="true" />
         <EntityTypeShape EntityType="Models.Location" Width="1.5" PointX="4.75" PointY="6.75" IsExpanded="true" />
@@ -26,7 +26,6 @@
         <EntityTypeShape EntityType="Models.AppNetUserType" Width="1.5" PointX="11.375" PointY="6" />
         <EntityTypeShape EntityType="Models.ProductImage" Width="1.5" PointX="11.375" PointY="9.75" />
         <EntityTypeShape EntityType="Models.Tax" Width="1.5" PointX="7.125" PointY="3.625" />
-        <EntityTypeShape EntityType="Models.UserRole" Width="1.5" PointX="12.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -5,12 +5,10 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
-using System.Data;
-using System.ComponentModel;
 
 namespace MVCProject.Common
 {
-    public static class Commons
+    public class Commons
     {
         public static IEnumerable<SelectListItem> GetLocationList(Models.aspnetEntities db)
         {
@@ -103,7 +101,7 @@ namespace MVCProject.Common
             useCatCode = ((bool) pc.CatID) ? 1 : 0;
             string code = (pc.Group1 != "" ? pc.Group1 + "." : "") +
                 (pc.Group2 != "" ? pc.Group2 + "." : "") +
-                string.Format("{0:000000}", pc.ScrollNumber);
+                string.Format("{0:0000000000}", pc.ScrollNumber);
             return code;
         }
 
@@ -115,7 +113,6 @@ namespace MVCProject.Common
             string en = Security.EncryptString("User:" + username + "~BackendUser", false, EncryptType.TripleDES);
             Models.aspnetEntities db = new Models.aspnetEntities();
             bool redirect = false;
-
             try
             {
                 var i = db.AppNetUserTypes.Where(d => d.Username == en).ToList();
@@ -123,14 +120,9 @@ namespace MVCProject.Common
                     redirect = true;
             }
             catch { return false; }
-
             if (redirect)
             {
-                try
-                {
                 res.Redirect("~/Product/Home");
-                }
-                catch { }
                 return false;
             }
 
