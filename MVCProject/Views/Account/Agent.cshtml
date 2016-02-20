@@ -1,12 +1,11 @@
 ﻿@model MVCProject.Models.AppNetUserType
 
 @{
-    ViewBag.Title = "Thông tin đại lý";
-    Layout = "~/Views/Shared/_Layout.Frontend.cshtml";
+    ViewBag.Title = "Agent";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Thông tin đại lý</h2>
-
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -81,7 +80,7 @@
         </div>
     </div>
 }
-
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
+

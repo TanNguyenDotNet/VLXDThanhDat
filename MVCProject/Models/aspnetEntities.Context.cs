@@ -43,5 +43,6 @@ namespace MVCProject.Models
         public virtual DbSet<AppNetUserType> AppNetUserTypes { get; set; }
         public virtual DbSet<ProductImage> ProductImages { get; set; }
         public virtual DbSet<Tax> Taxes { get; set; }
+        public virtual DbSet<UserRole> UserRoles { get; set; }
     }
 }

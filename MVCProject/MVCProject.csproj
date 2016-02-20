@@ -297,6 +297,9 @@
     <Compile Include="Models\Tax.cs">
       <DependentUpon>aspnetEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\UserRole.cs">
+      <DependentUpon>aspnetEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Warranty.cs">
       <DependentUpon>aspnetEntities.tt</DependentUpon>
     </Compile>
@@ -467,6 +470,10 @@
     <Content Include="Views\OrderDetail\AdmView.cshtml" />
     <Content Include="Views\OrderDetail\UserView.cshtml" />
     <Content Include="Views\ReportView\Index.cshtml" />
+    <Content Include="Views\Account\Index.cshtml" />
+    <Content Include="Views\Account\Agent.cshtml" />
+    <Content Include="Views\Account\Roles.cshtml" />
+    <Content Include="Views\Account\AccessDenied.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Report\ReportOrderDetail.rdlc" />

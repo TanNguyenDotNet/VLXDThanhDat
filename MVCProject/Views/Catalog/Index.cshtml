@@ -1,20 +1,16 @@
 ﻿@model IEnumerable<MVCProject.Models.Catalog>
-@if (!Request.IsAuthenticated)
-{
-    Response.Redirect("~/Account/Login");
-    return;
-}
-
 @{
     ViewBag.Title = "Danh mục";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    List<string> roles = (List<string>)ViewData["AccessList"];
 }
 
-
 <h2>Danh mục</h2>
-
 <p>
-    @Html.ActionLink("Thêm mới", "Create")
+    @if (roles.Contains("3"))
+    {
+        @Html.ActionLink("Thêm mới", "Create")
+    }
 </p>
 <table class="table">
     <tr>
@@ -30,7 +26,14 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.ActionLink(item.Title, "Edit", new { id = item.ID })
+            @if (roles.Contains("4"))
+            {
+                @Html.ActionLink(item.Title, "Edit", new { id = item.ID })
+            }
+            else
+            {
+                @item.Title
+            }
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Description)
