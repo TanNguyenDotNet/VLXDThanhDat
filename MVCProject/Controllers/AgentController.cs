@@ -26,7 +26,7 @@ namespace MVCProject.Controllers
                 return null;
             }
 
-           
+            ViewBag.LocationList = Common.Commons.GetLocationList(db);
             ViewData["UserName"] = User.Identity.GetUserName();
             return View(u);
         }
@@ -42,6 +42,7 @@ namespace MVCProject.Controllers
             {
                 appnetusertype.Expire = DateTime.Now.AddYears(1).ToString("yyyyMMddHHmm");
                 appnetusertype.State = "1";
+                appnetusertype.District = "";
                 db.Entry(appnetusertype).State = EntityState.Modified;
                 db.SaveChanges();
                 Response.Redirect("~/OrderDetail/Details");

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title</title>
+    <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/jquery.datetimepicker.css")
     @Scripts.Render("~/bundles/modernizr")
@@ -32,7 +32,7 @@
                         <li>@Html.ActionLink("Danh mục", "Index", "Catalog")</li>
                         <li>@Html.ActionLink("Khuyến mãi", "Index", "Promotion")</li>
                         <li>@Html.ActionLink("Đơn hàng", "Index", "Order")</li>
-                        <li>@Html.ActionLink("Tài khoản", "Index", "Account")</li>
+                        <li>@Html.ActionLink("Tài khoản", "Register", "Account")</li>
                     </ul>
                 }
                 else

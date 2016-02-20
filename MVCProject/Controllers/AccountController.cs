@@ -10,150 +10,12 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using MVCProject.Models;
 using MVCProject.Common;
-using System.Data.Entity;
 
 namespace MVCProject.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
-        Models.aspnetEntities db = new Models.aspnetEntities();
-        public ActionResult AccessDenied(string id)
-        {
-            return View();
-        }
-        public ActionResult Agent(string id)
-        {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
-                return null;
-
-            string enu = Security.EncryptString("User:" + id + "~FrontendUser", false, EncryptType.TripleDES);
-            var u = db.AppNetUserTypes.Find(enu);
-            if (u == null)
-            {
-                Response.Redirect("~/Account/Index/?Err=0");
-                return null;
-            }
-
-            ViewData["UserName"] = id;
-            return View(u);
-        }
-
-        [HttpPost]
-        public ActionResult Agent([Bind(Include = "Username,Email,Fax,Address,Phone,UserType,DateCreate,Expire,LocationID,District,State,TaxID,DisplayName")] 
-            AppNetUserType appnetusertype)
-        {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
-                return null;
-
-            if (ModelState.IsValid)
-            {
-                appnetusertype.Expire = DateTime.Now.AddYears(1).ToString("yyyyMMddHHmm");
-                appnetusertype.State = "1";
-                db.Entry(appnetusertype).State = EntityState.Modified;
-                db.SaveChanges();
-                Response.Redirect("~/Account/Index");
-            }
-            else
-                Response.Redirect("~/Account/Index/?Err=1");
-            return null;
-        }
-
-        [HttpPost]
-        public ActionResult Roles(string UserName, string EncrytUser, string Password, string[] Roles)
-        {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
-                return null;
-            
-            if (Password != null && Password != "")
-            {
-                UserManager.AddPasswordAsync(UserName, Password);
-            }
-
-            var uroles = db.UserRoles.Where(c => c.UserName == EncrytUser);
-            if (uroles != null && uroles.Count() > 0)
-                foreach (var item in uroles)
-                    db.UserRoles.Remove(item);
-            db.SaveChanges();
-            
-            foreach(string s in Roles)
-            {
-                UserRole u = new UserRole();
-                u.RoleId = s;
-                u.UserName = EncrytUser;
-                db.UserRoles.Add(u);
-            }
-            db.SaveChanges();
-
-            return RedirectToAction("Index", "Account");
-        }
-
-        public ActionResult Roles(string id)
-        {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
-                return null;
-            if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "14"))
-                return RedirectToAction("AccessDenied", "Account");
-
-            return View(GetFormInfo(id));
-        }
-
-        private RegisterViewModel GetFormInfo(string id)
-        {
-            string enu = Security.EncryptString("User:" + id + "~BackendUser", false, EncryptType.TripleDES);
-            var u = db.AppNetUserTypes.Find(enu);
-            if (u == null)
-            {
-                Response.Redirect("~/Account/Index/?Err=0");
-                return null;
-            }
-            
-            ViewData["UserName"] = id;
-            ViewData["EncrytUser"] = enu;
-            ViewBag.RoleList = db.AspNetRoles.OrderBy(o=>o.GroupName).ToList();
-            ViewBag.UserRoles = GetRoles(enu);
-            ViewBag.LocationList = Common.Commons.GetLocationList(db);
-
-            Models.RegisterViewModel model = new RegisterViewModel();
-            model.LocationID = u.LocationID.ToString();
-            return model;
-        }
-
-        private List<string> GetRoles(string enu)
-        {
-            List<string> us = new List<string>();
-            var roles = db.UserRoles.Where(c => c.UserName == enu);
-            if (roles != null && roles.Count() > 0)
-            {
-                foreach (var i in roles)
-                {
-                    us.Add(i.RoleId);
-                }
-            }
-            return us;
-        }
-
-        public ActionResult Index()
-        {
-            if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
-                return null;
-            if (!Common.Commons.CheckPermission(ViewData, db, User.Identity.GetUserName(), "19"))
-                return RedirectToAction("AccessDenied", "Account");
-
-            ViewBag.TypeList = Common.Commons.GetFullName(db.AppNetUserTypes.ToList());
-            ViewBag.LocationList = Common.Commons.GetCityName(db.Locations.ToList());
-            return View(GetUserList());
-        }
-
-        private IEnumerable<AspNetUser> GetUserList()
-        {
-            string un = User.Identity.GetUserName();
-            var list = (from u in db.AspNetUsers
-                       where u.UserName != un && !u.UserName.Contains("admin")
-                       select u).ToList();
-            return list;
-        }
-
         public AccountController()
             : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext())))
         {
@@ -213,7 +75,7 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
-            ViewBag.LocationList = Common.Commons.GetLocationList(db);
+
             return View();
         }
 
@@ -237,8 +99,6 @@ namespace MVCProject.Controllers
                         model.UserType, false, EncryptType.TripleDES);
                     string en = Security.EncryptString(model.UserName + "~" +
                         model.UserType, false, EncryptType.TripleDES);
-                    int lid = int.Parse(model.LocationID == null || model.LocationID == "" ? "0" : model.LocationID);
-
                     Models.AppNetUserType ut = new AppNetUserType {
                         Username = enu,
                         UserType = en,
@@ -247,14 +107,13 @@ namespace MVCProject.Controllers
                         Phone="",
                         DateCreate = DateTime.Now.ToString("yyyyMMdd"),
                         Expire = DateTime.Now.AddDays(365).ToString("yyyyMMdd"),
-                        LocationID = lid,
+                        LocationID = 0,
                         State = "0",
                         TaxID = "0",
-                        DisplayName = model.FullName,
-                        District = "",
-                        Fax = ""
+                        DisplayName = "",
+                        District = ""
                     };
-                    
+                    Models.aspnetEntities db = new Models.aspnetEntities();
                     db.AppNetUserTypes.Add(ut);
                     db.SaveChanges();
 
@@ -268,7 +127,7 @@ namespace MVCProject.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            return RedirectToAction("Index", "Account");
+            return RedirectToAction("Register", "Account");
         }
 
         //

@@ -18,8 +18,6 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
-            if (!Common.Commons.CheckPermission(ViewData, _db, User.Identity.GetUserName(), "20"))
-                return RedirectToAction("AccessDenied", "Account");
 
             return View(db.Orders.ToList()); 
         }

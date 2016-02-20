@@ -70,8 +70,6 @@ namespace MVCProject.Controllers
         {
             if (!Common.Commons.CheckLogin(Request, Response, User.Identity.GetUserName()))
                 return null;
-            if (!Common.Commons.CheckPermission(ViewData, _db, User.Identity.GetUserName(), "15"))
-                return RedirectToAction("AccessDenied", "Account");
 
             return View(AdminViewOrder(1));
         }
@@ -416,7 +414,6 @@ namespace MVCProject.Controllers
 
                 try
                 {
-                    // Lấy giá theo vùng
                     if(u.LocationID > 0)
                         price = _db.ProductPrices.OrderBy(c => c.ID).First(c => c.ProductID == i.ID && c.LocationID == u.LocationID);
                     if(price == null || price.Price == 0)
@@ -425,7 +422,7 @@ namespace MVCProject.Controllers
                 catch { cd[index, 1] = "0"; }
 
                 if (price == null || price.Price == 0)
-                    cd[index, 1] = i.Price.ToString(); // Không có giá theo vùng, lấy giá mặc định
+                    cd[index, 1] = i.Price.ToString();
                 else
                     cd[index, 1] = price.Price.ToString();
                 
